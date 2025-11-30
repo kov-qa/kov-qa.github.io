@@ -19,21 +19,21 @@
       /* Liquid Glass Effect */
       .glass-panel {
         background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
         box-shadow: 
-          0 4px 24px -1px rgba(0, 0, 0, 0.2),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.05),
-          inset 0 0 20px rgba(255, 255, 255, 0.02);
+          0 4px 30px rgba(0, 0, 0, 0.1),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
       }
 
       .glass-panel:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
         box-shadow: 
-          0 8px 32px -1px rgba(0, 0, 0, 0.3),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+          0 20px 40px -10px rgba(0, 0, 0, 0.5),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.15),
           inset 0 0 20px rgba(255, 255, 255, 0.05);
       }
     </style>

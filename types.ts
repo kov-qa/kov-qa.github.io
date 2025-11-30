@@ -1,6 +1,8 @@
+import React from 'react';
+
 export interface SocialLink {
   id: string;
-  platform: 'Telegram' | 'Discord' | 'Roblox';
+  platform: 'Telegram' | 'Discord' | 'Roblox' | 'GitHub';
   username: string;
   url?: string;
   action: 'link' | 'copy';

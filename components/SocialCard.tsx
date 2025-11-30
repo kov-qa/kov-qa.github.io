@@ -28,31 +28,68 @@ const SocialCard: React.FC<SocialCardProps> = ({ link, onCopy }) => {
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsHovered(true)}
+      onBlur={() => setIsHovered(false)}
       className={`
-        group relative w-full p-5 rounded-[2rem] flex items-center justify-between
-        transition-all duration-500
-        glass-panel
-        ${isHovered ? 'translate-y-[-2px] scale-[1.01]' : 'translate-y-0 scale-100'}
+        group relative h-20 flex items-center justify-center
+        glass-panel overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-white/50
+        transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
+        ${isHovered ? 'w-80 rounded-[2rem]' : 'w-20 rounded-full'}
       `}
+      style={{
+        zIndex: isHovered ? 50 : 1,
+        boxShadow: isHovered 
+          ? `0 10px 40px -10px ${link.color}30, inset 0 0 20px rgba(255,255,255,0.05)` 
+          : '0 4px 30px rgba(0, 0, 0, 0.1)'
+      }}
     >
-      <div className="flex items-center gap-5 z-10">
+      {/* Background Glow */}
+      <div 
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+        style={{
+          background: `radial-gradient(circle at center, ${link.color}10 0%, transparent 70%)`
+        }}
+      />
+
+      {/* Content Wrapper - Keeps content centered in flex */}
+      <div className="flex items-center justify-center relative z-10">
+        
+        {/* Icon */}
         <div 
-          className="p-3.5 rounded-2xl transition-all duration-500 shadow-inner border border-white/5"
+          className="text-3xl transition-all duration-500 shrink-0"
           style={{ 
-            backgroundColor: isHovered ? `${link.color}20` : 'rgba(255,255,255,0.03)',
-            color: isHovered ? link.color : 'rgba(255,255,255,0.7)',
-            boxShadow: isHovered ? `0 0 20px ${link.color}30` : 'none'
+            color: isHovered ? link.color : 'rgba(255,255,255,0.9)',
+            filter: isHovered ? `drop-shadow(0 0 8px ${link.color}60)` : 'none',
+            transform: isHovered ? 'scale(1.1)' : 'scale(1)'
           }}
         >
-          <Icon className="w-7 h-7" />
+          <Icon />
         </div>
-        <div className="text-left space-y-0.5">
-          <h3 className="text-xs font-semibold text-white/40 uppercase tracking-widest group-hover:text-white/60 transition-colors">{link.platform}</h3>
-          <p className="text-lg font-bold text-white tracking-wide group-hover:text-white transition-colors">{link.username}</p>
+
+        {/* Text Container - Expands smoothly */}
+        <div 
+          className={`
+            flex flex-col items-start overflow-hidden whitespace-nowrap
+            transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
+            ${isHovered ? 'w-40 ml-5 opacity-100' : 'w-0 ml-0 opacity-0'}
+          `}
+        >
+          <span className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-0.5">
+            {link.platform}
+          </span>
+          <span className="text-lg font-bold text-white tracking-wide">
+            {link.username}
+          </span>
         </div>
       </div>
 
-      <div className="text-white/30 group-hover:text-white transition-colors duration-300 z-10 pr-2">
+      {/* Action Indicator (Arrow/Check) - Fades in on the far right */}
+      <div 
+        className={`
+          absolute right-6 text-white/20 transition-all duration-500
+          ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}
+        `}
+      >
         {justCopied ? (
           <CheckIcon className="w-5 h-5 text-green-400" />
         ) : link.action === 'copy' ? (
@@ -61,14 +98,6 @@ const SocialCard: React.FC<SocialCardProps> = ({ link, onCopy }) => {
           <ExternalLinkIcon className="w-5 h-5" />
         )}
       </div>
-
-      {/* Subtle Gradient Glow on Hover */}
-      <div 
-        className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-        style={{
-          background: `radial-gradient(circle at center, ${link.color}15, transparent 70%)`
-        }}
-      />
     </button>
   );
 };

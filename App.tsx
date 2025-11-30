@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SocialLink } from './types';
-import { DiscordIcon, RobloxIcon, TelegramIcon } from './components/Icons';
+import { DiscordIcon, RobloxIcon, TelegramIcon, GithubIcon } from './components/Icons';
 import SocialCard from './components/SocialCard';
 import Notification from './components/Notification';
 
@@ -32,6 +32,15 @@ const LINKS: SocialLink[] = [
     action: 'link',
     color: '#FFFFFF', // White for Roblox in this dark theme
     icon: RobloxIcon,
+  },
+  {
+    id: 'github',
+    platform: 'GitHub',
+    username: 'kov-qa',
+    url: 'https://github.com/kov-qa',
+    action: 'link',
+    color: '#E6EDF3', // GitHub Light Grey
+    icon: GithubIcon,
   }
 ];
 
@@ -41,17 +50,31 @@ const App: React.FC = () => {
 
   // Handle mouse move for dynamic background effect
   useEffect(() => {
+    let rafId: number;
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (containerRef.current) {
-        const x = e.clientX;
-        const y = e.clientY;
-        containerRef.current.style.setProperty('--mouse-x', `${x}px`);
-        containerRef.current.style.setProperty('--mouse-y', `${y}px`);
+      // Optimize performance by using requestAnimationFrame
+      if (rafId) {
+        cancelAnimationFrame(rafId);
       }
+      
+      rafId = requestAnimationFrame(() => {
+        if (containerRef.current) {
+          const x = e.clientX;
+          const y = e.clientY;
+          containerRef.current.style.setProperty('--mouse-x', `${x}px`);
+          containerRef.current.style.setProperty('--mouse-y', `${y}px`);
+        }
+      });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+    };
   }, []);
 
   const handleCopy = async (text: string, platform: string) => {
@@ -80,7 +103,7 @@ const App: React.FC = () => {
         className="fixed inset-0 pointer-events-none transition-opacity duration-500"
         style={{
           background: `
-            radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%),
+            radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.04), transparent 40%),
             radial-gradient(1200px circle at 50% 50%, #050505, #000000 100%)
           `
         }}
@@ -89,19 +112,20 @@ const App: React.FC = () => {
       {/* Noise Texture Overlay */}
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
 
-      <main className="w-full max-w-md z-10 flex flex-col gap-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+      <main className="w-full max-w-2xl z-10 flex flex-col items-center gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 py-10">
         
         {/* Header Profile Section */}
         <div className="flex flex-col items-center text-center space-y-6">
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-tr from-white/20 to-transparent rounded-full blur opacity-30 group-hover:opacity-60 transition duration-700"></div>
-            <div className="relative w-32 h-32 rounded-full p-1 bg-black/40 backdrop-blur-sm border border-white/10 ring-1 ring-white/5 overflow-hidden shadow-2xl">
-               <img 
-                 src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
-                 alt="Kovrik Avatar" 
-                 className="w-full h-full object-cover rounded-full hover:scale-110 transition-transform duration-700 ease-in-out"
-               />
-            </div>
+          <div className="relative group cursor-default">
+             {/* Subtle static glow */}
+            <div className="absolute inset-0 bg-white/5 blur-2xl rounded-full scale-110 group-hover:scale-125 transition-transform duration-700"></div>
+            
+            <img 
+              src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+              alt="Kovrik Avatar" 
+              loading="eager"
+              className="relative w-32 h-32 rounded-full object-cover border-[3px] border-white/10 shadow-2xl z-10 group-hover:border-white/20 transition-colors duration-500"
+            />
           </div>
           
           <div className="space-y-2">
@@ -118,8 +142,8 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Links Grid */}
-        <div className="flex flex-col gap-5">
+        {/* Links Column */}
+        <div className="flex flex-col gap-6 items-center w-full">
           {LINKS.map((link) => (
             <SocialCard 
               key={link.id} 
