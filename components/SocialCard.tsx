@@ -31,72 +31,53 @@ const SocialCard: React.FC<SocialCardProps> = ({ link, onCopy }) => {
       onFocus={() => setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
       className={`
-        group relative h-20 flex items-center justify-center
-        glass-panel overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-white/50
-        transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
-        ${isHovered ? 'w-80 rounded-[2rem]' : 'w-20 rounded-full'}
+        group relative w-full aspect-square flex flex-col items-center justify-center
+        glass-panel rounded-2xl overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-white/50
+        transition-all duration-300 hover:-translate-y-1 active:scale-95 active:bg-white/10
       `}
       style={{
-        zIndex: isHovered ? 50 : 1,
-        boxShadow: isHovered 
-          ? `0 10px 40px -10px ${link.color}30, inset 0 0 20px rgba(255,255,255,0.05)` 
-          : '0 4px 30px rgba(0, 0, 0, 0.1)'
+        zIndex: isHovered ? 20 : 1,
       }}
     >
-      {/* Background Glow */}
+      {/* Background Glow on Hover */}
       <div 
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: `radial-gradient(circle at center, ${link.color}10 0%, transparent 70%)`
+          background: `radial-gradient(circle at center, ${link.color}15 0%, transparent 80%)`
         }}
       />
 
-      {/* Content Wrapper - Keeps content centered in flex */}
-      <div className="flex items-center justify-center relative z-10">
-        
-        {/* Icon */}
-        <div 
-          className="text-3xl transition-all duration-500 shrink-0"
-          style={{ 
-            color: isHovered ? link.color : 'rgba(255,255,255,0.9)',
-            filter: isHovered ? `drop-shadow(0 0 8px ${link.color}60)` : 'none',
-            transform: isHovered ? 'scale(1.1)' : 'scale(1)'
-          }}
-        >
-          <Icon />
-        </div>
-
-        {/* Text Container - Expands smoothly */}
-        <div 
-          className={`
-            flex flex-col items-start overflow-hidden whitespace-nowrap
-            transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
-            ${isHovered ? 'w-40 ml-5 opacity-100' : 'w-0 ml-0 opacity-0'}
-          `}
-        >
-          <span className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-0.5">
-            {link.platform}
-          </span>
-          <span className="text-lg font-bold text-white tracking-wide">
-            {link.username}
-          </span>
-        </div>
+      {/* Top Right Action Icon */}
+      <div className="absolute top-3 right-3 text-white/20 group-hover:text-white/60 transition-colors">
+         {justCopied ? (
+          <CheckIcon className="w-3.5 h-3.5 text-green-400" />
+        ) : link.action === 'copy' ? (
+          <CopyIcon className="w-3.5 h-3.5" />
+        ) : (
+          <ExternalLinkIcon className="w-3.5 h-3.5" />
+        )}
       </div>
 
-      {/* Action Indicator (Arrow/Check) - Fades in on the far right */}
+      {/* Main Icon */}
       <div 
-        className={`
-          absolute right-6 text-white/20 transition-all duration-500
-          ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}
-        `}
+        className="text-3xl sm:text-4xl transition-all duration-300 mb-2 shrink-0"
+        style={{ 
+          color: isHovered ? link.color : 'rgba(255,255,255,0.9)',
+          filter: isHovered ? `drop-shadow(0 0 15px ${link.color}40)` : 'none',
+          transform: isHovered ? 'scale(1.1)' : 'scale(1)'
+        }}
       >
-        {justCopied ? (
-          <CheckIcon className="w-5 h-5 text-green-400" />
-        ) : link.action === 'copy' ? (
-          <CopyIcon className="w-5 h-5" />
-        ) : (
-          <ExternalLinkIcon className="w-5 h-5" />
-        )}
+        <Icon />
+      </div>
+
+      {/* Text Info */}
+      <div className="flex flex-col items-center text-center px-2 z-10 w-full">
+        <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 mb-0.5">
+          {link.platform}
+        </span>
+        <span className="text-[11px] sm:text-xs font-medium text-white/90 truncate w-full px-1">
+          {link.username}
+        </span>
       </div>
     </button>
   );

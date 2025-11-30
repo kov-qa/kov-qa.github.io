@@ -112,38 +112,45 @@ const App: React.FC = () => {
       {/* Noise Texture Overlay */}
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
 
-      <main className="w-full max-w-2xl z-10 flex flex-col items-center gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 py-10">
+      <main className="w-full max-w-xs z-10 flex flex-col items-center gap-6 animate-in fade-in slide-in-from-bottom-8 duration-1000 py-4">
         
         {/* Header Profile Section */}
-        <div className="flex flex-col items-center text-center space-y-6">
+        <div className="flex flex-col items-center text-center space-y-4">
           <div className="relative group cursor-default">
              {/* Subtle static glow */}
-            <div className="absolute inset-0 bg-white/5 blur-2xl rounded-full scale-110 group-hover:scale-125 transition-transform duration-700"></div>
+            <div className="absolute inset-0 bg-white/5 blur-xl rounded-full scale-110 group-hover:scale-125 transition-transform duration-700"></div>
             
             <img 
               src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
               alt="Kovrik Avatar" 
               loading="eager"
-              className="relative w-32 h-32 rounded-full object-cover border-[3px] border-white/10 shadow-2xl z-10 group-hover:border-white/20 transition-colors duration-500"
+              className="relative w-24 h-24 rounded-full object-cover border-[3px] border-white/10 shadow-2xl z-10 group-hover:border-white/20 transition-colors duration-500"
             />
           </div>
           
-          <div className="space-y-2">
-            <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-lg">
+          <div className="space-y-1">
+            <h1 className="text-3xl font-black text-white tracking-tight drop-shadow-lg">
               Kovrik
             </h1>
             <div className="flex items-center justify-center gap-2">
-              <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-white/30"></div>
-              <p className="text-white/50 font-medium text-sm tracking-[0.2em] uppercase">
+              <div className="h-[1px] w-6 bg-gradient-to-r from-transparent to-white/30"></div>
+              <p className="text-white/50 font-medium text-xs tracking-[0.2em] uppercase">
                 Social Hub
               </p>
-              <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-white/30"></div>
+              <div className="h-[1px] w-6 bg-gradient-to-l from-transparent to-white/30"></div>
             </div>
           </div>
         </div>
 
-        {/* Links Column */}
-        <div className="flex flex-col gap-6 items-center w-full">
+        {/* Bio Section */}
+        <div className="w-full glass-panel rounded-2xl p-4 text-center backdrop-blur-md border border-white/5">
+          <p className="text-sm text-white/70 leading-relaxed font-light">
+            Digital explorer & enthusiast. Welcome to my personal hub where creativity meets code.
+          </p>
+        </div>
+
+        {/* Links Grid */}
+        <div className="grid grid-cols-2 gap-3 w-full">
           {LINKS.map((link) => (
             <SocialCard 
               key={link.id} 
@@ -154,8 +161,8 @@ const App: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <footer className="text-center pt-8 opacity-40 hover:opacity-100 transition-opacity duration-500">
-           <p className="text-xs font-light tracking-widest text-white/60">
+        <footer className="text-center pt-2 opacity-40 hover:opacity-100 transition-opacity duration-500">
+           <p className="text-[10px] font-light tracking-widest text-white/60">
              © {new Date().getFullYear()} KOVRIK
            </p>
         </footer>
