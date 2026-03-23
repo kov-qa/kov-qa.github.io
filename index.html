@@ -275,8 +275,6 @@ footer {
 .collection-spikes {
   position: absolute;
   inset: 0;
-  --spike-width: clamp(120px, 12vw, 180px);
-  --spike-gap: clamp(32px, 4vw, 72px);
   pointer-events: none;
   overflow: hidden;
   z-index: 0;
@@ -292,8 +290,8 @@ footer {
 .collection-spikes svg {
   position: absolute;
   top: 50%;
-  width: var(--spike-width);
-  height: min(74%, 560px);
+  width: clamp(160px, 18vw, 280px);
+  height: min(80%, 620px);
   display: block;
   overflow: visible;
   opacity: 0;
@@ -301,32 +299,20 @@ footer {
   will-change: opacity, transform;
 }
 .collection-spikes svg[data-side='left'] {
-  left: calc(50% - 14rem - var(--spike-gap) - var(--spike-width));
-  transform: translate3d(-36px, -50%, 0);
+  left: clamp(8px, 2vw, 28px);
+  transform: translate3d(-28px, -50%, 0) scaleX(-1);
 }
 .collection-spikes svg[data-side='right'] {
-  right: calc(50% - 14rem - var(--spike-gap) - var(--spike-width));
-  transform: translate3d(36px, -50%, 0) scaleX(-1);
+  right: clamp(8px, 2vw, 28px);
+  transform: translate3d(28px, -50%, 0);
 }
 #collection.spikes-visible .collection-spikes svg[data-side='left'] {
   opacity: .72;
-  transform: translate3d(0, -50%, 0);
+  transform: translate3d(0, -50%, 0) scaleX(-1);
 }
 #collection.spikes-visible .collection-spikes svg[data-side='right'] {
   opacity: .72;
-  transform: translate3d(0, -50%, 0) scaleX(-1);
-}
-@media (max-width: 980px) {
-  .collection-spikes {
-    --spike-width: clamp(90px, 18vw, 128px);
-    --spike-gap: 18px;
-  }
-  .collection-spikes svg[data-side='left'] {
-    left: max(4px, calc(50% - 14rem - var(--spike-gap) - var(--spike-width)));
-  }
-  .collection-spikes svg[data-side='right'] {
-    right: max(4px, calc(50% - 14rem - var(--spike-gap) - var(--spike-width)));
-  }
+  transform: translate3d(0, -50%, 0);
 }
 .spike-group { will-change: transform, opacity; transform-box: fill-box; transform-origin: center; }
 .spike-group polygon {
@@ -1104,43 +1090,40 @@ function createSeededRandom(seed) {
 
 function generateCollectionSpikes() {
   const sides = [
-    { id: 'collection-spikes-left', seed: 231 },
-    { id: 'collection-spikes-right', seed: 913 },
+    { id: 'collection-spikes-left', seed: 231, direction: 1 },
+    { id: 'collection-spikes-right', seed: 913, direction: -1 },
   ];
   const ns = 'http://www.w3.org/2000/svg';
   const height = 600;
-  const baseX = 18;
-  const tipMinX = 132;
-  const tipMaxX = 220;
+  const baseX = 24;
 
-  sides.forEach(({ id, seed }) => {
+  sides.forEach(({ id, seed, direction }) => {
     const svg = document.getElementById(id);
     const rand = createSeededRandom(seed);
-    const focusY = height * (0.5 + (rand() - 0.5) * 0.08);
     if (!svg) return;
     svg.innerHTML = '';
 
     for (let i = 0; i < 28; i++) {
-      const startY = 22 + i * 20 + rand() * 12;
-      const thickness = 1.8 + rand() * 3.4;
-      const tipX = tipMinX + rand() * (tipMaxX - tipMinX);
-      const pull = 0.42 + rand() * 0.22;
-      const tipY = startY + (focusY - startY) * pull + (rand() - 0.5) * 12;
-      const clampedTipY = Math.max(10, Math.min(height - 10, tipY));
+      const startY = 18 + i * 20 + rand() * 14;
+      const length = 72 + rand() * 120;
+      const thickness = 2 + rand() * 4;
+      const spread = 18 + rand() * 34;
+      const tipX = baseX + length;
+      const tipY = Math.min(height - 12, startY + (rand() - 0.5) * spread);
 
       const polygon = document.createElementNS(ns, 'polygon');
       polygon.setAttribute('points', [
         `${baseX},${startY - thickness}`,
-        `${tipX},${clampedTipY}`,
+        `${tipX},${tipY}`,
         `${baseX},${startY + thickness}`,
       ].join(' '));
-      polygon.setAttribute('opacity', String(0.24 + rand() * 0.54));
+      polygon.setAttribute('opacity', String(0.22 + rand() * 0.6));
 
       const group = document.createElementNS(ns, 'g');
       group.setAttribute('class', 'spike-group');
-      group.dataset.depth = String(0.5 + rand() * 0.85);
-      group.dataset.float = String(4 + rand() * 11);
-      group.dataset.spin = String(((focusY - startY) / height) * 18 + (rand() - 0.5) * 4);
+      group.dataset.depth = String(0.45 + rand() * 0.9);
+      group.dataset.float = String(6 + rand() * 18);
+      group.dataset.spin = String((rand() - 0.5) * 14 * direction);
       group.dataset.phase = String(rand() * Math.PI * 2);
       group.appendChild(polygon);
       svg.appendChild(group);
@@ -1167,11 +1150,11 @@ function updateSpikesScroll() {
     const floatRange = Number(group.dataset.float || 12);
     const phase = Number(group.dataset.phase || 0);
     const spin = Number(group.dataset.spin || 0);
-    const side = group.closest('svg')?.dataset.side === 'left' ? 1 : -1;
-    const driftX = side * (18 + progress * 32) * depth;
+    const side = group.closest('svg')?.dataset.side === 'left' ? -1 : 1;
+    const driftX = side * (10 + progress * 24) * depth;
     const driftY = Math.sin(oscillation + phase + index * 0.12) * floatRange;
-    const rotate = spin * (0.45 + progress * 0.75);
-    const scale = 0.86 + depth * 0.22 + progress * 0.06;
+    const rotate = spin * (0.35 + progress * 0.9);
+    const scale = 0.82 + depth * 0.28 + progress * 0.08;
     const opacity = Math.min(1, 0.28 + progress * 0.8);
 
     group.style.transform = `translate3d(${driftX}px, ${driftY}px, 0) rotate(${rotate}deg) scale(${scale})`;
