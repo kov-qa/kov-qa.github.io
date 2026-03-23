@@ -128,15 +128,37 @@ body {
   overflow: visible;
   pointer-events: none;
 }
-#hero-spikes {
+.hero-shards {
   position: absolute;
   inset: 0;
-  width: 100%; height: 100%;
-  overflow: visible;
   pointer-events: none;
   z-index: 2;
-  opacity: 0.18;
-  transform: translateZ(0);
+}
+.hero-shards svg {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: clamp(140px, 16vw, 240px);
+  overflow: visible;
+  opacity: .48;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+.hero-shards svg[data-side='left'] { left: clamp(24px, 4vw, 72px); }
+.hero-shards svg[data-side='right'] {
+  right: clamp(24px, 4vw, 72px);
+  transform: scaleX(-1);
+}
+.hero-shards .shard-layer { will-change: transform; }
+.hero-shards polygon {
+  fill: rgba(255,255,255,.72);
+  filter: drop-shadow(0 0 10px rgba(255,255,255,.14));
+}
+@media (max-width: 768px) {
+  .hero-shards svg {
+    width: clamp(96px, 20vw, 140px);
+    opacity: .28;
+  }
 }
 .hero-cta {
   display: inline-flex; justify-content: center;
@@ -150,18 +172,42 @@ body {
 
 /* ── Collection ───────────────────────────────────────────────────────── */
 #collection {
-  padding: 128px 24px; max-width: 80rem; margin: 0 auto;
-  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+  padding: 128px 24px;
+  max-width: 96rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.collection-inner {
+  position: relative;
+  width: 100%;
+  max-width: 72rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+  z-index: 1;
 }
 .section-label {
-  display: inline-block; padding: 16px 32px; border-radius: 2rem;
-  border: 1px solid rgba(255,255,255,.05); background: rgba(255,255,255,.02);
-  margin-bottom: 80px; align-self: flex-start;
+  display: inline-flex;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 2rem;
+  border: 1px solid rgba(255,255,255,.05);
+  background: rgba(255,255,255,.02);
+  margin-bottom: 0;
+  align-self: center;
 }
-.section-label h2 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.05em; color: #fff; transform: translateY(-2px); display: block; }
+.section-label h2 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.05em; color: #fff; transform: translateY(-2px); display: block; text-align: center; }
 .grid {
-  width: 100%; display: grid; gap: 48px;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  width: min(100%, 28rem);
+  display: grid;
+  gap: 48px;
+  justify-content: center;
+  grid-template-columns: minmax(280px, 1fr);
 }
 .empty-msg { color: rgba(255,255,255,.3); font-size: .875rem; letter-spacing: .4em; grid-column: 1/-1; text-align: center; padding: 80px 0; }
 
@@ -256,32 +302,6 @@ footer {
 .wave-divider .wave-g1 { will-change: transform; }
 .wave-divider .wave-g2 { will-change: transform; }
 .wave-divider .wave-g3 { will-change: transform; }
-
-/* ── Collection Spikes Animation ──────────────────────────────────────── */
-.collection-spikes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0.15;
-  mix-blend-mode: screen;
-}
-
-.collection-spikes svg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: block;
-}
-
-.spike-group { will-change: transform; }
-.spike-group polygon { fill: rgba(255,255,255,0.8); }
 
 /* Support Button ───────────────────────────────────────────────────────── */
 #support-btn {
@@ -401,8 +421,9 @@ footer {
   .hero-cta { padding: 12px 32px; font-size: 11px; }
 
   #collection { padding: 80px 16px; }
-  .section-label { margin-bottom: 48px; padding: 12px 20px; }
-  .grid { gap: 32px; grid-template-columns: 1fr; }
+  .collection-inner { gap: 48px; }
+  .section-label { margin-bottom: 0; padding: 12px 20px; }
+  .grid { width: min(100%, 24rem); gap: 32px; grid-template-columns: 1fr; }
   .product-card { padding: 16px; border-radius: 2rem; }
   .card-meta { margin-top: 20px; }
   .card-name { font-size: 1.25rem; }
@@ -478,8 +499,10 @@ footer {
     <div class="hero-parallax" id="hero-parallax">
       <div class="hero-glow" id="hero-glow"></div>
     </div>
-    <!-- Spikes -->
-    <svg id="hero-spikes" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+    <div class="hero-shards" aria-hidden="true">
+      <svg id="hero-shards-left" data-side="left" viewBox="0 0 260 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+      <svg id="hero-shards-right" data-side="right" viewBox="0 0 260 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
     <div class="hero-content">
       <div class="hero-title-wrap">
         <h2 class="y2k hero-title">rofl1s</h2>
@@ -513,14 +536,12 @@ footer {
   </div>
 
   <section id="collection">
-    <div class="section-label">
-      <h2 class="y2k">Коллекция</h2>
+    <div class="collection-inner">
+      <div class="section-label">
+        <h2 class="y2k">Коллекция</h2>
+      </div>
+      <div class="grid" id="products-grid"></div>
     </div>
-    <!-- Спайки/иглы, которые анимируются при скроллинге -->
-    <div class="collection-spikes">
-      <svg id="collection-spikes-svg" viewBox="0 0 2400 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
-    </div>
-    <div class="grid" id="products-grid"></div>
   </section>
 
   <!-- Wave Divider -->
@@ -987,64 +1008,11 @@ function drawHeroFrame() {
 }
 
 // draw on load + resize (debounced)
-let _frameTimer, _spikeTimer;
+let _frameTimer;
 function debouncedFrame() { clearTimeout(_frameTimer); _frameTimer = setTimeout(drawHeroFrame, 150); }
-function debouncedSpikes() { clearTimeout(_spikeTimer); _spikeTimer = setTimeout(drawSpikes, 150); }
-window.addEventListener('load', () => { drawHeroFrame(); drawSpikes(); });
-window.addEventListener('resize', () => { debouncedFrame(); debouncedSpikes(); });
-setTimeout(() => { drawHeroFrame(); drawSpikes(); }, 100);
-function drawSpikes() {
-  const svg = document.getElementById('hero-spikes');
-  const W = window.innerWidth;
-  const H = window.innerHeight;
-  const ns = 'http://www.w3.org/2000/svg';
-
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  svg.innerHTML = '';
-
-  // origin: bottom-right corner
-  const cx = W;
-  const cy = H;
-
-  function rng(seed) {
-    let s = seed;
-    return () => { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; };
-  }
-  const rand = rng(42);
-
-  const COUNT = isMobile ? 40 : 80;
-  // from Math.PI (left) sweeping to 3π/2 (up) — quarter circle going left+up
-  for (let i = 0; i < COUNT; i++) {
-    const t = i / (COUNT - 1);
-    const angle = Math.PI + t * (Math.PI / 2);
-
-    const base = Math.max(W, H);
-    const len = (base * 0.65 + rand() * base * 0.35) * (0.6 + rand() * 0.6);
-    const wobble = (rand() - 0.5) * 0.04;
-    const a = angle + wobble;
-
-    const tipX = cx + Math.cos(a) * len;
-    const tipY = cy + Math.sin(a) * len;
-
-    const halfW = 1.5 + rand() * 3.5;
-    const perpX = Math.cos(a + Math.PI / 2) * halfW;
-    const perpY = Math.sin(a + Math.PI / 2) * halfW;
-
-    const baseInset = rand() * W * 0.02;
-    const bx = cx + Math.cos(a) * baseInset;
-    const by = cy + Math.sin(a) * baseInset;
-
-    const path = document.createElementNS(ns, 'polygon');
-    path.setAttribute('points', [
-      `${bx + perpX},${by + perpY}`,
-      `${tipX},${tipY}`,
-      `${bx - perpX},${by - perpY}`,
-    ].join(' '));
-    path.setAttribute('fill', 'white');
-    path.setAttribute('opacity', String(0.3 + rand() * 0.5));
-    svg.appendChild(path);
-  }
-}
+window.addEventListener('load', drawHeroFrame);
+window.addEventListener('resize', debouncedFrame);
+setTimeout(drawHeroFrame, 100);
 
 // ── Wave Animation on Scroll ───────────────────────────────────────────────
 // Волны управляются СКРОЛЛОМ с плавным бесконечным движением (БЕЗ РАЗРЫВОВ)
@@ -1091,93 +1059,100 @@ window.addEventListener('scroll', () => {
 // Инициализация на загрузке страницы
 updateWaveScroll();
 
-// ── Collection Spikes Animation ────────────────────────────────────────
-// Иглы на странице коллекции, которые анимируются при скроллинге
-let spikeScrollAnimationId = null;
-const SPIKE_PATTERN_WIDTH = 2400;
+// ── Hero Shards Animation ───────────────────────────────────────────────
+let heroShardScrollAnimationId = null;
+const HERO_SHARD_PATTERN_HEIGHT = 900;
 
-function generateCollectionSpikes() {
-  const svg = document.getElementById('collection-spikes-svg');
-  const W = 2400;
-  const H = 600;
+function createSeededRandom(seed) {
+  let value = seed;
+  return () => {
+    value = (value * 16807) % 2147483647;
+    return (value - 1) / 2147483646;
+  };
+}
+
+function generateHeroShards() {
   const ns = 'http://www.w3.org/2000/svg';
+  const sides = [
+    { id: 'hero-shards-left', seed: 41 },
+    { id: 'hero-shards-right', seed: 83 },
+  ];
 
-  svg.innerHTML = '';
+  sides.forEach(({ id, seed }) => {
+    const svg = document.getElementById(id);
+    if (!svg) return;
 
-  // Создаём случайные иглы, рассеянные по всей ширине
-  function rng(seed) {
-    let s = seed;
-    return () => { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; };
-  }
-  const rand = rng(123);
+    const rand = createSeededRandom(seed);
+    svg.innerHTML = '';
 
-  const SPIKE_COUNT = 120; // Много игл для плотного эффекта
-  
-  for (let i = 0; i < SPIKE_COUNT; i++) {
-    const x = (i / SPIKE_COUNT) * W;
-    const y = rand() * H * 0.6 + H * 0.2; // Сосредоточены в середине
+    [0.24, 0.4, 0.58].forEach((speed, layerIndex) => {
+      const layer = document.createElementNS(ns, 'g');
+      layer.setAttribute('class', 'shard-layer');
+      layer.dataset.speed = String(speed);
+      layer.dataset.shift = String(layerIndex * 18);
 
-    const angle = (rand() - 0.5) * Math.PI * 0.5; // Разные углы
-    const len = 30 + rand() * 80; // Разная длина
-    const width = 1 + rand() * 2.5;
+      [0, HERO_SHARD_PATTERN_HEIGHT].forEach(offsetY => {
+        for (let i = 0; i < 15; i++) {
+          const y = 36 + i * 56 + rand() * 18 + offsetY;
+          const startX = 18 + rand() * 22 + layerIndex * 6;
+          const tipX = 132 + rand() * 102;
+          const thickness = 4 + rand() * 7;
+          const tail = 18 + rand() * 26;
+          const skew = (rand() - 0.5) * 12;
 
-    const tipX = x + Math.cos(angle) * len;
-    const tipY = y + Math.sin(angle) * len;
-
-    const perpX = Math.cos(angle + Math.PI / 2) * width;
-    const perpY = Math.sin(angle + Math.PI / 2) * width;
-
-    const polygon = document.createElementNS(ns, 'polygon');
-    polygon.setAttribute('points', [
-      `${x + perpX},${y + perpY}`,
-      `${tipX},${tipY}`,
-      `${x - perpX},${y - perpY}`,
-    ].join(' '));
-    polygon.setAttribute('opacity', String(0.2 + rand() * 0.6));
-    
-    // Оборачиваем в группу для анимации
-    const group = document.createElementNS(ns, 'g');
-    group.setAttribute('class', 'spike-group');
-    group.appendChild(polygon);
-    svg.appendChild(group);
-  }
-}
-
-function updateSpikesScroll() {
-  const scrollY = window.scrollY;
-  const collectionSection = document.getElementById('collection');
-  
-  if (collectionSection) {
-    const rect = collectionSection.getBoundingClientRect();
-    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-    
-    if (isVisible) {
-      const spikeGroups = document.querySelectorAll('.collection-spikes .spike-group');
-      const speeds = [0.3, 0.55, 0.4]; // Разные скорости для слоёв
-      
-      spikeGroups.forEach((group, index) => {
-        const speed = speeds[index % speeds.length];
-        const offset = (scrollY * speed) % SPIKE_PATTERN_WIDTH;
-        group.style.transform = `translateX(${offset}px)`;
+          const polygon = document.createElementNS(ns, 'polygon');
+          polygon.setAttribute('points', [
+            `${startX},${y - thickness}`,
+            `${tipX},${y + skew}`,
+            `${startX + tail},${y + thickness * 0.35}`,
+            `${startX + 3},${y + thickness}`,
+          ].join(' '));
+          polygon.setAttribute('opacity', String(0.14 + rand() * 0.3 + layerIndex * 0.08));
+          layer.appendChild(polygon);
+        }
       });
-    }
-  }
+
+      svg.appendChild(layer);
+    });
+  });
 }
 
-// Инициализация игл
-generateCollectionSpikes();
+function updateHeroShardsScroll() {
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+
+  const rect = hero.getBoundingClientRect();
+  const visible = rect.top < window.innerHeight && rect.bottom > 0;
+  const heroShards = document.querySelector('.hero-shards');
+  if (heroShards) heroShards.style.opacity = visible ? '1' : '0';
+  if (!visible) return;
+
+  const scrollY = window.scrollY;
+  document.querySelectorAll('.hero-shards .shard-layer').forEach((layer, index) => {
+    const speed = Number(layer.dataset.speed || 0.3);
+    const shift = Number(layer.dataset.shift || 0);
+    const side = layer.closest('svg')?.dataset.side === 'left' ? -1 : 1;
+    const offset = (scrollY * (40 + speed * 90) + shift * 12) % HERO_SHARD_PATTERN_HEIGHT;
+    const sway = Math.sin(scrollY * 0.01 + index) * (8 + speed * 10);
+    layer.style.transform = `translate3d(${side * sway}px, ${offset - HERO_SHARD_PATTERN_HEIGHT}px, 0)`;
+  });
+}
+
+generateHeroShards();
+updateHeroShardsScroll();
 
 window.addEventListener('scroll', () => {
-  if (spikeScrollAnimationId === null) {
-    spikeScrollAnimationId = requestAnimationFrame(() => {
-      updateSpikesScroll();
-      spikeScrollAnimationId = null;
-    });
-  }
+  if (heroShardScrollAnimationId !== null) return;
+  heroShardScrollAnimationId = requestAnimationFrame(() => {
+    updateHeroShardsScroll();
+    heroShardScrollAnimationId = null;
+  });
 }, { passive: true });
 
-// Инициализация при загрузке
-updateSpikesScroll();
+window.addEventListener('resize', () => {
+  generateHeroShards();
+  updateHeroShardsScroll();
+});
 </script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
