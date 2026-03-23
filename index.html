@@ -156,13 +156,34 @@ body {
 .section-label {
   display: inline-block; padding: 16px 32px; border-radius: 2rem;
   border: 1px solid rgba(255,255,255,.05); background: rgba(255,255,255,.02);
-  margin-bottom: 80px; align-self: flex-start;
+  margin-bottom: 80px; align-self: center; text-align: center;
 }
 .section-label h2 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.05em; color: #fff; transform: translateY(-2px); display: block; }
 .grid {
   width: 100%; display: grid; gap: 48px;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: minmax(280px, 1fr);
+  justify-items: center;
 }
+.collection-card-stage {
+  position: relative;
+  width: min(100%, 32rem);
+  isolation: isolate;
+}
+.collection-card-spikes {
+  position: absolute;
+  inset: -14%;
+  pointer-events: none;
+  opacity: .2;
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+.collection-card-spikes svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.collection-card-spike-group { will-change: transform; transform-box: fill-box; transform-origin: center; }
+.collection-card-spike-group polygon { fill: rgba(255,255,255,.85); }
 .empty-msg { color: rgba(255,255,255,.3); font-size: .875rem; letter-spacing: .4em; grid-column: 1/-1; text-align: center; padding: 80px 0; }
 
 /* ── Product Card ─────────────────────────────────────────────────────── */
@@ -171,6 +192,8 @@ body {
   border-radius: 3rem; border: 1px solid rgba(255,255,255,.05);
   background: rgba(255,255,255,.004); cursor: pointer; text-decoration: none; display: block;
   transition: border-color .2s;
+  position: relative;
+  z-index: 1;
 }
 .product-card:hover { border-color: rgba(255,255,255,.12); }
 .card-img-wrap {
@@ -441,6 +464,8 @@ footer {
   #collection { padding: 80px 16px; }
   .section-label { margin-bottom: 48px; padding: 12px 20px; }
   .grid { gap: 32px; grid-template-columns: 1fr; }
+  .collection-card-stage { width: 100%; }
+  .collection-card-spikes { inset: -8%; opacity: .16; }
   .product-card { padding: 16px; border-radius: 2rem; }
   .card-meta { margin-top: 20px; }
   .card-name { font-size: 1.25rem; }
@@ -770,18 +795,25 @@ function renderGrid(query = '') {
     return;
   }
   grid.innerHTML = filtered.map(p => `
-    <div class="product-card" onclick="showProduct('${p.id}')">
-      <div class="card-img-wrap">
-        <img src="${p.images[0]}" alt="${p.name}" referrerpolicy="no-referrer" loading="lazy" />
+    <div class="collection-card-stage">
+      <div class="collection-card-spikes" aria-hidden="true">
+        <svg class="collection-card-spikes-svg" viewBox="0 0 800 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
-      <div class="card-meta">
-        <div class="card-name">${p.name}</div>
-        <div class="card-price">Скоро</div>
-        <p class="card-desc">${p.description}</p>
-        <button class="order-btn" style="margin-top:24px" onclick="event.stopPropagation(); window.open('https://t.me/r0fl1s', '_blank')">Заказать</button>
+      <div class="product-card" onclick="showProduct('${p.id}')">
+        <div class="card-img-wrap">
+          <img src="${p.images[0]}" alt="${p.name}" referrerpolicy="no-referrer" loading="lazy" />
+        </div>
+        <div class="card-meta">
+          <div class="card-name">${p.name}</div>
+          <div class="card-price">Скоро</div>
+          <p class="card-desc">${p.description}</p>
+          <button class="order-btn" style="margin-top:24px" onclick="event.stopPropagation(); window.open('https://t.me/r0fl1s', '_blank')">Заказать</button>
+        </div>
       </div>
     </div>
   `).join('');
+  generateCollectionCardSpikes();
+  updateCollectionCardSpikesScroll();
 }
 
 
@@ -1185,6 +1217,73 @@ function generateCollectionSpikes() {
     group.appendChild(polygon);
     svg.appendChild(group);
   }
+}
+
+
+function generateCollectionCardSpikes() {
+  const svgs = document.querySelectorAll('.collection-card-spikes-svg');
+  if (!svgs.length) return;
+
+  const W = 800;
+  const H = 1000;
+  const ns = 'http://www.w3.org/2000/svg';
+
+  function rng(seed) {
+    let s = seed;
+    return () => { s = (s * 48271) % 2147483647; return (s - 1) / 2147483646; };
+  }
+
+  svgs.forEach((svg, svgIndex) => {
+    const rand = rng(900 + svgIndex);
+    svg.innerHTML = '';
+    const total = isMobile ? 52 : 78;
+    const centerX = W / 2;
+    const centerY = H / 2;
+
+    for (let i = 0; i < total; i++) {
+      const angle = (i / total) * Math.PI * 2;
+      const originX = centerX + Math.cos(angle) * (W * 0.34 + rand() * W * 0.025);
+      const originY = centerY + Math.sin(angle) * (H * 0.37 + rand() * H * 0.03);
+      const group = document.createElementNS(ns, 'g');
+      group.setAttribute('class', 'collection-card-spike-group');
+      group.dataset.depth = (0.7 + rand() * 0.8).toFixed(3);
+
+      const len = 34 + rand() * 112;
+      const width = 2 + rand() * 4.5;
+      const jitter = (rand() - 0.5) * 0.24;
+      const dir = angle + jitter;
+      const tipX = originX + Math.cos(dir) * len;
+      const tipY = originY + Math.sin(dir) * len;
+      const perpX = Math.cos(dir + Math.PI / 2) * width;
+      const perpY = Math.sin(dir + Math.PI / 2) * width;
+
+      const polygon = document.createElementNS(ns, 'polygon');
+      polygon.setAttribute('points', [
+        `${originX + perpX},${originY + perpY}`,
+        `${tipX},${tipY}`,
+        `${originX - perpX},${originY - perpY}`,
+      ].join(' '));
+      polygon.setAttribute('opacity', String(0.22 + rand() * 0.58));
+      group.appendChild(polygon);
+      svg.appendChild(group);
+    }
+  });
+}
+
+function updateCollectionCardSpikesScroll() {
+  const section = document.getElementById('collection');
+  if (!section) return;
+  const rect = section.getBoundingClientRect();
+  if (!(rect.top < window.innerHeight && rect.bottom > 0)) return;
+
+  const groups = document.querySelectorAll('.collection-card-spike-group');
+  groups.forEach((group, index) => {
+    const depth = Number(group.dataset.depth || '1');
+    const drift = Math.sin((window.scrollY * 0.0032 * depth) + index * 0.38) * (8 + depth * 7);
+    const lift = Math.cos((window.scrollY * 0.0026 * depth) + index * 0.27) * (5 + depth * 4);
+    const rotate = Math.sin((window.scrollY * 0.0017) + index * 0.18) * (5 * depth);
+    group.style.transform = `translate(${drift}px, ${lift}px) rotate(${rotate}deg)`;
+  });
 }
 
 function updateSpikesScroll() {
