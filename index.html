@@ -303,6 +303,55 @@ footer {
 .wave-divider .wave-g2 { will-change: transform; }
 .wave-divider .wave-g3 { will-change: transform; }
 
+/* ── Collection Spikes Animation ──────────────────────────────────────── */
+.collection-spikes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.collection-spikes::before {
+  content: '';
+  position: absolute;
+  inset: 12% 16% 10%;
+  background: radial-gradient(circle at center, rgba(255,255,255,.08), transparent 68%);
+  filter: blur(80px);
+  opacity: .45;
+}
+.collection-spikes svg {
+  position: absolute;
+  top: 50%;
+  width: clamp(160px, 18vw, 280px);
+  height: min(80%, 620px);
+  display: block;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity .45s ease, transform .6s cubic-bezier(.22,1,.36,1);
+  will-change: opacity, transform;
+}
+.collection-spikes svg[data-side='left'] {
+  left: clamp(8px, 2vw, 28px);
+  transform: translate3d(-28px, -50%, 0) scaleX(-1);
+}
+.collection-spikes svg[data-side='right'] {
+  right: clamp(8px, 2vw, 28px);
+  transform: translate3d(28px, -50%, 0);
+}
+#collection.spikes-visible .collection-spikes svg[data-side='left'] {
+  opacity: .72;
+  transform: translate3d(0, -50%, 0) scaleX(-1);
+}
+#collection.spikes-visible .collection-spikes svg[data-side='right'] {
+  opacity: .72;
+  transform: translate3d(0, -50%, 0);
+}
+.spike-group { will-change: transform, opacity; transform-box: fill-box; transform-origin: center; }
+.spike-group polygon {
+  fill: rgba(255,255,255,0.88);
+  filter: drop-shadow(0 0 12px rgba(255,255,255,.18));
+}
+
 /* Support Button ───────────────────────────────────────────────────────── */
 #support-btn {
   position: fixed; bottom: 32px; right: 32px; z-index: 60;
@@ -536,6 +585,11 @@ footer {
   </div>
 
   <section id="collection">
+    <!-- Спайки/иглы, которые появляются по бокам при скролле -->
+    <div class="collection-spikes" aria-hidden="true">
+      <svg id="collection-spikes-left" data-side="left" viewBox="0 0 240 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+      <svg id="collection-spikes-right" data-side="right" viewBox="0 0 240 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
     <div class="collection-inner">
       <div class="section-label">
         <h2 class="y2k">Коллекция</h2>
@@ -1059,9 +1113,8 @@ window.addEventListener('scroll', () => {
 // Инициализация на загрузке страницы
 updateWaveScroll();
 
-// ── Hero Shards Animation ───────────────────────────────────────────────
-let heroShardScrollAnimationId = null;
-const HERO_SHARD_PATTERN_HEIGHT = 900;
+// ── Collection Spikes Animation ────────────────────────────────────────
+let spikeScrollAnimationId = null;
 
 function createSeededRandom(seed) {
   let value = seed;
@@ -1071,88 +1124,92 @@ function createSeededRandom(seed) {
   };
 }
 
-function generateHeroShards() {
-  const ns = 'http://www.w3.org/2000/svg';
+function generateCollectionSpikes() {
   const sides = [
-    { id: 'hero-shards-left', seed: 41 },
-    { id: 'hero-shards-right', seed: 83 },
+    { id: 'collection-spikes-left', seed: 231, direction: 1 },
+    { id: 'collection-spikes-right', seed: 913, direction: -1 },
   ];
+  const ns = 'http://www.w3.org/2000/svg';
+  const height = 600;
+  const baseX = 24;
 
-  sides.forEach(({ id, seed }) => {
+  sides.forEach(({ id, seed, direction }) => {
     const svg = document.getElementById(id);
-    if (!svg) return;
-
     const rand = createSeededRandom(seed);
+    if (!svg) return;
     svg.innerHTML = '';
 
-    [0.24, 0.4, 0.58].forEach((speed, layerIndex) => {
-      const layer = document.createElementNS(ns, 'g');
-      layer.setAttribute('class', 'shard-layer');
-      layer.dataset.speed = String(speed);
-      layer.dataset.shift = String(layerIndex * 18);
+    for (let i = 0; i < 28; i++) {
+      const startY = 18 + i * 20 + rand() * 14;
+      const length = 72 + rand() * 120;
+      const thickness = 2 + rand() * 4;
+      const spread = 18 + rand() * 34;
+      const tipX = baseX + length;
+      const tipY = Math.min(height - 12, startY + (rand() - 0.5) * spread);
 
-      [0, HERO_SHARD_PATTERN_HEIGHT].forEach(offsetY => {
-        for (let i = 0; i < 15; i++) {
-          const y = 36 + i * 56 + rand() * 18 + offsetY;
-          const startX = 18 + rand() * 22 + layerIndex * 6;
-          const tipX = 132 + rand() * 102;
-          const thickness = 4 + rand() * 7;
-          const tail = 18 + rand() * 26;
-          const skew = (rand() - 0.5) * 12;
+      const polygon = document.createElementNS(ns, 'polygon');
+      polygon.setAttribute('points', [
+        `${baseX},${startY - thickness}`,
+        `${tipX},${tipY}`,
+        `${baseX},${startY + thickness}`,
+      ].join(' '));
+      polygon.setAttribute('opacity', String(0.22 + rand() * 0.6));
 
-          const polygon = document.createElementNS(ns, 'polygon');
-          polygon.setAttribute('points', [
-            `${startX},${y - thickness}`,
-            `${tipX},${y + skew}`,
-            `${startX + tail},${y + thickness * 0.35}`,
-            `${startX + 3},${y + thickness}`,
-          ].join(' '));
-          polygon.setAttribute('opacity', String(0.14 + rand() * 0.3 + layerIndex * 0.08));
-          layer.appendChild(polygon);
-        }
-      });
-
-      svg.appendChild(layer);
-    });
+      const group = document.createElementNS(ns, 'g');
+      group.setAttribute('class', 'spike-group');
+      group.dataset.depth = String(0.45 + rand() * 0.9);
+      group.dataset.float = String(6 + rand() * 18);
+      group.dataset.spin = String((rand() - 0.5) * 14 * direction);
+      group.dataset.phase = String(rand() * Math.PI * 2);
+      group.appendChild(polygon);
+      svg.appendChild(group);
+    }
   });
 }
 
-function updateHeroShardsScroll() {
-  const hero = document.getElementById('hero');
-  if (!hero) return;
+function updateSpikesScroll() {
+  const collectionSection = document.getElementById('collection');
+  if (!collectionSection) return;
 
-  const rect = hero.getBoundingClientRect();
-  const visible = rect.top < window.innerHeight && rect.bottom > 0;
-  const heroShards = document.querySelector('.hero-shards');
-  if (heroShards) heroShards.style.opacity = visible ? '1' : '0';
+  const rect = collectionSection.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  const visible = rect.top < viewportHeight * 0.88 && rect.bottom > viewportHeight * 0.18;
+  collectionSection.classList.toggle('spikes-visible', visible);
+
   if (!visible) return;
 
-  const scrollY = window.scrollY;
-  document.querySelectorAll('.hero-shards .shard-layer').forEach((layer, index) => {
-    const speed = Number(layer.dataset.speed || 0.3);
-    const shift = Number(layer.dataset.shift || 0);
-    const side = layer.closest('svg')?.dataset.side === 'left' ? -1 : 1;
-    const offset = (scrollY * (40 + speed * 90) + shift * 12) % HERO_SHARD_PATTERN_HEIGHT;
-    const sway = Math.sin(scrollY * 0.01 + index) * (8 + speed * 10);
-    layer.style.transform = `translate3d(${side * sway}px, ${offset - HERO_SHARD_PATTERN_HEIGHT}px, 0)`;
+  const progress = Math.min(1, Math.max(0, (viewportHeight - rect.top) / (rect.height + viewportHeight)));
+  const oscillation = window.scrollY * 0.018;
+
+  document.querySelectorAll('.collection-spikes .spike-group').forEach((group, index) => {
+    const depth = Number(group.dataset.depth || 0.5);
+    const floatRange = Number(group.dataset.float || 12);
+    const phase = Number(group.dataset.phase || 0);
+    const spin = Number(group.dataset.spin || 0);
+    const side = group.closest('svg')?.dataset.side === 'left' ? -1 : 1;
+    const driftX = side * (10 + progress * 24) * depth;
+    const driftY = Math.sin(oscillation + phase + index * 0.12) * floatRange;
+    const rotate = spin * (0.35 + progress * 0.9);
+    const scale = 0.82 + depth * 0.28 + progress * 0.08;
+    const opacity = Math.min(1, 0.28 + progress * 0.8);
+
+    group.style.transform = `translate3d(${driftX}px, ${driftY}px, 0) rotate(${rotate}deg) scale(${scale})`;
+    group.style.opacity = opacity.toFixed(3);
   });
 }
 
-generateHeroShards();
-updateHeroShardsScroll();
+generateCollectionSpikes();
 
 window.addEventListener('scroll', () => {
-  if (heroShardScrollAnimationId !== null) return;
-  heroShardScrollAnimationId = requestAnimationFrame(() => {
-    updateHeroShardsScroll();
-    heroShardScrollAnimationId = null;
+  if (spikeScrollAnimationId !== null) return;
+  spikeScrollAnimationId = requestAnimationFrame(() => {
+    updateSpikesScroll();
+    spikeScrollAnimationId = null;
   });
 }, { passive: true });
 
-window.addEventListener('resize', () => {
-  generateHeroShards();
-  updateHeroShardsScroll();
-});
+window.addEventListener('resize', updateSpikesScroll);
+updateSpikesScroll();
 </script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
