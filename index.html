@@ -1170,7 +1170,6 @@ updateWaveScroll();
 // Иглы на странице коллекции, которые анимируются при скроллинге
 let spikeScrollAnimationId = null;
 let productSpikeAnimationId = null;
-let collectionCardSpikeAnimationId = null;
 const SPIKE_PATTERN_WIDTH = 2400;
 
 function generateCollectionSpikes() {
@@ -1381,7 +1380,6 @@ function updateProductSpikesScroll() {
 
 // Инициализация игл
 generateCollectionSpikes();
-generateCollectionCardSpikes();
 generateProductSpikes();
 
 window.addEventListener('scroll', () => {
@@ -1397,24 +1395,15 @@ window.addEventListener('scroll', () => {
       productSpikeAnimationId = null;
     });
   }
-  if (collectionCardSpikeAnimationId === null) {
-    collectionCardSpikeAnimationId = requestAnimationFrame(() => {
-      updateCollectionCardSpikesScroll();
-      collectionCardSpikeAnimationId = null;
-    });
-  }
 }, { passive: true });
 
 window.addEventListener('resize', () => {
-  generateCollectionCardSpikes();
   generateProductSpikes();
-  updateCollectionCardSpikesScroll();
   updateProductSpikesScroll();
 });
 
 // Инициализация при загрузке
 updateSpikesScroll();
-updateCollectionCardSpikesScroll();
 updateProductSpikesScroll();
 </script>
 <!-- Vercel Web Analytics -->
