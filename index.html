@@ -301,6 +301,9 @@ footer {
 #product-page {
   min-height: 100vh; background: #0a0a0a; padding: 96px 24px 128px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .back-btn {
   position: fixed; top: 32px; left: 32px; z-index: 60;
@@ -312,14 +315,42 @@ footer {
 .back-btn.glass { border: 1px solid rgba(255,255,255,.05); }
 .back-btn:hover { color: #fff; background: rgba(255,255,255,.05); }
 .product-layout {
-  max-width: 56rem; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 64px;
+  align-items: center;
 }
 @media (max-width: 768px) { .product-layout { grid-template-columns: 1fr; } }
+.gallery-stage {
+  position: relative;
+  width: min(100%, 34rem);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+.product-spikes {
+  position: absolute;
+  inset: -14%;
+  pointer-events: none;
+  opacity: .18;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 24px rgba(255,255,255,.08));
+}
+.product-spikes svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.product-spike-group { will-change: transform; transform-box: fill-box; transform-origin: center; }
+.product-spike-group polygon { fill: rgba(255,255,255,.85); }
 .gallery-wrap {
   aspect-ratio: 3/4; overflow: hidden; background: #0a0a0a;
   border-radius: 2.5rem; border: 1px solid rgba(255,255,255,.10);
   position: relative; display: flex; align-items: center; justify-content: center;
+  width: 100%;
+  z-index: 1;
 }
 .gallery-wrap img.gallery-img {
   position: absolute; width: 100%; height: 100%; object-fit: cover; cursor: pointer;
@@ -339,7 +370,13 @@ footer {
   border: none; cursor: pointer; transition: background .2s; padding: 0;
 }
 .dot.active { background: #fff; }
-.product-info { display: flex; flex-direction: column; gap: 24px; }
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  max-width: 28rem;
+}
 .product-name { font-size: 2.25rem; font-weight: 700; letter-spacing: -.04em; }
 .product-price { font-size: 1.5rem; color: rgba(255,255,255,.7); margin-top: 24px; }
 .product-desc { font-size: .875rem; line-height: 1.6; color: rgba(255,255,255,.5); }
@@ -385,7 +422,8 @@ footer {
 }
 
 /* ── Page visibility ──────────────────────────────────────────────────── */
-#main-page, #product-page { display: block; }
+#main-page { display: block; }
+#product-page.hidden, #main-page.hidden { display: none !important; }
 
 /* ── SVG icons (inline) ───────────────────────────────────────────────── */
 .ico { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -415,7 +453,9 @@ footer {
 
   #product-page { padding: 80px 16px 80px; }
   .back-btn { top: 16px; left: 16px; }
-  .product-layout { gap: 32px; }
+  .product-layout { gap: 32px; width: 100%; }
+  .gallery-stage { width: 100%; }
+  .product-spikes { inset: -8%; opacity: .14; }
   .product-name { font-size: 1.75rem; }
 
   #support-btn { bottom: 20px; right: 20px; padding: 14px; }
@@ -614,7 +654,10 @@ footer {
 
   <div class="product-layout">
     <!-- Gallery -->
-    <div>
+    <div class="gallery-stage">
+      <div class="product-spikes" aria-hidden="true">
+        <svg id="product-spikes-svg" viewBox="0 0 800 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
       <div class="gallery-wrap" id="gallery-wrap">
         <button class="gallery-arrow left" onclick="galleryPaginate(-1)">
           <svg class="ico" width="22" height="22"><use href="#ico-left"/></svg>
@@ -1094,6 +1137,7 @@ updateWaveScroll();
 // ── Collection Spikes Animation ────────────────────────────────────────
 // Иглы на странице коллекции, которые анимируются при скроллинге
 let spikeScrollAnimationId = null;
+let productSpikeAnimationId = null;
 const SPIKE_PATTERN_WIDTH = 2400;
 
 function generateCollectionSpikes() {
@@ -1164,8 +1208,80 @@ function updateSpikesScroll() {
   }
 }
 
+function generateProductSpikes() {
+  const svg = document.getElementById('product-spikes-svg');
+  if (!svg) return;
+
+  const W = 800;
+  const H = 1000;
+  const ns = 'http://www.w3.org/2000/svg';
+  svg.innerHTML = '';
+
+  function rng(seed) {
+    let s = seed;
+    return () => { s = (s * 48271) % 2147483647; return (s - 1) / 2147483646; };
+  }
+  const rand = rng(777);
+  const ringPoints = [];
+  const total = isMobile ? 54 : 84;
+  const centerX = W / 2;
+  const centerY = H / 2;
+
+  for (let i = 0; i < total; i++) {
+    const angle = (i / total) * Math.PI * 2;
+    const ellipseX = Math.cos(angle) * (W * 0.34 + rand() * W * 0.03);
+    const ellipseY = Math.sin(angle) * (H * 0.39 + rand() * H * 0.03);
+    ringPoints.push({ angle, x: centerX + ellipseX, y: centerY + ellipseY });
+  }
+
+  ringPoints.forEach((point, index) => {
+    const group = document.createElementNS(ns, 'g');
+    group.setAttribute('class', 'product-spike-group');
+    group.dataset.baseAngle = point.angle.toFixed(4);
+    group.dataset.depth = (0.7 + rand() * 0.9).toFixed(3);
+
+    const len = 36 + rand() * 126;
+    const width = 2 + rand() * 5;
+    const jitter = (rand() - 0.5) * 0.26;
+    const dir = point.angle + jitter;
+    const tipX = point.x + Math.cos(dir) * len;
+    const tipY = point.y + Math.sin(dir) * len;
+    const perpX = Math.cos(dir + Math.PI / 2) * width;
+    const perpY = Math.sin(dir + Math.PI / 2) * width;
+
+    const polygon = document.createElementNS(ns, 'polygon');
+    polygon.setAttribute('points', [
+      `${point.x + perpX},${point.y + perpY}`,
+      `${tipX},${tipY}`,
+      `${point.x - perpX},${point.y - perpY}`,
+    ].join(' '));
+    polygon.setAttribute('opacity', String(0.2 + rand() * 0.55));
+    group.appendChild(polygon);
+    svg.appendChild(group);
+  });
+}
+
+function updateProductSpikesScroll() {
+  const page = document.getElementById('product-page');
+  if (!page || page.classList.contains('hidden')) return;
+
+  const groups = document.querySelectorAll('.product-spike-group');
+  if (!groups.length) return;
+
+  const scrollY = window.scrollY;
+  groups.forEach((group, index) => {
+    const baseAngle = Number(group.dataset.baseAngle || '0');
+    const depth = Number(group.dataset.depth || '1');
+    const drift = Math.sin((scrollY * 0.0035 * depth) + index * 0.45) * (10 + depth * 8);
+    const lift = Math.cos((scrollY * 0.0028 * depth) + index * 0.35) * (6 + depth * 5);
+    const rotate = Math.sin((scrollY * 0.0019) + index * 0.2) * (6 * depth);
+    group.style.transform = `translate(${drift}px, ${lift}px) rotate(${rotate}deg)`;
+  });
+}
+
 // Инициализация игл
 generateCollectionSpikes();
+generateProductSpikes();
 
 window.addEventListener('scroll', () => {
   if (spikeScrollAnimationId === null) {
@@ -1174,10 +1290,22 @@ window.addEventListener('scroll', () => {
       spikeScrollAnimationId = null;
     });
   }
+  if (productSpikeAnimationId === null) {
+    productSpikeAnimationId = requestAnimationFrame(() => {
+      updateProductSpikesScroll();
+      productSpikeAnimationId = null;
+    });
+  }
 }, { passive: true });
+
+window.addEventListener('resize', () => {
+  generateProductSpikes();
+  updateProductSpikesScroll();
+});
 
 // Инициализация при загрузке
 updateSpikesScroll();
+updateProductSpikesScroll();
 </script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
