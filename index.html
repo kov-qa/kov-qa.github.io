@@ -128,16 +128,6 @@ body {
   overflow: visible;
   pointer-events: none;
 }
-#hero-spikes {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  overflow: visible;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.18;
-  transform: translateZ(0);
-}
 .hero-cta {
   display: inline-flex; justify-content: center;
   padding: 16px 48px; border-radius: 9999px;
@@ -526,8 +516,6 @@ footer {
     <div class="hero-parallax" id="hero-parallax">
       <div class="hero-glow" id="hero-glow"></div>
     </div>
-    <!-- Spikes -->
-    <svg id="hero-spikes" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
     <div class="hero-content">
       <div class="hero-title-wrap">
         <h2 class="y2k hero-title">rofl1s</h2>
@@ -1038,64 +1026,11 @@ function drawHeroFrame() {
 }
 
 // draw on load + resize (debounced)
-let _frameTimer, _spikeTimer;
+let _frameTimer;
 function debouncedFrame() { clearTimeout(_frameTimer); _frameTimer = setTimeout(drawHeroFrame, 150); }
-function debouncedSpikes() { clearTimeout(_spikeTimer); _spikeTimer = setTimeout(drawSpikes, 150); }
-window.addEventListener('load', () => { drawHeroFrame(); drawSpikes(); });
-window.addEventListener('resize', () => { debouncedFrame(); debouncedSpikes(); });
-setTimeout(() => { drawHeroFrame(); drawSpikes(); }, 100);
-function drawSpikes() {
-  const svg = document.getElementById('hero-spikes');
-  const W = window.innerWidth;
-  const H = window.innerHeight;
-  const ns = 'http://www.w3.org/2000/svg';
-
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  svg.innerHTML = '';
-
-  // origin: bottom-right corner
-  const cx = W;
-  const cy = H;
-
-  function rng(seed) {
-    let s = seed;
-    return () => { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; };
-  }
-  const rand = rng(42);
-
-  const COUNT = isMobile ? 40 : 80;
-  // from Math.PI (left) sweeping to 3π/2 (up) — quarter circle going left+up
-  for (let i = 0; i < COUNT; i++) {
-    const t = i / (COUNT - 1);
-    const angle = Math.PI + t * (Math.PI / 2);
-
-    const base = Math.max(W, H);
-    const len = (base * 0.65 + rand() * base * 0.35) * (0.6 + rand() * 0.6);
-    const wobble = (rand() - 0.5) * 0.04;
-    const a = angle + wobble;
-
-    const tipX = cx + Math.cos(a) * len;
-    const tipY = cy + Math.sin(a) * len;
-
-    const halfW = 1.5 + rand() * 3.5;
-    const perpX = Math.cos(a + Math.PI / 2) * halfW;
-    const perpY = Math.sin(a + Math.PI / 2) * halfW;
-
-    const baseInset = rand() * W * 0.02;
-    const bx = cx + Math.cos(a) * baseInset;
-    const by = cy + Math.sin(a) * baseInset;
-
-    const path = document.createElementNS(ns, 'polygon');
-    path.setAttribute('points', [
-      `${bx + perpX},${by + perpY}`,
-      `${tipX},${tipY}`,
-      `${bx - perpX},${by - perpY}`,
-    ].join(' '));
-    path.setAttribute('fill', 'white');
-    path.setAttribute('opacity', String(0.3 + rand() * 0.5));
-    svg.appendChild(path);
-  }
-}
+window.addEventListener('load', drawHeroFrame);
+window.addEventListener('resize', debouncedFrame);
+setTimeout(drawHeroFrame, 100);
 
 // ── Wave Animation on Scroll ───────────────────────────────────────────────
 // Волны управляются СКРОЛЛОМ с плавным бесконечным движением (БЕЗ РАЗРЫВОВ)
