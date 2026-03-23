@@ -300,19 +300,19 @@ footer {
 }
 .collection-spikes svg[data-side='left'] {
   left: clamp(8px, 2vw, 28px);
-  transform: translate3d(-28px, -50%, 0);
+  transform: translate3d(-28px, -50%, 0) scaleX(-1);
 }
 .collection-spikes svg[data-side='right'] {
   right: clamp(8px, 2vw, 28px);
-  transform: translate3d(28px, -50%, 0) scaleX(-1);
+  transform: translate3d(28px, -50%, 0);
 }
 #collection.spikes-visible .collection-spikes svg[data-side='left'] {
   opacity: .72;
-  transform: translate3d(0, -50%, 0);
+  transform: translate3d(0, -50%, 0) scaleX(-1);
 }
 #collection.spikes-visible .collection-spikes svg[data-side='right'] {
   opacity: .72;
-  transform: translate3d(0, -50%, 0) scaleX(-1);
+  transform: translate3d(0, -50%, 0);
 }
 .spike-group { will-change: transform, opacity; transform-box: fill-box; transform-origin: center; }
 .spike-group polygon {
@@ -1150,7 +1150,7 @@ function updateSpikesScroll() {
     const floatRange = Number(group.dataset.float || 12);
     const phase = Number(group.dataset.phase || 0);
     const spin = Number(group.dataset.spin || 0);
-    const side = group.closest('svg')?.dataset.side === 'left' ? 1 : -1;
+    const side = group.closest('svg')?.dataset.side === 'left' ? -1 : 1;
     const driftX = side * (10 + progress * 24) * depth;
     const driftY = Math.sin(oscillation + phase + index * 0.12) * floatRange;
     const rotate = spin * (0.35 + progress * 0.9);
