@@ -226,7 +226,64 @@ footer {
   border-top: 1px solid rgba(255,255,255,.05); padding-top: 48px;
 }
 
-/* ── Support Button ───────────────────────────────────────────────────── */
+/* ── Wavy Divider ─────────────────────────────────────────────────────── */
+.wave-divider {
+  position: relative; height: 80px; overflow: hidden; pointer-events: none;
+  background: linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(10,10,10,1) 100%);
+}
+.wave-divider svg {
+  position: absolute; width: 100%; height: 100%;
+  top: 0; left: 0; display: block;
+}
+.wave-line { fill: none; stroke: rgba(255,255,255,.06); stroke-width: 1.5; }
+.wave-line.accent { stroke: rgba(255,255,255,.12); stroke-width: 1; }
+
+/* Волны НЕ анимируются сами, они управляются скроллом */
+@keyframes wave1 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(120px); }
+}
+@keyframes wave2 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-120px); }
+}
+@keyframes wave3 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(160px); }
+}
+
+/* No animation - transform управляется JavaScript */
+.wave-divider .wave-g1 { will-change: transform; }
+.wave-divider .wave-g2 { will-change: transform; }
+.wave-divider .wave-g3 { will-change: transform; }
+
+/* ── Collection Spikes Animation ──────────────────────────────────────── */
+.collection-spikes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+}
+
+.collection-spikes svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+.spike-group { will-change: transform; }
+.spike-group polygon { fill: rgba(255,255,255,0.8); }
+
+/* Support Button ───────────────────────────────────────────────────────── */
 #support-btn {
   position: fixed; bottom: 32px; right: 32px; z-index: 60;
   display: flex; align-items: center; gap: 12px;
@@ -437,12 +494,52 @@ footer {
   </section>
 
   <!-- Collection -->
+  <!-- Wave Divider -->
+  <div class="wave-divider" id="wave-1">
+    <svg viewBox="0 0 2400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <g class="wave-g1">
+        <path class="wave-line" d="M0,40 Q30,20 60,40 T120,40 T180,40 T240,40 T300,40 T360,40 T420,40 T480,40 T540,40 T600,40 T660,40 T720,40 T780,40 T840,40 T900,40 T960,40 T1020,40 T1080,40 T1140,40 T1200,40"/>
+        <path class="wave-line" d="M1200,40 Q1230,20 1260,40 T1320,40 T1380,40 T1440,40 T1500,40 T1560,40 T1620,40 T1680,40 T1740,40 T1800,40 T1860,40 T1920,40 T1980,40 T2040,40 T2100,40 T2160,40 T2220,40 T2280,40 T2340,40 T2400,40"/>
+      </g>
+      <g class="wave-g2">
+        <path class="wave-line accent" d="M0,50 Q40,30 80,50 T160,50 T240,50 T320,50 T400,50 T480,50 T560,50 T640,50 T720,50 T800,50 T880,50 T960,50 T1040,50 T1120,50 T1200,50"/>
+        <path class="wave-line accent" d="M1200,50 Q1240,30 1280,50 T1360,50 T1440,50 T1520,50 T1600,50 T1680,50 T1760,50 T1840,50 T1920,50 T2000,50 T2080,50 T2160,50 T2240,50 T2320,50 T2400,50"/>
+      </g>
+      <g class="wave-g3">
+        <path class="wave-line" d="M0,35 Q35,15 70,35 T140,35 T210,35 T280,35 T350,35 T420,35 T490,35 T560,35 T630,35 T700,35 T770,35 T840,35 T910,35 T980,35 T1050,35 T1120,35 T1200,35" opacity="0.5"/>
+        <path class="wave-line" d="M1200,35 Q1235,15 1270,35 T1340,35 T1410,35 T1480,35 T1550,35 T1620,35 T1690,35 T1760,35 T1830,35 T1900,35 T1970,35 T2040,35 T2110,35 T2180,35 T2250,35 T2320,35 T2400,35" opacity="0.5"/>
+      </g>
+    </svg>
+  </div>
+
   <section id="collection">
     <div class="section-label">
       <h2 class="y2k">Коллекция</h2>
     </div>
+    <!-- Спайки/иглы, которые анимируются при скроллинге -->
+    <div class="collection-spikes">
+      <svg id="collection-spikes-svg" viewBox="0 0 2400 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
     <div class="grid" id="products-grid"></div>
   </section>
+
+  <!-- Wave Divider -->
+  <div class="wave-divider" id="wave-2">
+    <svg viewBox="0 0 2400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <g class="wave-g1">
+        <path class="wave-line" d="M0,30 Q30,50 60,30 T120,30 T180,30 T240,30 T300,30 T360,30 T420,30 T480,30 T540,30 T600,30 T660,30 T720,30 T780,30 T840,30 T900,30 T960,30 T1020,30 T1080,30 T1140,30 T1200,30"/>
+        <path class="wave-line" d="M1200,30 Q1230,50 1260,30 T1320,30 T1380,30 T1440,30 T1500,30 T1560,30 T1620,30 T1680,30 T1740,30 T1800,30 T1860,30 T1920,30 T1980,30 T2040,30 T2100,30 T2160,30 T2220,30 T2280,30 T2340,30 T2400,30"/>
+      </g>
+      <g class="wave-g2">
+        <path class="wave-line accent" d="M0,20 Q40,50 80,20 T160,20 T240,20 T320,20 T400,20 T480,20 T560,20 T640,20 T720,20 T800,20 T880,20 T960,20 T1040,20 T1120,20 T1200,20"/>
+        <path class="wave-line accent" d="M1200,20 Q1240,50 1280,20 T1360,20 T1440,20 T1520,20 T1600,20 T1680,20 T1760,20 T1840,20 T1920,20 T2000,20 T2080,20 T2160,20 T2240,20 T2320,20 T2400,20"/>
+      </g>
+      <g class="wave-g3">
+        <path class="wave-line" d="M0,45 Q35,65 70,45 T140,45 T210,45 T280,45 T350,45 T420,45 T490,45 T560,45 T630,45 T700,45 T770,45 T840,45 T910,45 T980,45 T1050,45 T1120,45 T1200,45" opacity="0.5"/>
+        <path class="wave-line" d="M1200,45 Q1235,65 1270,45 T1340,45 T1410,45 T1480,45 T1550,45 T1620,45 T1690,45 T1760,45 T1830,45 T1900,45 T1970,45 T2040,45 T2110,45 T2180,45 T2250,45 T2320,45 T2400,45" opacity="0.5"/>
+      </g>
+    </svg>
+  </div>
 
   <!-- Brand Ethos -->
   <section id="ethos">
@@ -455,6 +552,24 @@ footer {
       </div>
     </div>
   </section>
+
+  <!-- Wave Divider -->
+  <div class="wave-divider" id="wave-3">
+    <svg viewBox="0 0 2400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <g class="wave-g1">
+        <path class="wave-line" d="M0,40 Q30,20 60,40 T120,40 T180,40 T240,40 T300,40 T360,40 T420,40 T480,40 T540,40 T600,40 T660,40 T720,40 T780,40 T840,40 T900,40 T960,40 T1020,40 T1080,40 T1140,40 T1200,40"/>
+        <path class="wave-line" d="M1200,40 Q1230,20 1260,40 T1320,40 T1380,40 T1440,40 T1500,40 T1560,40 T1620,40 T1680,40 T1740,40 T1800,40 T1860,40 T1920,40 T1980,40 T2040,40 T2100,40 T2160,40 T2220,40 T2280,40 T2340,40 T2400,40"/>
+      </g>
+      <g class="wave-g2">
+        <path class="wave-line accent" d="M0,50 Q40,30 80,50 T160,50 T240,50 T320,50 T400,50 T480,50 T560,50 T640,50 T720,50 T800,50 T880,50 T960,50 T1040,50 T1120,50 T1200,50"/>
+        <path class="wave-line accent" d="M1200,50 Q1240,30 1280,50 T1360,50 T1440,50 T1520,50 T1600,50 T1680,50 T1760,50 T1840,50 T1920,50 T2000,50 T2080,50 T2160,50 T2240,50 T2320,50 T2400,50"/>
+      </g>
+      <g class="wave-g3">
+        <path class="wave-line" d="M0,35 Q35,15 70,35 T140,35 T210,35 T280,35 T350,35 T420,35 T490,35 T560,35 T630,35 T700,35 T770,35 T840,35 T910,35 T980,35 T1050,35 T1120,35 T1200,35" opacity="0.5"/>
+        <path class="wave-line" d="M1200,35 Q1235,15 1270,35 T1340,35 T1410,35 T1480,35 T1550,35 T1620,35 T1690,35 T1760,35 T1830,35 T1900,35 T1970,35 T2040,35 T2110,35 T2180,35 T2250,35 T2320,35 T2400,35" opacity="0.5"/>
+      </g>
+    </svg>
+  </div>
 
   <!-- Footer -->
   <footer>
@@ -819,7 +934,6 @@ renderGrid();
 
 // ── Hero Frame ─────────────────────────────────────────────────────────────
 function drawHeroFrame() {
-  if (isMobile) return; // frame not visible on small screens
   const svg = document.getElementById('hero-frame-svg');
   const wrap = svg.parentElement;
   const W = wrap.offsetWidth;
@@ -931,6 +1045,139 @@ function drawSpikes() {
     svg.appendChild(path);
   }
 }
+
+// ── Wave Animation on Scroll ───────────────────────────────────────────────
+// Волны управляются СКРОЛЛОМ с плавным бесконечным движением (БЕЗ РАЗРЫВОВ)
+let waveScrollAnimationId = null;
+const WAVE_SEAMLESS_WIDTH = 2400; // Полная ширина паттерна для плавного цикла (два дубля по 1200)
+
+function updateWaveScroll() {
+  const scrollY = window.scrollY;
+  const waveDividers = document.querySelectorAll('.wave-divider');
+  
+  waveDividers.forEach((divider, index) => {
+    const rect = divider.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    
+    if (isVisible) {
+      // Разные скорости для каждого слоя волн - плавное движение
+      const speeds = [0.5, 0.35, 0.65];
+      const offset = (scrollY * speeds[index]) % WAVE_SEAMLESS_WIDTH;
+      
+      // Получаем все группы волн в этом divider
+      const waveGroups = divider.querySelectorAll('g[class^="wave-g"]');
+      waveGroups.forEach((group, groupIndex) => {
+        const groupSpeeds = (index === 0 ? [0.5, 0.35, 0.65] : [0.6, 0.4, 0.7]);
+        const groupSpeed = groupSpeeds[groupIndex];
+        const groupOffset = (scrollY * groupSpeed) % WAVE_SEAMLESS_WIDTH;
+        
+        // Плавное смещение без прерывания
+        group.style.willChange = 'transform';
+        group.style.transform = `translateX(${groupOffset}px)`;
+      });
+    }
+  });
+}
+
+window.addEventListener('scroll', () => {
+  if (waveScrollAnimationId === null) {
+    waveScrollAnimationId = requestAnimationFrame(() => {
+      updateWaveScroll();
+      waveScrollAnimationId = null;
+    });
+  }
+}, { passive: true });
+
+// Инициализация на загрузке страницы
+updateWaveScroll();
+
+// ── Collection Spikes Animation ────────────────────────────────────────
+// Иглы на странице коллекции, которые анимируются при скроллинге
+let spikeScrollAnimationId = null;
+const SPIKE_PATTERN_WIDTH = 2400;
+
+function generateCollectionSpikes() {
+  const svg = document.getElementById('collection-spikes-svg');
+  const W = 2400;
+  const H = 600;
+  const ns = 'http://www.w3.org/2000/svg';
+
+  svg.innerHTML = '';
+
+  // Создаём случайные иглы, рассеянные по всей ширине
+  function rng(seed) {
+    let s = seed;
+    return () => { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; };
+  }
+  const rand = rng(123);
+
+  const SPIKE_COUNT = 120; // Много игл для плотного эффекта
+  
+  for (let i = 0; i < SPIKE_COUNT; i++) {
+    const x = (i / SPIKE_COUNT) * W;
+    const y = rand() * H * 0.6 + H * 0.2; // Сосредоточены в середине
+
+    const angle = (rand() - 0.5) * Math.PI * 0.5; // Разные углы
+    const len = 30 + rand() * 80; // Разная длина
+    const width = 1 + rand() * 2.5;
+
+    const tipX = x + Math.cos(angle) * len;
+    const tipY = y + Math.sin(angle) * len;
+
+    const perpX = Math.cos(angle + Math.PI / 2) * width;
+    const perpY = Math.sin(angle + Math.PI / 2) * width;
+
+    const polygon = document.createElementNS(ns, 'polygon');
+    polygon.setAttribute('points', [
+      `${x + perpX},${y + perpY}`,
+      `${tipX},${tipY}`,
+      `${x - perpX},${y - perpY}`,
+    ].join(' '));
+    polygon.setAttribute('opacity', String(0.2 + rand() * 0.6));
+    
+    // Оборачиваем в группу для анимации
+    const group = document.createElementNS(ns, 'g');
+    group.setAttribute('class', 'spike-group');
+    group.appendChild(polygon);
+    svg.appendChild(group);
+  }
+}
+
+function updateSpikesScroll() {
+  const scrollY = window.scrollY;
+  const collectionSection = document.getElementById('collection');
+  
+  if (collectionSection) {
+    const rect = collectionSection.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    
+    if (isVisible) {
+      const spikeGroups = document.querySelectorAll('.collection-spikes .spike-group');
+      const speeds = [0.3, 0.55, 0.4]; // Разные скорости для слоёв
+      
+      spikeGroups.forEach((group, index) => {
+        const speed = speeds[index % speeds.length];
+        const offset = (scrollY * speed) % SPIKE_PATTERN_WIDTH;
+        group.style.transform = `translateX(${offset}px)`;
+      });
+    }
+  }
+}
+
+// Инициализация игл
+generateCollectionSpikes();
+
+window.addEventListener('scroll', () => {
+  if (spikeScrollAnimationId === null) {
+    spikeScrollAnimationId = requestAnimationFrame(() => {
+      updateSpikesScroll();
+      spikeScrollAnimationId = null;
+    });
+  }
+}, { passive: true });
+
+// Инициализация при загрузке
+updateSpikesScroll();
 </script>
 <!-- Vercel Web Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
