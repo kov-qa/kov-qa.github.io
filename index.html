@@ -279,15 +279,15 @@ footer {
   opacity: 0;
   will-change: opacity, transform;
   mix-blend-mode: screen;
+  transform: translateX(0);
   transition: opacity .35s ease;
 }
 .collection-spikes-side.left {
   left: 0;
-  transform: translateX(-24px);
 }
 .collection-spikes-side.right {
   right: 0;
-  transform: translateX(24px) scaleX(-1);
+  transform: scaleX(-1);
 }
 .collection-spikes-side svg {
   position: absolute;
@@ -1176,24 +1176,40 @@ function updateSpikesScroll() {
   const scrollY = window.scrollY || window.pageYOffset || 0;
   const collectionSection = document.getElementById('collection');
   const sides = document.querySelectorAll('.collection-spikes-side');
+  const productCard = document.querySelector('#products-grid .product-card');
   
   if (!collectionSection || !sides.length) return;
 
   const rect = collectionSection.getBoundingClientRect();
   const sectionHeight = Math.max(rect.height, 1);
   const viewport = window.innerHeight || document.documentElement.clientHeight || 1;
+  const viewportW = window.innerWidth || document.documentElement.clientWidth || 1;
   const rawProgress = (viewport - rect.top) / (sectionHeight + viewport);
   const progress = Math.max(0, Math.min(rawProgress, 1));
   const visible = rect.top < viewport && rect.bottom > 0;
+  const reveal = visible ? progress : 0;
+
+  const sideW = Math.max(Math.min(viewportW * 0.2, 250), 90);
+  const gap = Math.max(18, Math.min(46, viewportW * 0.025));
+  const hiddenOffset = sideW + 60;
+
+  let leftTarget = 0;
+  let rightTarget = 0;
+  if (productCard) {
+    const cardRect = productCard.getBoundingClientRect();
+    leftTarget = Math.max(0, cardRect.left - sideW - gap);
+    rightTarget = cardRect.right + gap - (viewportW - sideW);
+  }
 
   sides.forEach((side) => {
     const isLeft = side.classList.contains('left');
-    const startOffset = 24 * (isLeft ? -1 : 1);
-    const currentOffset = startOffset * (1 - progress);
-    side.style.opacity = visible ? String(progress * 0.95) : '0';
+    const startX = isLeft ? -hiddenOffset : hiddenOffset;
+    const endX = isLeft ? leftTarget : rightTarget;
+    const currentX = startX + (endX - startX) * reveal;
+    side.style.opacity = String(Math.max(0, Math.min(0.95, reveal * 1.08)));
     side.style.transform = isLeft
-      ? `translateX(${currentOffset}px)`
-      : `translateX(${currentOffset}px) scaleX(-1)`;
+      ? `translateX(${currentX}px)`
+      : `translateX(${currentX}px) scaleX(-1)`;
   });
 
   const spikeGroups = document.querySelectorAll('.collection-spikes .spike-group');
@@ -1201,7 +1217,7 @@ function updateSpikesScroll() {
     const direction = index % 2 === 0 ? 1 : -1;
     const speed = 0.08 + (index % 5) * 0.03;
     const yOffset = ((scrollY * speed) % SPIKE_ANIMATION_Y) * direction;
-    const opacity = 0.25 + progress * 0.75;
+    const opacity = 0.2 + reveal * 0.8;
     group.style.transform = `translateY(${yOffset.toFixed(2)}px)`;
     group.style.opacity = String(opacity);
   });
@@ -1219,6 +1235,7 @@ window.addEventListener('scroll', () => {
     });
   }
 }, { passive: true });
+window.addEventListener('resize', updateSpikesScroll, { passive: true });
 
 // Инициализация при загрузке
 updateSpikesScroll();
