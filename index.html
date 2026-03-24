@@ -273,21 +273,21 @@ footer {
 }
 .collection-spikes-side {
   position: absolute;
-  top: 0;
-  width: clamp(90px, 20vw, 250px);
-  height: 100%;
+  left: 0;
+  width: 100%;
+  height: clamp(90px, 18vh, 190px);
   opacity: 0;
   will-change: opacity, transform;
   mix-blend-mode: screen;
-  transform: translateX(0);
+  transform: translateY(0);
   transition: opacity .35s ease;
 }
 .collection-spikes-side.left {
-  left: 0;
+  top: 0;
 }
 .collection-spikes-side.right {
-  right: 0;
-  transform: scaleX(-1);
+  bottom: 0;
+  transform: scaleY(-1);
 }
 .collection-spikes-side svg {
   position: absolute;
@@ -425,7 +425,7 @@ footer {
   #collection { padding: 80px 16px; }
   .section-label { margin-bottom: 48px; padding: 12px 20px; }
   .grid { gap: 32px; grid-template-columns: 1fr; }
-  .collection-spikes-side { width: 82px; }
+  .collection-spikes-side { height: 78px; }
   .product-card { padding: 16px; border-radius: 2rem; }
   .card-meta { margin-top: 20px; }
   .card-name { font-size: 1.25rem; }
@@ -542,10 +542,10 @@ footer {
     <!-- Спайки/иглы, которые анимируются при скроллинге -->
     <div class="collection-spikes" aria-hidden="true">
       <div class="collection-spikes-side left">
-        <svg id="collection-spikes-left-svg" viewBox="0 0 320 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+        <svg id="collection-spikes-top-svg" viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
       <div class="collection-spikes-side right">
-        <svg id="collection-spikes-right-svg" viewBox="0 0 320 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+        <svg id="collection-spikes-bottom-svg" viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
     </div>
     <div class="grid" id="products-grid"></div>
@@ -1128,8 +1128,8 @@ function generateCollectionSideSpikes(svgId, seed = 123) {
   const svg = document.getElementById(svgId);
   if (!svg) return;
 
-  const W = 320;
-  const H = 600;
+  const W = 1200;
+  const H = 220;
   const ns = 'http://www.w3.org/2000/svg';
 
   svg.innerHTML = '';
@@ -1141,15 +1141,15 @@ function generateCollectionSideSpikes(svgId, seed = 123) {
   }
   const rand = rng(seed);
 
-  const SPIKE_COUNT = 55;
+  const SPIKE_COUNT = 70;
   
   for (let i = 0; i < SPIKE_COUNT; i++) {
-    const x = rand() * 34;
-    const y = (i / SPIKE_COUNT) * H;
+    const x = (i / SPIKE_COUNT) * W;
+    const y = rand() * 26;
 
-    const angle = (rand() - 0.5) * 0.45;
-    const len = 40 + rand() * 190;
-    const width = 1 + rand() * 3;
+    const angle = (rand() - 0.5) * 0.4 + Math.PI / 2;
+    const len = 34 + rand() * 120;
+    const width = 1 + rand() * 2.8;
 
     const tipX = x + Math.cos(angle) * len;
     const tipY = y + Math.sin(angle) * len;
@@ -1183,33 +1183,33 @@ function updateSpikesScroll() {
   const rect = collectionSection.getBoundingClientRect();
   const sectionHeight = Math.max(rect.height, 1);
   const viewport = window.innerHeight || document.documentElement.clientHeight || 1;
-  const viewportW = window.innerWidth || document.documentElement.clientWidth || 1;
-  const rawProgress = (viewport - rect.top) / (sectionHeight + viewport);
+  // Ранний старт: анимация начинается до полного входа секции в viewport
+  const rawProgress = (viewport * 1.35 - rect.top) / (sectionHeight + viewport * 0.65);
   const progress = Math.max(0, Math.min(rawProgress, 1));
   const visible = rect.top < viewport && rect.bottom > 0;
-  const reveal = visible ? progress : 0;
+  const reveal = visible ? Math.min(1, progress * 1.18) : 0;
 
-  const sideW = Math.max(Math.min(viewportW * 0.2, 250), 90);
-  const gap = Math.max(18, Math.min(46, viewportW * 0.025));
-  const hiddenOffset = sideW + 60;
+  const sideH = Math.max(Math.min(viewport * 0.18, 190), 90);
+  const gap = Math.max(14, Math.min(36, viewport * 0.03));
+  const hiddenOffset = sideH + 60;
 
-  let leftTarget = 0;
-  let rightTarget = 0;
+  let topTarget = 0;
+  let bottomTarget = 0;
   if (productCard) {
     const cardRect = productCard.getBoundingClientRect();
-    leftTarget = Math.max(0, cardRect.left - sideW - gap);
-    rightTarget = cardRect.right + gap - (viewportW - sideW);
+    topTarget = Math.max(0, cardRect.top - rect.top - sideH - gap);
+    bottomTarget = Math.max(0, rect.bottom - cardRect.bottom - sideH - gap);
   }
 
   sides.forEach((side) => {
-    const isLeft = side.classList.contains('left');
-    const startX = isLeft ? -hiddenOffset : hiddenOffset;
-    const endX = isLeft ? leftTarget : rightTarget;
-    const currentX = startX + (endX - startX) * reveal;
+    const isTop = side.classList.contains('left');
+    const startY = isTop ? -hiddenOffset : hiddenOffset;
+    const endY = isTop ? topTarget : -bottomTarget;
+    const currentY = startY + (endY - startY) * reveal;
     side.style.opacity = String(Math.max(0, Math.min(0.95, reveal * 1.08)));
-    side.style.transform = isLeft
-      ? `translateX(${currentX}px)`
-      : `translateX(${currentX}px) scaleX(-1)`;
+    side.style.transform = isTop
+      ? `translateY(${currentY}px)`
+      : `translateY(${currentY}px) scaleY(-1)`;
   });
 
   const spikeGroups = document.querySelectorAll('.collection-spikes .spike-group');
@@ -1224,8 +1224,8 @@ function updateSpikesScroll() {
 }
 
 // Инициализация игл
-generateCollectionSideSpikes('collection-spikes-left-svg', 187);
-generateCollectionSideSpikes('collection-spikes-right-svg', 271);
+generateCollectionSideSpikes('collection-spikes-top-svg', 187);
+generateCollectionSideSpikes('collection-spikes-bottom-svg', 271);
 
 window.addEventListener('scroll', () => {
   if (spikeScrollAnimationId === null) {
