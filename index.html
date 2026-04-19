@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html class="dark scroll-smooth" lang="en">
@@ -41,7 +40,7 @@
                         "primary-container": "#ffb300",
                         "on-error": "#690005",
                         "on-secondary-fixed-variant": "#454747",
-                        "background": "#0a0a0a",
+                        "background": "#000000",
                         "surface-container-highest": "#353534",
                         "on-background": "#f5f5f5",
                         "inverse-surface": "#e5e2e1",
@@ -91,15 +90,6 @@
             font-family: 'Newsreader', serif;
         }
 
-        .text-mask {
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-
         .text-display-lg {
             font-size: 3.5rem;
             line-height: 1.1;
@@ -117,36 +107,36 @@
             letter-spacing: 0.05em;
         }
 
-        .ghost-border {
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-        }
-
-        .ambient-shadow {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        }
-
-        /* New Cinematic Lighting Effects */
+        /* Cinematic Lighting Effects */
         .white-glow {
             filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.15));
         }
 
-        .gold-glow-subtle {
-            filter: drop-shadow(0 0 20px rgba(255, 215, 155, 0.1));
+        .work-glow {
+            position: relative;
+            z-index: 1;
         }
 
-        .cinematic-bg-glow {
-            background: radial-gradient(circle at 50% 50%,
-                    rgba(255, 255, 255, 0.06) 0%,
-                    rgba(255, 255, 255, 0.03) 25%,
-                    rgba(255, 255, 255, 0.01) 50%,
-                    transparent 80%);
-            filter: blur(60px);
+        .work-glow::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200%;
+            height: 180%;
+            background: radial-gradient(ellipse at center,
+                    rgba(255, 255, 255, 0.35) 0%,
+                    rgba(255, 255, 255, 0.2) 20%,
+                    rgba(255, 255, 255, 0.08) 40%,
+                    transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .gold-glow-subtle {
+            filter: drop-shadow(0 0 20px rgba(255, 215, 155, 0.1));
         }
 
         .card-hover-glow {
@@ -163,15 +153,16 @@
             width: 100%;
         }
 
-        .container-glow {
-            box-shadow: none;
-        }
-
         .photo-card {
             position: relative;
             isolation: isolate;
             background: transparent;
-            overflow: visible;
+        }
+
+        .photo-card-inner {
+            overflow: hidden;
+            border-radius: inherit;
+            position: relative;
         }
 
         .photo-card::before {
@@ -210,7 +201,6 @@
 
         .photo-card img {
             display: block;
-            border-radius: inherit;
         }
 
         .photo-bloom {
@@ -220,23 +210,6 @@
                 drop-shadow(0 0 180px rgba(255, 215, 155, 0.28))
                 drop-shadow(0 0 260px rgba(255, 215, 155, 0.18))
                 brightness(1.22);
-        }
-
-        @keyframes imageFloat {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .anim-image {
-            animation: none;
-            will-change: auto;
         }
 
         /* Scroll Reveal Animations */
@@ -306,7 +279,6 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .anim-image,
             .animate-startup,
             .animate-startup-delay,
             .reveal-up {
@@ -324,44 +296,38 @@
 </head>
 
 <body
-    class="bg-background text-on-surface antialiased min-h-screen flex flex-col selection:bg-white/20 selection:text-white font-body">
+    class="bg-background text-on-surface antialiased min-h-screen flex flex-col selection:bg-white/20 selection:text-white font-body overflow-x-hidden">
     <!-- TopNavBar -->
-    <header class="fixed top-0 left-0 right-0 z-50 flex justify-center items-center w-full mt-6 px-4">
+    <header class="fixed top-0 left-0 right-0 z-50 flex justify-center items-center w-full mt-4 px-3 sm:mt-6 sm:px-4">
         <nav
-            class="bg-black/40 backdrop-blur-3xl rounded-[2rem] mx-auto w-full max-w-4xl px-5 py-3 shadow-2xl flex flex-col items-center sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 border border-white/5 animate-startup">
-            <a class="font-headline text-2xl font-bold text-primary tracking-tighter shrink-0 transition-colors duration-300 text-center sm:text-left"
+            class="bg-black/40 backdrop-blur-3xl rounded-[1.5rem] sm:rounded-[2rem] mx-auto w-full max-w-md sm:max-w-2xl px-4 py-3 sm:px-6 sm:py-4 shadow-2xl flex flex-col items-center sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-6 border border-white/5 animate-startup">
+            <a class="font-headline text-xl sm:text-3xl font-bold text-primary tracking-tighter shrink-0 transition-colors duration-300 text-center sm:text-left"
                 href="#">Portfolio</a>
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-5 gap-y-2">
-                <a class="nav-link font-headline italic text-lg font-bold scale-95 transition-colors duration-300 is-active"
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2">
+                <a class="nav-link font-headline italic text-base sm:text-xl font-bold scale-95 transition-colors duration-300"
                     data-nav-link href="#work">Work</a>
-                <a class="nav-link font-headline italic text-lg font-medium transition-colors duration-300 scale-95"
+                <a class="nav-link font-headline italic text-base sm:text-xl font-medium transition-colors duration-300 scale-95"
                     data-nav-link href="#about">About</a>
-                <a class="nav-link font-headline italic text-lg font-medium transition-colors duration-300 scale-95"
+                <a class="nav-link font-headline italic text-base sm:text-xl font-medium transition-colors duration-300 scale-95"
                     data-nav-link href="#services">Services</a>
-                <a class="nav-link font-headline italic text-lg font-medium transition-colors duration-300 scale-95"
+                <a class="nav-link font-headline italic text-base sm:text-xl font-medium transition-colors duration-300 scale-95"
                     data-nav-link href="#contact">Contact</a>
             </div>
             <a href="#contact"
-                class="bg-primary text-black font-bold rounded-full px-6 py-2 scale-95 active:scale-90 transition-transform self-center sm:self-auto">Hire
+                class="bg-primary text-black font-bold rounded-full px-5 py-2 sm:px-8 sm:py-3 text-sm sm:text-lg scale-95 active:scale-90 transition-transform self-center sm:self-auto">Hire
                 Me</a>
         </nav>
     </header>
-    <main class="flex-grow pt-32 pb-24 px-6 md:px-12 lg:px-24 relative">
-        <!-- Subtle Global Hero Glow -->
-        <div
-            class="absolute -top-40 left-1/2 -translate-x-1/2 w-[150%] max-w-[140rem] h-[1000px] cinematic-bg-glow pointer-events-none">
-        </div>
-        <!-- Work Hero Section (Text Mask) -->
+    <main class="flex-grow pt-32 pb-24 px-2 md:px-4 lg:px-8 relative">
+        <!-- Work Hero Section -->
         <section class="relative w-full min-h-[614px] flex items-center justify-center mb-32" id="work">
-            <h1 class="text-[15vw] font-black tracking-tighter uppercase text-mask font-headline leading-none opacity-100 transition-opacity duration-700 white-glow animate-startup-delay"
-                data-alt="high contrast abstract metallic structures with sharp highlights and deep shadows"
-                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuADdVVYEt7AHcoDoqXqhtsAY0YYj9eV2dSC53Rf31v-_jhAXkrcuhbYopOrOKTRgEBqnx1xejBhXdYv_LnRKAF0JcTWL-ceuJPud-iituWF7MohtpwOQmJizhTDHSMfcKebzlDGXeezkzbksul4OM1Y6jjES6SzSHoVCNzWICSpKcw-wDiHVXt9ekiHuKN7p83BSUwTFazhocLzHcgaIHVuuPOwzp-LDtUbzZkaMLPjl_L4t9Tf4dtiH6917ND7UuDpoz-dm5vB-90P');">
+            <h1 class="text-[15vw] font-black tracking-tighter uppercase text-white font-headline leading-none opacity-100 transition-opacity duration-700 white-glow work-glow animate-startup-delay">
                 WORK
             </h1>
         </section>
         <!-- Impact & Results Section -->
         <section
-            class="max-w-7xl mx-auto mb-32 bg-[#0c0c0c] rounded-[4rem] border border-white/5 py-24 md:py-32 px-8 flex flex-col items-center text-center relative overflow-hidden group">
+            class="max-w-7xl mx-auto mb-32 bg-black rounded-[4rem] border border-white/5 py-24 md:py-32 px-8 flex flex-col items-center text-center relative overflow-hidden group">
             <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
             <h2
                 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight font-headline tracking-tight relative z-10 white-glow reveal-up">
@@ -381,20 +347,22 @@
                     fluid interactions.
                 </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-12 md:grid-rows-[auto_auto] gap-8 md:gap-6 items-start">
-                <div class="order-1 md:order-1 col-span-1 md:col-span-8 md:row-start-1 reveal-up delay-100">
-                    <div class="w-full max-w-[34rem] md:max-w-none md:ml-0">
+            <div class="grid grid-cols-1 md:grid-cols-12 md:grid-rows-[auto_auto] gap-6 md:gap-5 md:items-stretch">
+                <div class="order-1 md:order-1 col-span-1 md:col-span-7 md:row-start-1 reveal-up delay-100">
+                    <div class="w-full">
                         <div
-                            class="photo-card relative w-full aspect-[16/9] rounded-[3.5rem] overflow-hidden mb-5 card-hover-glow container-glow">
-                            <img alt="Project Obsidian"
-                                class="w-full h-full object-cover opacity-100 photo-bloom"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ZDSpTr3H65mmY3HYkb8ygsWg5Ay00kqRBA9x7b5TAQyR63aLp-Y02vBvBrEn3APPyCD6bSBdMXdCfLJ6cD-aRWZ7m0z_dzclvrJsbestJh1-9rCNOQJEYkx3ByDtyERKuBz9F04rNQlZCfLD2cM43nwGI1apbpFExjl5TvW0W5hIBCZQafMi-3Apz0anDDVZDlCE11PPsbA2QQPdr8U8EBUUt-BjNpn-axQYzJwJcWiUWD9-9z46xbF3MXRKxCe27Lj0XZCD1woc" />
-                            <div class="absolute bottom-6 left-6 flex gap-2">
-                                <span
-                                    class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">Web
-                                    Design</span>
-                                <span
-                                    class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">2023</span>
+                            class="photo-card relative w-full aspect-[16/9] rounded-[3.5rem] mb-5 card-hover-glow">
+                            <div class="photo-card-inner w-full h-full">
+                                <img alt="Project Obsidian"
+                                    class="w-full h-full object-cover opacity-100 photo-bloom"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ZDSpTr3H65mmY3HYkb8ygsWg5Ay00kqRBA9x7b5TAQyR63aLp-Y02vBvBrEn3APPyCD6bSBdMXdCfLJ6cD-aRWZ7m0z_dzclvrJsbestJh1-9rCNOQJEYkx3ByDtyERKuBz9F04rNQlZCfLD2cM43nwGI1apbpFExjl5TvW0W5hIBCZQafMi-3Apz0anDDVZDlCE11PPsbA2QQPdr8U8EBUUt-BjNpn-axQYzJwJcWiUWD9-9z46xbF3MXRKxCe27Lj0XZCD1woc" />
+                                <div class="absolute bottom-6 left-6 flex gap-2">
+                                    <span
+                                        class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">Web
+                                        Design</span>
+                                    <span
+                                        class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">2023</span>
+                                </div>
                             </div>
                         </div>
                         <div class="px-4">
@@ -403,16 +371,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="order-3 md:order-3 col-span-1 md:col-span-8 md:row-start-2 reveal-up delay-300">
-                    <div class="w-full max-w-[34rem] md:max-w-none md:ml-0">
+                <div class="order-3 md:order-3 col-span-1 md:col-span-7 md:row-start-2 reveal-up delay-300">
+                    <div class="w-full">
                         <div
-                            class="photo-card relative w-full aspect-[16/10] rounded-[3.5rem] overflow-hidden mb-5 card-hover-glow container-glow">
-                            <img alt="Aurelian Identity"
-                                class="w-full h-full object-cover opacity-100 photo-bloom"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKbZfuaR1rf1Q0Ge2ySSn8MaymyvLwNGnrPM7FXAArInztUP5bDY831JO8UyWkB-C8KYv-6_5gJ_yDlik6I4xgN2IOddGGWVXlBtkr-ginMjOE-xE9FpCBgKDWFD8vUxg3JlRi-cm7BegVhjZ-7l19Lbp3WGpy-5R478XxdYxm4APZF-aE244sZyC6TDXj2Bu5RL8P5MUWxj8pqu1PGwZo_7LkLnJKEPRX25AgCHsl3K8ryJtZH9PxSYiBPlkpeVAMCAqKL_fMqFJx" />
-                            <div class="absolute bottom-6 left-6">
-                                <span
-                                    class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">Branding</span>
+                            class="photo-card relative w-full aspect-[16/10] rounded-[3.5rem] mb-5 card-hover-glow">
+                            <div class="photo-card-inner w-full h-full">
+                                <img alt="Aurelian Identity"
+                                    class="w-full h-full object-cover opacity-100 photo-bloom"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKbZfuaR1rf1Q0Ge2ySSn8MaymyvLwNGnrPM7FXAArInztUP5bDY831JO8UyWkB-C8KYv-6_5gJ_yDlik6I4xgN2IOddGGWVXlBtkr-ginMjOE-xE9FpCBgKDWFD8vUxg3JlRi-cm7BegVhjZ-7l19Lbp3WGpy-5R478XxdYxm4APZF-aE244sZyC6TDXj2Bu5RL8P5MUWxj8pqu1PGwZo_7LkLnJKEPRX25AgCHsl3K8ryJtZH9PxSYiBPlkpeVAMCAqKL_fMqFJx" />
+                                <div class="absolute bottom-6 left-6">
+                                    <span
+                                        class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">Branding</span>
+                                </div>
                             </div>
                         </div>
                         <div class="px-4">
@@ -421,17 +391,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="order-2 md:order-2 col-span-1 md:col-span-4 md:row-span-2 reveal-up delay-200 md:self-stretch">
-                    <div class="w-full max-w-[9.75rem] sm:max-w-[11rem] md:max-w-[14rem] mx-auto md:ml-auto">
+                <div class="order-2 md:order-2 col-span-1 md:col-span-5 md:row-span-2 reveal-up delay-200 md:self-stretch">
+                    <div class="w-full md:h-full md:ml-auto">
                         <div
-                            class="photo-card relative w-full aspect-[3/4] md:h-full md:min-h-[42rem] md:aspect-auto rounded-[3rem] overflow-hidden mb-5 card-hover-glow container-glow">
-                            <img alt="Nexus Platform"
-                                class="w-full h-full object-cover opacity-100 photo-bloom"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV852wkpOkNDL3SUEnWdEMEchfxiN9dSFfGTUUv4RA9zqy508ODOK3SCrQTGvPSmD4RH_2xX1CE-z_wd8sJpAL3doM2Pge4ylPVQD4AGNsCfkgFnrBNPrzkFlFQ1v3z7zjJKdE9Vq3ct5my-E7YK9_uIutqBp2yMV7JZZFDCRjDNqMh9vAMqV0lgKtNyPghRfClwnISjTSsh4KJ9UgMvQkUwRTmm-JsxxuXexrvltfwd2nUt5FO1S9YQkyew_lm4HIK4EoKmiL_2yB" />
-                            <div class="absolute bottom-6 left-6">
-                                <span
-                                    class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">App
-                                    Design</span>
+                            class="photo-card relative w-full aspect-[3/4] md:h-full md:aspect-auto rounded-[3rem] mb-5 md:mb-0 card-hover-glow">
+                            <div class="photo-card-inner w-full h-full">
+                                <img alt="Nexus Platform"
+                                    class="w-full h-full object-cover opacity-100 photo-bloom"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV852wkpOkNDL3SUEnWdEMEchfxiN9dSFfGTUUv4RA9zqy508ODOK3SCrQTGvPSmD4RH_2xX1CE-z_wd8sJpAL3doM2Pge4ylPVQD4AGNsCfkgFnrBNPrzkFlFQ1v3z7zjJKdE9Vq3ct5my-E7YK9_uIutqBp2yMV7JZZFDCRjDNqMh9vAMqV0lgKtNyPghRfClwnISjTSsh4KJ9UgMvQkUwRTmm-JsxxuXexrvltfwd2nUt5FO1S9YQkyew_lm4HIK4EoKmiL_2yB" />
+                                <div class="absolute bottom-6 left-6">
+                                    <span
+                                        class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">App
+                                        Design</span>
+                                </div>
                             </div>
                         </div>
                         <div class="px-2 text-center">
@@ -449,7 +421,7 @@
             <div class="absolute inset-0 footer-inner-glow pointer-events-none"></div>
             <!-- Methodology Section -->
             <section id="about"
-                class="max-w-7xl mx-auto px-8 py-24 md:px-16 md:py-32 flex flex-col items-center text-center relative z-10">
+                class="max-w-7xl mx-auto px-8 pt-24 pb-16 md:px-16 md:pt-32 md:pb-20 flex flex-col items-center text-center relative z-10">
                 <h2 class="text-display-lg font-headline italic mb-4 text-white gold-glow-subtle reveal-up">Methodology
                 </h2>
                 <p
@@ -516,24 +488,9 @@
                     </div>
                 </div>
             </section>
-            <div class="section-separator mx-auto max-w-4xl opacity-50"></div>
-            <!-- Let's Talk Section -->
-            <section id="contact"
-                class="max-w-7xl mx-auto px-8 py-20 md:px-16 md:py-32 flex flex-col items-center text-center relative z-10">
-                <h2
-                    class="text-[12vw] md:text-[10rem] text-white/[0.03] font-headline italic mb-12 leading-none tracking-tight select-none reveal-up">
-                    Let's Talk</h2>
-                <p class="font-label text-label-sm text-white/40 tracking-[0.4em] uppercase mb-16 reveal-up delay-100">
-                    LIMITED AVAILABILITY FOR 2024
-                </p>
-                <a href="mailto:contact@example.com"
-                    class="bg-white text-black font-label text-xs uppercase tracking-[0.2em] rounded-full px-10 py-5 flex items-center gap-4 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] reveal-up delay-200">
-                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                    Ready to join?
-                </a>
-            </section>
             <!-- Additional Block (Capabilities/Expertise) -->
             <section class="max-w-7xl mx-auto pb-24 px-8 md:px-16 relative z-10" id="services">
+                <div class="section-separator mx-auto max-w-4xl opacity-50 mb-12 md:mb-20"></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div class="reveal-up">
                         <span class="font-label text-label-sm mb-4 block text-primary/60 tracking-[0.2em]">Core
@@ -572,32 +529,49 @@
                     </div>
                 </div>
             </section>
+            <div class="section-separator mx-auto max-w-4xl opacity-50"></div>
+            <!-- Let's Talk Section -->
+            <section id="contact"
+                class="max-w-7xl mx-auto px-8 py-20 md:px-16 md:py-32 flex flex-col items-center text-center relative z-10">
+                <h2
+                    class="text-[12vw] md:text-[10rem] text-white/[0.03] font-headline italic mb-12 leading-none tracking-tight select-none reveal-up">
+                    Let's Talk</h2>
+                <p class="font-label text-label-sm text-white/40 tracking-[0.4em] uppercase mb-16 reveal-up delay-100">
+                    LIMITED AVAILABILITY FOR 2026
+                </p>
+                <a href="mailto:contact@example.com"
+                    class="bg-white text-black font-label text-xs uppercase tracking-[0.2em] rounded-full px-10 py-5 flex items-center gap-4 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] reveal-up delay-200">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    Ready to join?
+                </a>
+            </section>
         </div>
     </main>
     <!-- Footer -->
     <footer
-        class="w-auto mx-6 md:mx-12 lg:mx-auto max-w-[1400px] py-16 px-12 bg-[#080808] rounded-[4rem] md:rounded-[5rem] flex flex-col md:flex-row justify-between items-center gap-12 border border-white/5 mb-12 relative overflow-hidden">
+        class="w-auto mx-2 md:mx-4 lg:mx-auto max-w-[1400px] py-16 px-4 md:px-8 bg-[#080808] rounded-[4rem] md:rounded-[5rem] flex flex-col md:flex-row justify-between items-center gap-12 border border-white/5 mb-12 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-t from-white/[0.01] to-transparent pointer-events-none"></div>
         <div class="absolute inset-0 footer-inner-glow pointer-events-none"></div>
         <div class="text-white font-black text-2xl font-headline relative z-10 tracking-tighter">
             Molten Monolith
         </div>
         <div class="flex gap-8 relative z-10">
+            <!-- TODO: Add real social links -->
             <a aria-label="Instagram"
-                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all"
-                href="#">Instagram</a>
+                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all hover:text-white"
+                href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
             <a aria-label="LinkedIn"
-                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all"
-                href="#">LinkedIn</a>
+                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all hover:text-white"
+                href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
             <a aria-label="Dribbble"
-                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all"
-                href="#">Dribbble</a>
+                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all hover:text-white"
+                href="https://dribbble.com" target="_blank" rel="noopener">Dribbble</a>
             <a aria-label="Email"
-                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all"
-                href="#">Email</a>
+                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all hover:text-white"
+                href="mailto:hello@moltenmonolith.com">Email</a>
         </div>
         <div class="font-label text-[10px] uppercase tracking-[0.3em] text-primary/40 relative z-10">
-            &copy; 2024 Molten Monolith.
+            &copy; 2026 Molten Monolith.
         </div>
     </footer>
 
@@ -611,46 +585,77 @@
 
             const setActiveLink = (id) => {
                 navLinks.forEach((link) => {
-                    const isActive = link.getAttribute('href') === `#${id}`;
+                    const isActive = id ? link.getAttribute('href') === `#${id}` : false;
                     link.classList.toggle('is-active', isActive);
-                    link.classList.toggle('text-white', isActive);
                 });
             };
 
-            if (!('IntersectionObserver' in window)) {
+            const hasIO = 'IntersectionObserver' in window;
+
+            if (!hasIO) {
                 revealItems.forEach((el) => el.classList.add('is-visible'));
-                return;
+            } else {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                revealItems.forEach((el) => observer.observe(el));
             }
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
+            const updateActiveNav = () => {
+                const scrollY = window.scrollY;
+                const viewportCenter = scrollY + window.innerHeight / 2;
+                let active = null;
+
+                // First: find section that contains the viewport center
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const section = sections[i];
+                    const rect = section.getBoundingClientRect();
+                    const top = rect.top + scrollY;
+                    const bottom = top + rect.height;
+                    if (top <= viewportCenter && bottom >= viewportCenter) {
+                        active = section;
+                        break;
                     }
-                });
-            }, { threshold: 0.1 });
-
-            revealItems.forEach((el) => observer.observe(el));
-
-            const sectionObserver = new IntersectionObserver((entries) => {
-                const visibleEntries = entries
-                    .filter((entry) => entry.isIntersecting)
-                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-                if (visibleEntries[0]?.target?.id) {
-                    setActiveLink(visibleEntries[0].target.id);
                 }
-            }, {
-                rootMargin: '-35% 0px -45% 0px',
-                threshold: [0.2, 0.4, 0.6]
-            });
 
-            sections.forEach((section) => sectionObserver.observe(section));
+                // Fallback: closest section top that is above viewport center
+                if (!active) {
+                    for (let i = sections.length - 1; i >= 0; i--) {
+                        const rect = sections[i].getBoundingClientRect();
+                        const top = rect.top + scrollY;
+                        if (top <= viewportCenter) {
+                            active = sections[i];
+                            break;
+                        }
+                    }
+                }
+
+                setActiveLink(active?.id || null);
+            };
+
+            updateActiveNav();
+            let navRaf = null;
+            const scheduleNavUpdate = () => {
+                if (navRaf) return;
+                navRaf = requestAnimationFrame(() => {
+                    navRaf = null;
+                    updateActiveNav();
+                });
+            };
+            window.addEventListener('scroll', scheduleNavUpdate, { passive: true });
+            window.addEventListener('resize', scheduleNavUpdate, { passive: true });
 
             const currentHash = window.location.hash.replace('#', '');
             if (currentHash) {
                 setActiveLink(currentHash);
             }
+
+            // All scroll effects initialized
         });
     </script>
 </body>
