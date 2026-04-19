@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio — Impact & Results | Digital Craftsmanship</title>
+    <meta name="description" content="Delivering extraordinary measurable outcomes through high-end digital craftsmanship and strategic aesthetics.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #161616;
+            --bg-card-hover: #1c1c1c;
+            --bg-light: #f5f0eb;
+            --bg-light-alt: #ede8e2;
+            --text-primary: #ffffff;
+            --text-secondary: #999999;
+            --text-muted: #666666;
+            --text-dark: #1a1a1a;
+            --text-dark-secondary: #555555;
+            --accent: #c8ff00;
+            --border: #222222;
+            --border-light: #333333;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-pill: 100px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== HEADER / NAV ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            transition: background 0.4s ease, backdrop-filter 0.4s ease;
+        }
+
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-badge {
+            font-size: 10px;
+            font-weight: 500;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            padding: 3px 8px;
+            border-radius: var(--radius-pill);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--text-primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn-hire {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 22px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-hire:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.15);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 160px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(200, 255, 0, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-inner {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 80px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 6vw, 64px);
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .hero p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto 36px;
+            line-height: 1.7;
+        }
+
+        .btn-explore {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-pill);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-explore:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-explore .arrow {
+            display: inline-flex;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-explore:hover .arrow {
+            transform: translateY(3px);
+        }
+
+        /* ===== SELECTED WORKS ===== */
+        .works {
+            padding: 100px 0;
+        }
+
+        .works-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 48px;
+            gap: 40px;
+        }
+
+        .works-header-left .label {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .works-header-left h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .works-header-right {
+            max-width: 340px;
+            text-align: right;
+        }
+
+        .works-header-right p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .work-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .work-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .work-card-image {
+            width: 100%;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .work-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .work-card:hover .work-card-image img {
+            transform: scale(1.05);
+        }
+
+        .work-card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 4px 10px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius-pill);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .work-card-info {
+            padding: 20px 24px;
+        }
+
+        .work-card-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .work-card-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ===== METHODOLOGY ===== */
+        .methodology {
+            padding: 100px 0;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            position: relative;
+        }
+
+        .methodology-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .methodology-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 600;
+            font-style: italic;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            color: var(--text-dark);
+        }
+
+        .methodology-header p {
+            font-size: 14px;
+            color: var(--text-dark-secondary);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .method-card {
+            text-align: center;
+            padding: 32px 24px;
+        }
+
+        .method-icon {
+            width: 44px;
+            height: 44px;
+            margin: 0 auto 20px;
+            background: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .method-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: var(--bg-light);
+            stroke-width: 1.5;
+        }
+
+        .method-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            font-style: italic;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .method-card p {
+            font-size: 12px;
+            color: var(--text-dark-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== LET'S TALK ===== */
+        .lets-talk {
+            padding: 100px 0 80px;
+            background: var(--bg-primary);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lets-talk-bg-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(60px, 12vw, 140px);
+            font-style: italic;
+            font-weight: 400;
+            color: rgba(255,255,255,0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .lets-talk-availability {
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .lets-talk-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .lets-talk-email a {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 2px;
+            transition: border-color 0.3s ease;
+        }
+
+        .lets-talk-email a:hover {
+            border-color: var(--text-primary);
+        }
+
+        .btn-ready {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.15);
+        }
+
+        /* ===== DIGITAL CRAFTSMANSHIP ===== */
+        .craftsmanship {
+            padding: 100px 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        .craftsmanship-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: flex-start;
+        }
+
+        .craftsmanship-left .label {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .craftsmanship-left h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .craftsmanship-left p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 400px;
+        }
+
+        .btn-project {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: gap 0.3s ease;
+        }
+
+        .btn-project:hover {
+            gap: 14px;
+        }
+
+        .btn-project .arrow-right {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-project:hover .arrow-right {
+            transform: translateX(4px);
+        }
+
+        .craftsmanship-right {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .service-item {
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border);
+            transition: padding-left 0.3s ease;
+        }
+
+        .service-item:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .service-item:hover {
+            padding-left: 12px;
+        }
+
+        .service-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 500;
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+
+        .service-item p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 60px 0;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--text-primary);
+            opacity: 0.6;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 12px;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-delay-1 { transition-delay: 0.1s; }
+        .fade-in-delay-2 { transition-delay: 0.2s; }
+        .fade-in-delay-3 { transition-delay: 0.3s; }
+        .fade-in-delay-4 { transition-delay: 0.4s; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav { display: none; }
+
+            .hero-inner {
+                padding: 50px 24px;
+            }
+
+            .works-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .works-header-right {
+                text-align: left;
+            }
+
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .methodology-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .craftsmanship-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        /* ===== Placeholder Images via CSS Gradient ===== */
+        .img-obsidian {
+            background: linear-gradient(135deg, #0a1628 0%, #0d2847 30%, #00e5ff 50%, #0d2847 70%, #0a1628 100%);
+        }
+        .img-fluid {
+            background: linear-gradient(135deg, #1a1020 0%, #2d1b3d 30%, #c77d55 60%, #1a1020 100%);
+        }
+        .img-aurelian {
+            background: linear-gradient(135deg, #0f2027 0%, #00c9ff 30%, #ff6f61 50%, #92fe9d 70%, #0f2027 100%);
+        }
+        .img-nexus {
+            background: linear-gradient(135deg, #111 0%, #1a1a2e 50%, #16213e 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header id="header">
+        <div class="container">
+            <a href="#" class="logo" id="logo">
+                <span class="logo-text">Portfolio</span>
+                <span class="logo-badge">Studio</span>
+            </a>
+            <nav id="main-nav">
+                <a href="#hero">Home</a>
+                <a href="#works">About</a>
+                <a href="#methodology">Process</a>
+                <a href="#contact">Contact</a>
+                <a href="#contact" class="btn-hire" id="btn-hire-me">Hire Me</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-inner fade-in">
+                <h1>Impact <em>&amp; Results</em></h1>
+                <p>Delivering extraordinary measurable outcomes through high-end digital craftsmanship and strategic aesthetics.</p>
+                <button class="btn-explore" id="btn-explore" onclick="document.getElementById('works').scrollIntoView({behavior:'smooth'})">
+                    Explore Outcomes
+                    <span class="arrow">↓</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SELECTED WORKS ===== -->
+    <section class="works" id="works">
+        <div class="container">
+            <div class="works-header fade-in">
+                <div class="works-header-left">
+                    <div class="label">Digital and Real</div>
+                    <h2>Selected Works</h2>
+                </div>
+                <div class="works-header-right">
+                    <p>A collection of digital favorites. Exploring the multiverses to build exceptional projects. Full Immersion.</p>
+                </div>
+            </div>
+            <div class="works-grid">
+                <div class="work-card fade-in fade-in-delay-1" id="card-obsidian">
+                    <div class="work-card-image">
+                        <div style="width:100%;height:100%;position:relative;overflow:hidden;">
+                            <svg width="100%" height="100%" viewBox="0 0 600 375" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#0a1628"/>
+                                        <stop offset="50%" style="stop-color:#0d3b66"/>
+                                        <stop offset="100%" style="stop-color:#0a1628"/>
+                                    </linearGradient>
+                                    <radialGradient id="glow1" cx="50%" cy="50%" r="40%">
+                                        <stop offset="0%" style="stop-color:#00e5ff;stop-opacity:0.4"/>
+                                        <stop offset="100%" style="stop-color:#00e5ff;stop-opacity:0"/>
+                                    </radialGradient>
+                                </defs>
+                                <rect width="600" height="375" fill="url(#g1)"/>
+                                <rect x="80" y="60" width="280" height="180" rx="8" fill="#0a0e1a" stroke="#1a3a5c" stroke-width="1"/>
+                                <rect x="90" y="75" width="260" height="2" fill="#1a3a5c"/>
+                                <circle cx="98" cy="70" r="3" fill="#ff5f56"/>
+                                <circle cx="110" cy="70" r="3" fill="#ffbd2e"/>
+                                <circle cx="122" cy="70" r="3" fill="#27ca40"/>
+                                <rect x="100" y="90" width="230" height="140" fill="#050a15"/>
+                                <!-- Grid lines -->
+                                <line x1="100" y1="120" x2="330" y2="120" stroke="#00e5ff" stroke-width="0.3" opacity="0.5"/>
+                                <line x1="100" y1="150" x2="330" y2="150" stroke="#00e5ff" stroke-width="0.3" opacity="0.5"/>
+                                <line x1="100" y1="180" x2="330" y2="180" stroke="#00e5ff" stroke-width="0.3" opacity="0.5"/>
+                                <line x1="150" y1="90" x2="150" y2="230" stroke="#00e5ff" stroke-width="0.3" opacity="0.5"/>
+                                <line x1="200" y1="90" x2="200" y2="230" stroke="#00e5ff" stroke-width="0.3" opacity="0.5"/>
+                                <line x1="250" y1="90" x2="250" y2="230" stroke="#00e5ff" stroke-width="0.3" opacity="0.5"/>
+                                <line x1="300" y1="90" x2="300" y2="230" stroke="#00e5ff" stroke-width="0.3" opacity="0.5"/>
+                                <!-- Data visualization -->
+                                <circle cx="430" cy="190" r="80" fill="url(#glow1)"/>
+                                <circle cx="430" cy="190" r="50" fill="none" stroke="#00e5ff" stroke-width="1" opacity="0.6"/>
+                                <circle cx="430" cy="190" r="30" fill="none" stroke="#00e5ff" stroke-width="0.5" opacity="0.3"/>
+                                <!-- Small floating elements -->
+                                <rect x="380" y="100" width="100" height="60" rx="6" fill="rgba(0,229,255,0.05)" stroke="#00e5ff" stroke-width="0.5" opacity="0.5"/>
+                                <rect x="390" y="115" width="40" height="3" rx="1.5" fill="#00e5ff" opacity="0.4"/>
+                                <rect x="390" y="123" width="60" height="3" rx="1.5" fill="#00e5ff" opacity="0.2"/>
+                                <rect x="390" y="131" width="30" height="3" rx="1.5" fill="#00e5ff" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <span class="work-card-badge">Web Design</span>
+                    </div>
+                    <div class="work-card-info">
+                        <h3>Project Obsidian</h3>
+                        <p>Dashboard & Analytics</p>
+                    </div>
+                </div>
+
+                <div class="work-card fade-in fade-in-delay-2" id="card-fluid">
+                    <div class="work-card-image">
+                        <div style="width:100%;height:100%;position:relative;">
+                            <svg width="100%" height="100%" viewBox="0 0 600 375" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <radialGradient id="g2" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%" style="stop-color:#3d1f5c"/>
+                                        <stop offset="100%" style="stop-color:#1a1020"/>
+                                    </radialGradient>
+                                    <radialGradient id="blob2" cx="50%" cy="45%" r="35%">
+                                        <stop offset="0%" style="stop-color:#e8a87c;stop-opacity:0.9"/>
+                                        <stop offset="40%" style="stop-color:#c77d55;stop-opacity:0.7"/>
+                                        <stop offset="100%" style="stop-color:#1a1020;stop-opacity:0"/>
+                                    </radialGradient>
+                                </defs>
+                                <rect width="600" height="375" fill="url(#g2)"/>
+                                <!-- Abstract shape -->
+                                <ellipse cx="300" cy="180" rx="120" ry="100" fill="url(#blob2)"/>
+                                <ellipse cx="320" cy="170" rx="80" ry="70" fill="none" stroke="#e8a87c" stroke-width="0.5" opacity="0.4"/>
+                                <ellipse cx="280" cy="200" rx="60" ry="50" fill="none" stroke="#c77d55" stroke-width="0.5" opacity="0.3"/>
+                                <!-- Inner highlight -->
+                                <ellipse cx="310" cy="165" rx="30" ry="25" fill="rgba(232,168,124,0.15)"/>
+                                <!-- Inner dark hole -->
+                                <ellipse cx="305" cy="175" rx="20" ry="18" fill="#1a1020"/>
+                                <ellipse cx="305" cy="175" rx="12" ry="10" fill="#0d0810"/>
+                            </svg>
+                        </div>
+                        <span class="work-card-badge">3D / Motion</span>
+                    </div>
+                    <div class="work-card-info">
+                        <h3>Fluid Dynamics</h3>
+                        <p>3D Art Direction</p>
+                    </div>
+                </div>
+
+                <div class="work-card fade-in fade-in-delay-3" id="card-aurelian">
+                    <div class="work-card-image">
+                        <div style="width:100%;height:100%;position:relative;">
+                            <svg width="100%" height="100%" viewBox="0 0 600 375" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <radialGradient id="g3" cx="50%" cy="50%" r="60%">
+                                        <stop offset="0%" style="stop-color:#1a2a3a"/>
+                                        <stop offset="100%" style="stop-color:#0f1820"/>
+                                    </radialGradient>
+                                </defs>
+                                <rect width="600" height="375" fill="url(#g3)"/>
+                                <!-- Headphones shape - simplified -->
+                                <path d="M220,200 Q220,130 300,130 Q380,130 380,200" fill="none" stroke="#00c9ff" stroke-width="3" opacity="0.8"/>
+                                <!-- Ear cups -->
+                                <ellipse cx="220" cy="215" rx="30" ry="40" fill="#1a3040" stroke="#00c9ff" stroke-width="1.5" opacity="0.7"/>
+                                <ellipse cx="380" cy="215" rx="30" ry="40" fill="#1a3040" stroke="#ff6f61" stroke-width="1.5" opacity="0.7"/>
+                                <!-- Inner ear detail -->
+                                <ellipse cx="220" cy="215" rx="18" ry="25" fill="none" stroke="#00c9ff" stroke-width="0.5" opacity="0.4"/>
+                                <ellipse cx="380" cy="215" rx="18" ry="25" fill="none" stroke="#ff6f61" stroke-width="0.5" opacity="0.4"/>
+                                <!-- Glow effects -->
+                                <circle cx="220" cy="215" r="50" fill="none" stroke="#00c9ff" stroke-width="0.3" opacity="0.2"/>
+                                <circle cx="380" cy="215" r="50" fill="none" stroke="#ff6f61" stroke-width="0.3" opacity="0.2"/>
+                                <circle cx="300" cy="280" r="70" fill="none" stroke="#92fe9d" stroke-width="0.3" opacity="0.15"/>
+                                <!-- Energy lines -->
+                                <line x1="250" y1="200" x2="350" y2="200" stroke="#92fe9d" stroke-width="0.5" opacity="0.3"/>
+                                <line x1="260" y1="220" x2="340" y2="220" stroke="#00c9ff" stroke-width="0.5" opacity="0.2"/>
+                                <line x1="255" y1="240" x2="345" y2="240" stroke="#ff6f61" stroke-width="0.5" opacity="0.2"/>
+                            </svg>
+                        </div>
+                        <span class="work-card-badge">Branding</span>
+                    </div>
+                    <div class="work-card-info">
+                        <h3>Aurelian Identity</h3>
+                        <p>Brand System + 3D</p>
+                    </div>
+                </div>
+
+                <div class="work-card fade-in fade-in-delay-4" id="card-nexus">
+                    <div class="work-card-image">
+                        <div style="width:100%;height:100%;position:relative;">
+                            <svg width="100%" height="100%" viewBox="0 0 600 375" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#111111"/>
+                                        <stop offset="100%" style="stop-color:#1a1a2e"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect width="600" height="375" fill="url(#g4)"/>
+                                <!-- Text blocks -->
+                                <rect x="40" y="40" width="180" height="8" rx="4" fill="#2a2a3e" opacity="0.6"/>
+                                <rect x="40" y="58" width="140" height="6" rx="3" fill="#2a2a3e" opacity="0.4"/>
+                                <rect x="40" y="74" width="160" height="6" rx="3" fill="#2a2a3e" opacity="0.3"/>
+                                <rect x="40" y="100" width="200" height="8" rx="4" fill="#2a2a3e" opacity="0.5"/>
+                                <rect x="40" y="118" width="120" height="6" rx="3" fill="#2a2a3e" opacity="0.3"/>
+                                <rect x="40" y="134" width="170" height="6" rx="3" fill="#2a2a3e" opacity="0.3"/>
+                                <!-- Right side UI elements -->
+                                <rect x="340" y="40" width="220" height="140" rx="8" fill="#1a1a28" stroke="#2a2a3e" stroke-width="0.5"/>
+                                <rect x="355" y="60" width="60" height="3" rx="1.5" fill="#2a2a3e" opacity="0.5"/>
+                                <rect x="355" y="70" width="90" height="3" rx="1.5" fill="#2a2a3e" opacity="0.3"/>
+                                <rect x="355" y="80" width="50" height="3" rx="1.5" fill="#2a2a3e" opacity="0.4"/>
+                                <!-- More layout lines -->
+                                <rect x="40" y="180" width="520" height="1" fill="#2a2a3e" opacity="0.2"/>
+                                <rect x="40" y="200" width="240" height="8" rx="4" fill="#2a2a3e" opacity="0.4"/>
+                                <rect x="40" y="220" width="180" height="6" rx="3" fill="#2a2a3e" opacity="0.25"/>
+                                <rect x="40" y="240" width="200" height="6" rx="3" fill="#2a2a3e" opacity="0.25"/>
+                                <rect x="40" y="270" width="150" height="6" rx="3" fill="#2a2a3e" opacity="0.3"/>
+                                <rect x="40" y="290" width="250" height="6" rx="3" fill="#2a2a3e" opacity="0.2"/>
+                                <rect x="40" y="310" width="190" height="6" rx="3" fill="#2a2a3e" opacity="0.2"/>
+                                <rect x="340" y="200" width="220" height="120" rx="8" fill="#1a1a28" stroke="#2a2a3e" stroke-width="0.5"/>
+                            </svg>
+                        </div>
+                        <span class="work-card-badge">App Design</span>
+                    </div>
+                    <div class="work-card-info">
+                        <h3>Nexus Platform</h3>
+                        <p>SaaS Dashboard</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== METHODOLOGY ===== -->
+    <section class="methodology" id="methodology">
+        <div class="container">
+            <div class="methodology-header fade-in">
+                <h2>Methodology</h2>
+                <p>Design is the transformation of constraints that challenges the system to come to-point, numeric, and a transforming creation.</p>
+            </div>
+            <div class="methodology-grid">
+                <div class="method-card fade-in fade-in-delay-1">
+                    <div class="method-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>Fluid Strategy</h3>
+                    <p>A structured approach to understanding your brand's core. Research the user flow and thoroughly analyze the positioning narrative.</p>
+                </div>
+                <div class="method-card fade-in fade-in-delay-2">
+                    <div class="method-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <path d="M3 9h18"/>
+                            <path d="M9 21V9"/>
+                        </svg>
+                    </div>
+                    <h3>Atmosphere UI</h3>
+                    <p>Crafting interfaces that feel alive, rich and immersive. Every interaction is designed to resonate and surprise.</p>
+                </div>
+                <div class="method-card fade-in fade-in-delay-3">
+                    <div class="method-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                            <path d="M2 12h20"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3>Final Polish</h3>
+                    <p>The last 10% that makes all the difference. Animations, micro-interactions, pixel-perfect delivery with elegant execution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LET'S TALK ===== -->
+    <section class="lets-talk" id="contact">
+        <div class="container" style="position:relative; z-index:1;">
+            <div class="lets-talk-bg-text">Let's Talk</div>
+            <div class="fade-in">
+                <div class="lets-talk-availability">Limited Availability for 2025</div>
+                <div class="lets-talk-email">
+                    <span>✉</span>
+                    <a href="mailto:hello@studio.com">hello@studio.com</a>
+                </div>
+                <br>
+                <button class="btn-ready" id="btn-ready">Ready? I'm Ready<span style="margin-left:4px;">→</span></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DIGITAL CRAFTSMANSHIP ===== -->
+    <section class="craftsmanship" id="craftsmanship">
+        <div class="container">
+            <div class="craftsmanship-grid">
+                <div class="craftsmanship-left fade-in">
+                    <div class="label">Core Philosophy</div>
+                    <h2>Digital<br>Craftsmanship</h2>
+                    <p>Precise digital production for visionary studios. We specialize in rich content, interactive editorial emotion and large-scale websites proven with refined creativity.</p>
+                    <a href="#works" class="btn-project" id="btn-explore-project">
+                        Explore a Project
+                        <span class="arrow-right">→</span>
+                    </a>
+                </div>
+                <div class="craftsmanship-right fade-in fade-in-delay-2">
+                    <div class="service-item" id="service-editorial">
+                        <h3>Editorial UI Design</h3>
+                        <p>Magazine-quality layouts, immersive visual storytelling, crafting premium digital experiences with editorial sensibility.</p>
+                    </div>
+                    <div class="service-item" id="service-creative">
+                        <h3>Creative Development</h3>
+                        <p>Custom code, animations, and interactive experiences that push the boundaries of web technology.</p>
+                    </div>
+                    <div class="service-item" id="service-brand">
+                        <h3>Brand Architecture</h3>
+                        <p>Strategic identity systems that unify visual language across every digital touchpoint.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-logo">Modern Monolith</div>
+            <div class="footer-text">© 2025 Portfolio Studio. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script>
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
