@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 
-<html class="dark scroll-smooth" lang="en">
+<html class="dark scroll-smooth" lang="ru">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Portfolio - Molten Monolith</title>
+    <title>VARKULEVICH — Заказы из Китая, Кореи, Японии</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap"
-        rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -73,21 +68,76 @@
                         "full": "9999px"
                     },
                     "fontFamily": {
-                        "headline": ["Newsreader", "serif"],
-                        "body": ["Inter", "sans-serif"],
-                        "label": ["Inter", "sans-serif"]
+                        "headline": ["SF Pro Display", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+                        "body": ["SF Pro Text", "SF Pro Display", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+                        "label": ["SF Pro Text", "SF Pro Display", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"]
                     }
                 },
             },
         }
     </script>
     <style>
+        * {
+            font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 3D Perspective Container */
+        .perspective-container {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        /* 3D Tilt Cards */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tilt-card:hover {
+            transform: translateZ(30px) rotateX(2deg) rotateY(-2deg);
+        }
+
+        .tilt-card-inner {
+            transform: translateZ(20px);
+        }
+
+        /* Parallax Layers */
+        .parallax-slow {
+            will-change: transform;
+        }
+
+        /* Smooth 3D Text */
+        .text-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .text-3d:hover {
+            transform: translateZ(50px) scale(1.02);
+        }
+
+        /* Enhanced Glow with 3D depth */
+        .glow-3d {
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 60px rgba(255, 215, 155, 0.15));
+        }
+
+        /* Smooth section transitions */
+        section {
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .font-headline {
-            font-family: 'Newsreader', serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            font-weight: 700;
+            letter-spacing: -0.022em;
         }
 
         .text-display-lg {
@@ -122,16 +172,33 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) translateZ(-50px);
             width: 200%;
             height: 180%;
             background: radial-gradient(ellipse at center,
-                    rgba(255, 255, 255, 0.35) 0%,
-                    rgba(255, 255, 255, 0.2) 20%,
-                    rgba(255, 255, 255, 0.08) 40%,
-                    transparent 70%);
-            filter: blur(80px);
+                    rgba(255, 255, 255, 0.45) 0%,
+                    rgba(255, 255, 255, 0.25) 15%,
+                    rgba(255, 215, 155, 0.15) 35%,
+                    rgba(255, 255, 255, 0.05) 55%,
+                    transparent 75%);
+            filter: blur(100px);
             z-index: -1;
+            pointer-events: none;
+        }
+
+        .work-glow::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(-100px);
+            width: 250%;
+            height: 220%;
+            background: radial-gradient(ellipse at center,
+                    rgba(255, 215, 155, 0.1) 0%,
+                    transparent 60%);
+            filter: blur(120px);
+            z-index: -2;
             pointer-events: none;
         }
 
@@ -153,6 +220,40 @@
             width: 100%;
         }
 
+        /* Active Nav Link */
+        .nav-link {
+            color: rgba(255, 255, 255, 0.5);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-link.is-active {
+            color: #ffd79b;
+            text-shadow: 0 0 20px rgba(255, 215, 155, 0.4), 0 0 40px rgba(255, 215, 155, 0.15);
+        }
+
+        .nav-link.is-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #ffd79b;
+            box-shadow: 0 0 8px rgba(255, 215, 155, 0.6);
+        }
+
+        /* Header scroll state */
+        .header-scrolled {
+            background: rgba(0, 0, 0, 0.75) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
         .photo-card {
             position: relative;
             isolation: isolate;
@@ -163,6 +264,12 @@
             overflow: hidden;
             border-radius: inherit;
             position: relative;
+            transform: translateZ(30px);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tilt-card:hover .photo-card-inner {
+            transform: translateZ(50px) scale(1.02);
         }
 
         .photo-card::before {
@@ -215,14 +322,63 @@
         /* Scroll Reveal Animations */
         .reveal-up {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
             will-change: opacity, transform;
         }
 
         .reveal-up.is-visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        .reveal-up.delay-100 {
+            transition-delay: 0ms;
+        }
+
+        .reveal-up.delay-200 {
+            transition-delay: 150ms;
+        }
+
+        .reveal-up.delay-300 {
+            transition-delay: 300ms;
+        }
+
+        .reveal-up.delay-400 {
+            transition-delay: 450ms;
+        }
+
+        /* 3D Float Animation */
+        @keyframes float3d {
+            0%, 100% { transform: translateY(0) translateZ(0) rotateX(0); }
+            50% { transform: translateY(-15px) translateZ(30px) rotateX(2deg); }
+        }
+
+        /* Slow Pulse Animation for Popular Card */
+        @keyframes pulse-slow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 215, 155, 0.3), 0 0 40px rgba(255, 215, 155, 0.2);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 215, 155, 0.5), 0 0 60px rgba(255, 215, 155, 0.3);
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 3s ease-in-out infinite;
+        }
+
+        /* Card Glow Effect */
+        .card-glow {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-glow-accent {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-float {
+            animation: float3d 6s ease-in-out infinite;
         }
 
         .delay-100 {
@@ -235,6 +391,41 @@
 
         .delay-300 {
             transition-delay: 300ms;
+        }
+
+        .delay-400 {
+            transition-delay: 400ms;
+        }
+
+        .card-glow {
+            box-shadow: 0 0 25px rgba(255, 215, 155, 0.08), 0 0 50px rgba(255, 215, 155, 0.04), inset 0 0 25px rgba(255, 215, 155, 0.03);
+            transition: box-shadow 0.4s ease, border-color 0.3s ease;
+        }
+
+        .card-glow:hover {
+            box-shadow: 0 0 35px rgba(255, 215, 155, 0.15), 0 0 70px rgba(255, 215, 155, 0.08), inset 0 0 35px rgba(255, 215, 155, 0.05);
+        }
+
+        .card-glow-accent {
+            box-shadow: 0 0 30px rgba(255, 215, 155, 0.12), 0 0 60px rgba(255, 215, 155, 0.06), inset 0 0 30px rgba(255, 215, 155, 0.04);
+            transition: box-shadow 0.4s ease, border-color 0.3s ease;
+        }
+
+        .card-glow-accent:hover {
+            box-shadow: 0 0 45px rgba(255, 215, 155, 0.22), 0 0 90px rgba(255, 215, 155, 0.1), inset 0 0 45px rgba(255, 215, 155, 0.07);
+        }
+
+        .btn-glow {
+            box-shadow: 0 0 20px rgba(255, 215, 155, 0.2), 0 0 40px rgba(255, 215, 155, 0.1);
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(255, 215, 155, 0.35), 0 0 60px rgba(255, 215, 155, 0.15);
+        }
+
+        .btn-glow:active {
+            box-shadow: 0 0 15px rgba(255, 215, 155, 0.25), 0 0 30px rgba(255, 215, 155, 0.1);
         }
 
         @keyframes startupFadeUp {
@@ -298,280 +489,526 @@
 <body
     class="bg-background text-on-surface antialiased min-h-screen flex flex-col selection:bg-white/20 selection:text-white font-body overflow-x-hidden">
     <!-- TopNavBar -->
-    <header class="fixed top-0 left-0 right-0 z-50 flex justify-center items-center w-full mt-4 px-3 sm:mt-6 sm:px-4">
+    <header class="fixed top-0 left-0 right-0 z-[100] flex justify-center items-center w-full mt-4 px-3 sm:mt-6 sm:px-4">
         <nav
-            class="bg-black/40 backdrop-blur-3xl rounded-[1.5rem] sm:rounded-[2rem] mx-auto w-full max-w-md sm:max-w-2xl px-4 py-3 sm:px-6 sm:py-4 shadow-2xl flex flex-col items-center sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-6 border border-white/5 animate-startup">
-            <a class="font-headline text-xl sm:text-3xl font-bold text-primary tracking-tighter shrink-0 transition-colors duration-300 text-center sm:text-left"
-                href="#">Portfolio</a>
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2">
-                <a class="nav-link font-headline italic text-base sm:text-xl font-bold scale-95 transition-colors duration-300"
-                    data-nav-link href="#work">Work</a>
-                <a class="nav-link font-headline italic text-base sm:text-xl font-medium transition-colors duration-300 scale-95"
-                    data-nav-link href="#about">About</a>
-                <a class="nav-link font-headline italic text-base sm:text-xl font-medium transition-colors duration-300 scale-95"
-                    data-nav-link href="#services">Services</a>
-                <a class="nav-link font-headline italic text-base sm:text-xl font-medium transition-colors duration-300 scale-95"
-                    data-nav-link href="#contact">Contact</a>
+            class="bg-black/40 backdrop-blur-3xl rounded-[2rem] sm:rounded-[3rem] mx-auto w-full max-w-5xl px-5 py-3 sm:px-8 sm:py-4 shadow-2xl flex items-center justify-between gap-4 border border-white/5 animate-startup" id="main-nav">
+            <a class="font-headline text-xl sm:text-2xl font-bold text-primary tracking-tighter shrink-0 transition-colors duration-300"
+                href="#">VARKULEVICH</a>
+            <div class="flex items-center gap-6 sm:gap-8">
+                <div class="flex items-center gap-4 sm:gap-6">
+                    <a class="nav-link font-headline italic text-sm sm:text-base font-medium transition-colors duration-300"
+                        data-nav-link href="#tariffs">Тарифы</a>
+                    <a class="nav-link font-headline italic text-sm sm:text-base font-medium transition-colors duration-300"
+                        data-nav-link href="#about">Почему?</a>
+                    <a class="nav-link font-headline italic text-sm sm:text-base font-medium transition-colors duration-300"
+                        data-nav-link href="#countries">Страны</a>
+                    <a class="nav-link font-headline italic text-sm sm:text-base font-medium transition-colors duration-300"
+                        data-nav-link href="#contact">Покупка</a>
+                </div>
+                <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20узнать%20подробнее%20о%20тарифах" target="_blank"
+                class="btn-glow bg-primary text-black font-bold rounded-[1.5rem] px-5 py-2 sm:px-7 sm:py-2.5 text-xs sm:text-sm scale-95 active:scale-90 transition-transform whitespace-nowrap">Купить</a>
             </div>
-            <a href="#contact"
-                class="bg-primary text-black font-bold rounded-full px-5 py-2 sm:px-8 sm:py-3 text-sm sm:text-lg scale-95 active:scale-90 transition-transform self-center sm:self-auto">Hire
-                Me</a>
         </nav>
     </header>
     <main class="flex-grow pt-32 pb-24 px-2 md:px-4 lg:px-8 relative">
-        <!-- Work Hero Section -->
-        <section class="relative w-full min-h-[614px] flex items-center justify-center mb-32" id="work">
-            <h1 class="text-[15vw] font-black tracking-tighter uppercase text-white font-headline leading-none opacity-100 transition-opacity duration-700 white-glow work-glow animate-startup-delay">
-                WORK
+        <!-- Hero Section -->
+        <section class="relative w-full min-h-[614px] flex flex-col items-center justify-center mb-32" id="hero">
+            <h1 class="text-[12vw] font-black tracking-tighter uppercase text-white font-headline leading-none opacity-100 transition-opacity duration-700 white-glow work-glow text-3d animate-startup-delay">
+                VARKULEVICH
             </h1>
+            <p class="text-xl md:text-2xl text-primary font-headline mt-4 text-center max-w-[80vw] px-4 reveal-up">
+                Ты научишься заказывать с Китая, Кореи и Японии быстрее, чем думаешь.
+            </p>
         </section>
-        <!-- Impact & Results Section -->
-        <section
-            class="max-w-7xl mx-auto mb-32 bg-black rounded-[4rem] border border-white/5 py-24 md:py-32 px-8 flex flex-col items-center text-center relative overflow-hidden group">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
-            <h2
-                class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight font-headline tracking-tight relative z-10 white-glow reveal-up">
-                Impact &amp; Results
-            </h2>
-            <p class="text-lg md:text-xl max-w-2xl mb-10 text-white/70 relative z-10 reveal-up delay-100">Delivering
-                substantial, measurable
-                outcomes through high-end digital architecture and strategic aesthetics.</p>
+        <!-- Value Proposition Section -->
+        <section class="max-w-7xl mx-auto mb-16 px-4 lg:pl-64 reveal-up lg:mt-32">
+            <div class="flex flex-row md:grid md:grid-cols-2 gap-4 lg:gap-12 items-start mx-auto max-w-6xl">
+                <!-- Left Column: Text Content -->
+                <div class="order-1 md:order-1 flex-1">
+                    <!-- Main Headline -->
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight font-headline text-left">
+                        Как заказывать<br/>
+                        товары из <span class="text-primary">Китая</span>,<br/>
+                        <span class="text-primary">Кореи</span> и <span class="text-primary">Японии</span><br/>
+                        дешевле и<br/>
+                        зарабатывать<br/>
+                        на этом
+                    </h1>
+                    
+                    <!-- 4 Features Row -->
+                    <div class="grid grid-cols-1 gap-3 mb-6">
+                        <!-- Feature 1 -->
+                        <div class="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 rounded-[2rem] p-4 border border-yellow-500/30 flex items-center gap-3 shadow-lg shadow-yellow-500/20">
+                            <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                                    <path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-xs text-white leading-tight">Находим поставщиков по лучшим ценам</p>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-[2rem] p-4 border border-purple-500/30 flex items-center gap-3 shadow-lg shadow-purple-500/20">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <p class="text-xs text-white leading-tight">Проверяем продавцов и избегаем рисков</p>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="bg-gradient-to-br from-blue-500/20 to-blue-600/10 rounded-[2rem] p-4 border border-blue-500/30 flex items-center gap-3 shadow-lg shadow-blue-500/20">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" stroke-width="2"/>
+                                    <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-xs text-white leading-tight">Организуем доставку быстро и выгодно</p>
+                        </div>
+
+                        <!-- Feature 4 -->
+                        <div class="bg-gradient-to-br from-green-500/20 to-green-600/10 rounded-[2rem] p-4 border border-green-500/30 flex items-center gap-3 shadow-lg shadow-green-500/20">
+                            <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <p class="text-xs text-white leading-tight">Превращаем закупки в стабильный доход</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Image and Benefits -->
+                <div class="order-2 flex flex-col items-center justify-center gap-6 w-1/2 shrink-0">
+                    <img 
+                        src="https://i.imgur.com/xo3zGuz.jpeg" 
+                        alt="Логистика из Китая, Кореи и Японии" 
+                        class="w-full h-auto object-contain drop-shadow-2xl"
+                    />
+                    
+                    <!-- 5 Benefits Row -->
+                    <div class="grid grid-cols-1 gap-3 w-full">
+                        <!-- Benefit 1 -->
+                        <div class="flex items-center gap-3 bg-white/5 rounded-xl p-4">
+                            <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M12 14l9-5-9-5-9 5 9 5z" stroke-width="2"/>
+                                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <p class="text-sm text-white leading-tight">Пошаговая система от поиска товара до продажи</p>
+                        </div>
+
+                        <!-- Benefit 2 -->
+                        <div class="flex items-center gap-3 bg-white/5 rounded-xl p-4">
+                            <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-sm text-white leading-tight">Только рабочие схемы и реальные инструменты</p>
+                        </div>
+
+                        <!-- Benefit 3 -->
+                        <div class="flex items-center gap-3 bg-white/5 rounded-xl p-4">
+                            <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-sm text-white leading-tight">Подходит новичкам и тем, кто уже в бизнесе</p>
+                        </div>
+
+                        <!-- Benefit 4 -->
+                        <div class="flex items-center gap-3 bg-white/5 rounded-xl p-4">
+                            <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-sm text-white leading-tight">Поможем масштабировать доход и выйти на новый уровень</p>
+                        </div>
+
+                        <!-- Benefit 5 -->
+                        <div class="flex items-center gap-3 bg-white/5 rounded-xl p-4">
+                            <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <p class="text-sm text-white leading-tight">Поддержка на всех этапах обучения</p>
+                        </div>
+                    </div>
+                </div>
         </section>
-        <!-- Selected Works (Portfolio Layout) -->
-        <section class="max-w-7xl mx-auto mb-32">
+        <!-- Tariffs Section -->
+        <section class="max-w-7xl mx-auto mb-32" id="tariffs">
             <div class="max-w-3xl mx-auto mb-16 text-center reveal-up">
-                <span class="text-label-sm font-label mb-3 block text-primary/60 tracking-[0.2em]">Curated Archive</span>
-                <h2 class="text-display-lg text-white font-headline white-glow">Selected Works</h2>
+                <span class="text-label-sm font-label mb-3 block text-primary/60 tracking-[0.2em]">4 ТАРИФА ОБУЧЕНИЯ</span>
+                <h2 class="text-display-lg text-white font-headline white-glow">От старта до полного сопровождения</h2>
                 <p class="text-body-lg max-w-2xl mx-auto mt-6 text-white/60">
-                    A collection of digital monoliths. Exploring the tension between brutalist structures and organic,
-                    fluid interactions.
+                    Получи систему, которая поможет покупать дешевле, избегать мошенников, находить проверенных поставщиков, правильно организовывать логистику и масштабировать продажи.
                 </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-12 md:grid-rows-[auto_auto] gap-6 md:gap-5 md:items-stretch">
-                <div class="order-1 md:order-1 col-span-1 md:col-span-7 md:row-start-1 reveal-up delay-100">
-                    <div class="w-full">
-                        <div
-                            class="photo-card relative w-full aspect-[16/9] rounded-[3.5rem] mb-5 card-hover-glow">
-                            <div class="photo-card-inner w-full h-full">
-                                <img alt="Project Obsidian"
-                                    class="w-full h-full object-cover opacity-100 photo-bloom"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ZDSpTr3H65mmY3HYkb8ygsWg5Ay00kqRBA9x7b5TAQyR63aLp-Y02vBvBrEn3APPyCD6bSBdMXdCfLJ6cD-aRWZ7m0z_dzclvrJsbestJh1-9rCNOQJEYkx3ByDtyERKuBz9F04rNQlZCfLD2cM43nwGI1apbpFExjl5TvW0W5hIBCZQafMi-3Apz0anDDVZDlCE11PPsbA2QQPdr8U8EBUUt-BjNpn-axQYzJwJcWiUWD9-9z46xbF3MXRKxCe27Lj0XZCD1woc" />
-                                <div class="absolute bottom-6 left-6 flex gap-2">
-                                    <span
-                                        class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">Web
-                                        Design</span>
-                                    <span
-                                        class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">2023</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="px-4">
-                            <h3 class="text-2xl font-bold text-white font-headline mb-1">Project Obsidian</h3>
-                            <p class="text-sm text-white/40">Fintech Dashboard Reimagined</p>
-                        </div>
+            <!-- Tariff Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                <!-- Tariff 1: China -->
+                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-100">
+                    <div class="mb-6">
+                        <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <rect width="100" height="100" fill="#DE2910"/>
+                                <g fill="#FFDE00">
+                                    <polygon points="20,15 22.5,22.5 30,22.5 24,27 26,35 20,30 14,35 16,27 10,22.5 17.5,22.5"/>
+                                    <polygon points="35,8 36,11 39,11 36.5,13 37.5,16 35,14 32.5,16 33.5,13 31,11 34,11"/>
+                                    <polygon points="42,18 43,21 46,21 43.5,23 44.5,26 42,24 39.5,26 40.5,23 38,21 41,21"/>
+                                    <polygon points="42,30 43,33 46,33 43.5,35 44.5,38 42,36 39.5,38 40.5,35 38,33 41,33"/>
+                                    <polygon points="35,38 36,41 39,41 36.5,43 37.5,46 35,44 32.5,46 33.5,43 31,41 34,41"/>
+                                </g>
+                            </svg>
+                        </span>
+                        <h3 class="text-2xl font-bold text-white font-headline mb-1">Китай</h3>
+                        <span class="text-2xl font-bold text-primary">1990 ₽</span>
+                        <p class="text-white/40 text-sm mt-1">Доступ навсегда</p>
                     </div>
+                    <ul class="flex-grow space-y-3 mb-8">
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Обучение заказам с Taobao, 1688, Pinduoduo</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Поиск надёжных продавцов</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Проверка качества товара</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Доставка и таможня</span>
+                        </li>
+                    </ul>
+                    <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20купить%20тариф%20Китай%201990₽" target="_blank" class="btn-glow w-full bg-primary hover:bg-primary/90 text-black font-bold py-3.5 rounded-[1.5rem] text-center transition-all text-sm">
+                        Перейти к оплате
+                    </a>
                 </div>
-                <div class="order-3 md:order-3 col-span-1 md:col-span-7 md:row-start-2 reveal-up delay-300">
-                    <div class="w-full">
-                        <div
-                            class="photo-card relative w-full aspect-[16/10] rounded-[3.5rem] mb-5 card-hover-glow">
-                            <div class="photo-card-inner w-full h-full">
-                                <img alt="Aurelian Identity"
-                                    class="w-full h-full object-cover opacity-100 photo-bloom"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKbZfuaR1rf1Q0Ge2ySSn8MaymyvLwNGnrPM7FXAArInztUP5bDY831JO8UyWkB-C8KYv-6_5gJ_yDlik6I4xgN2IOddGGWVXlBtkr-ginMjOE-xE9FpCBgKDWFD8vUxg3JlRi-cm7BegVhjZ-7l19Lbp3WGpy-5R478XxdYxm4APZF-aE244sZyC6TDXj2Bu5RL8P5MUWxj8pqu1PGwZo_7LkLnJKEPRX25AgCHsl3K8ryJtZH9PxSYiBPlkpeVAMCAqKL_fMqFJx" />
-                                <div class="absolute bottom-6 left-6">
-                                    <span
-                                        class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">Branding</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="px-4">
-                            <h3 class="text-2xl font-bold text-white font-headline mb-1">Aurelian Identity</h3>
-                            <p class="text-sm text-white/40">Brand System &amp; Typography</p>
-                        </div>
+                <!-- Tariff 2: Korea -->
+                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-200">
+                    <div class="mb-6">
+                        <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <rect width="100" height="100" fill="#FFFFFF"/>
+                                <!-- Taegeuk (center) -->
+                                <g transform="translate(50,50)">
+                                    <circle r="18" fill="#C60C30"/>
+                                    <path d="M0,-18 A18,18 0 0,1 0,18 A9,9 0 0,1 0,0 A9,9 0 0,0 0,-18" fill="#003478"/>
+                                </g>
+                                <!-- Trigrams -->
+                                <g fill="#000000">
+                                    <!-- Top left (geon) -->
+                                    <rect x="18" y="12" width="12" height="2"/>
+                                    <rect x="18" y="17" width="12" height="2"/>
+                                    <rect x="18" y="22" width="12" height="2"/>
+                                    <!-- Top right (ri) -->
+                                    <rect x="70" y="12" width="12" height="2"/>
+                                    <rect x="70" y="17" width="12" height="2"/>
+                                    <rect x="70" y="22" width="12" height="2"/>
+                                    <!-- Bottom left (gam) -->
+                                    <rect x="18" y="76" width="12" height="2"/>
+                                    <rect x="18" y="81" width="12" height="2"/>
+                                    <rect x="18" y="86" width="12" height="2"/>
+                                    <!-- Bottom right (gon) -->
+                                    <rect x="70" y="76" width="12" height="2"/>
+                                    <rect x="70" y="81" width="12" height="2"/>
+                                    <rect x="70" y="86" width="12" height="2"/>
+                                </g>
+                            </svg>
+                        </span>
+                        <h3 class="text-2xl font-bold text-white font-headline mb-1">Корея</h3>
+                        <span class="text-2xl font-bold text-primary">2990 ₽</span>
+                        <p class="text-white/40 text-sm mt-1">Доступ навсегда</p>
                     </div>
+                    <ul class="flex-grow space-y-3 mb-8">
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Заказы с Naver, Gmarket, Coupang</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>K-beauty и корейская косметика</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Одежда и аксессуары K-fashion</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Эксклюзивные корейские бренды</span>
+                        </li>
+                    </ul>
+                    <button disabled class="w-full bg-white/10 text-white/50 font-bold py-3.5 rounded-[1.5rem] text-center text-sm cursor-not-allowed">
+                        Временно недоступно
+                    </button>
                 </div>
-                <div class="order-2 md:order-2 col-span-1 md:col-span-5 md:row-span-2 reveal-up delay-200 md:self-stretch">
-                    <div class="w-full md:h-full md:ml-auto">
-                        <div
-                            class="photo-card relative w-full aspect-[3/4] md:h-full md:aspect-auto rounded-[3rem] mb-5 md:mb-0 card-hover-glow">
-                            <div class="photo-card-inner w-full h-full">
-                                <img alt="Nexus Platform"
-                                    class="w-full h-full object-cover opacity-100 photo-bloom"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV852wkpOkNDL3SUEnWdEMEchfxiN9dSFfGTUUv4RA9zqy508ODOK3SCrQTGvPSmD4RH_2xX1CE-z_wd8sJpAL3doM2Pge4ylPVQD4AGNsCfkgFnrBNPrzkFlFQ1v3z7zjJKdE9Vq3ct5my-E7YK9_uIutqBp2yMV7JZZFDCRjDNqMh9vAMqV0lgKtNyPghRfClwnISjTSsh4KJ9UgMvQkUwRTmm-JsxxuXexrvltfwd2nUt5FO1S9YQkyew_lm4HIK4EoKmiL_2yB" />
-                                <div class="absolute bottom-6 left-6">
-                                    <span
-                                        class="font-label bg-black/60 text-white rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-xl border border-white/10">App
-                                        Design</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="px-2 text-center">
-                            <h3 class="text-2xl font-bold text-white font-headline mb-1">Nexus Platform</h3>
-                            <p class="text-sm text-white/40">Mobile Experience</p>
-                        </div>
+                <!-- Tariff 3: Japan -->
+                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-300">
+                    <div class="mb-6">
+                        <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <rect width="100" height="100" fill="#FFFFFF"/>
+                                <circle cx="50" cy="50" r="22" fill="#BC002D"/>
+                            </svg>
+                        </span>
+                        <h3 class="text-2xl font-bold text-white font-headline mb-1">Япония</h3>
+                        <span class="text-2xl font-bold text-primary">2990 ₽</span>
+                        <p class="text-white/40 text-sm mt-1">Доступ навсегда</p>
                     </div>
+                    <ul class="flex-grow space-y-3 mb-8">
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Заказы с Mercari, Rakuten, Yahoo</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Японская косметика и уход</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Винтаж и аниме-товары</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Электроника и автозапчасти</span>
+                        </li>
+                    </ul>
+                    <button disabled class="w-full bg-white/10 text-white/50 font-bold py-3.5 rounded-[1.5rem] text-center text-sm cursor-not-allowed">
+                        Временно недоступно
+                    </button>
+                </div>
+                <!-- Tariff 4: All Countries (Popular) -->
+                <div class="card-glow-accent bg-gradient-to-br from-primary/20 to-transparent rounded-[3rem] border-2 border-primary/60 p-8 flex flex-col relative overflow-hidden group reveal-up delay-400 animate-pulse-slow">
+                    <div class="absolute top-0 right-0 bg-primary text-black text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-bl-2xl">
+                        ВЫГОДНО
+                    </div>
+                    <div class="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-br-2xl">
+                        -54%
+                    </div>
+                    <div class="mb-6 mt-4">
+                        <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg bg-gradient-to-br from-primary/30 to-primary/10 border border-primary/30">
+                            <svg viewBox="0 0 24 24" class="w-8 h-8 text-primary" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/>
+                            </svg>
+                        </span>
+                        <h3 class="text-2xl font-bold text-white font-headline mb-1">Все страны</h3>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-bold text-primary">6490 ₽</span>
+                            <span class="text-white/40 line-through text-base">8970 ₽</span>
+                        </div>
+                        <p class="text-white/40 text-sm mt-1">Китай + Корея + Япония</p>
+                    </div>
+                    <ul class="flex-grow space-y-3 mb-8">
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Все материалы по Китаю, Корее и Японии</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Сравнение цен между странами</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Закрытый чат участников</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white/70 text-sm">
+                            <span class="text-primary mt-0.5">✓</span>
+                            <span>Поддержка и ответы на вопросы</span>
+                        </li>
+                    </ul>
+                    <button disabled class="w-full bg-white/10 text-white/50 font-bold py-3.5 rounded-[1.5rem] text-center text-sm cursor-not-allowed">
+                        Временно недоступно
+                    </button>
                 </div>
             </div>
         </section>
         <!-- Cohesive Bottom Wrapper -->
         <div
-            class="max-w-[90rem] mx-auto bg-[#0d0d0c] rounded-[4rem] md:rounded-[5rem] overflow-hidden mb-12 shadow-3xl border border-white/5 relative">
+            class="max-w-[90rem] mx-auto bg-[#0d0d0c] rounded-[4rem] md:rounded-[6rem] overflow-hidden mb-12 shadow-3xl border border-white/5 relative">
             <!-- Subtle Interior Glow -->
             <div class="absolute inset-0 footer-inner-glow pointer-events-none"></div>
-            <!-- Methodology Section -->
+            <!-- Who is it for detailed -->
             <section id="about"
                 class="max-w-7xl mx-auto px-8 pt-24 pb-16 md:px-16 md:pt-32 md:pb-20 flex flex-col items-center text-center relative z-10">
-                <h2 class="text-display-lg font-headline italic mb-4 text-white gold-glow-subtle reveal-up">Methodology
+                <h2 class="text-display-lg font-headline italic mb-12 text-white gold-glow-subtle reveal-up">Подходит для:
                 </h2>
-                <p
-                    class="max-w-2xl mx-auto mb-20 text-sm md:text-base leading-relaxed text-white/60 reveal-up delay-100">
-                    Design is the bridge between the visceral and the functional. Our process is organic, iterative, and
-                    uncompromisingly premium.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 w-full text-left">
-                    <!-- Col 1 -->
-                    <div class="flex flex-col items-start reveal-up delay-100">
-                        <div
-                            class="w-12 h-12 rounded-full bg-primary/10 border border-white/10 flex items-center justify-center mb-6 transition-colors">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z">
-                                </path>
-                            </svg>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl text-left">
+                    <div class="flex items-start gap-3 reveal-up delay-100">
+                        <span class="text-primary text-xl mt-0.5">✓</span>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-1">Личных покупок</h3>
+                            <p class="text-sm text-white/60">Покупай всё для себя по ценам ниже рынка в 2-3 раза</p>
                         </div>
-                        <h3 class="text-xl font-bold text-white font-headline mb-4">Fluid Strategy</h3>
-                        <p class="text-sm leading-relaxed text-white/80 transition-colors">
-                            We begin by dissolving preconceptions, exploring the core intent of the project through
-                            sensory mapping and atmospheric mood boarding.
-                        </p>
                     </div>
-                    <!-- Col 2 -->
-                    <div class="flex flex-col items-start reveal-up delay-200">
-                        <div
-                            class="w-12 h-12 rounded-full bg-primary/10 border border-white/10 flex items-center justify-center mb-6 transition-colors">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
-                            </svg>
+                    <div class="flex items-start gap-3 reveal-up delay-150">
+                        <span class="text-primary text-xl mt-0.5">✓</span>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-1">Запуска бизнеса</h3>
+                            <p class="text-sm text-white/60">Начни свой магазин с минимальными вложениями</p>
                         </div>
-                        <h3 class="text-xl font-bold text-white font-headline mb-4">Atmospheric UI</h3>
-                        <p class="text-sm leading-relaxed text-white/80 transition-colors">
-                            Interfaces are treated as environments. We layer light, texture, and movement to create a
-                            sense of place rather than just a digital tool.
-                        </p>
                     </div>
-                    <!-- Col 3 -->
-                    <div class="flex flex-col items-start reveal-up delay-300">
-                        <div
-                            class="w-12 h-12 rounded-full bg-primary/10 border border-white/10 flex items-center justify-center mb-6 transition-colors">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z">
-                                </path>
-                                <path d="M5 3v4"></path>
-                                <path d="M19 17v4"></path>
-                                <path d="M3 5h4"></path>
-                                <path d="M17 19h4"></path>
-                            </svg>
+                    <div class="flex items-start gap-3 reveal-up delay-200">
+                        <span class="text-primary text-xl mt-0.5">✓</span>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-1">Маркетплейсов</h3>
+                            <p class="text-sm text-white/60">Поставляй товары на Wildberries, Ozon, Яндекс.Маркет</p>
                         </div>
-                        <h3 class="text-xl font-bold text-white font-headline mb-4">Final Polish</h3>
-                        <p class="text-sm leading-relaxed text-white/80 transition-colors">
-                            The molten metal cools. We refine every micro-interaction and pixel until the experience
-                            feels effortless and permanent.
-                        </p>
+                    </div>
+                    <div class="flex items-start gap-3 reveal-up delay-250">
+                        <span class="text-primary text-xl mt-0.5">✓</span>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-1">Оптовых поставок</h3>
+                            <p class="text-sm text-white/60">Масштабируй закупки и работай с крупными объёмами</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 reveal-up delay-300 col-span-1 md:col-span-2 lg:col-span-1">
+                        <span class="text-primary text-xl mt-0.5">✓</span>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-1">Собственного бренда</h3>
+                            <p class="text-sm text-white/60">Создавай бренды одежды, косметики и техники</p>
+                        </div>
                     </div>
                 </div>
             </section>
-            <!-- Additional Block (Capabilities/Expertise) -->
-            <section class="max-w-7xl mx-auto pb-24 px-8 md:px-16 relative z-10" id="services">
+            <!-- Countries Section -->
+            <section class="max-w-7xl mx-auto pb-24 px-8 md:px-16 relative z-10" id="countries">
                 <div class="section-separator mx-auto max-w-4xl opacity-50 mb-12 md:mb-20"></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div class="reveal-up">
-                        <span class="font-label text-label-sm mb-4 block text-primary/60 tracking-[0.2em]">Core
-                            Competencies</span>
-                        <h2 class="text-display-lg text-white font-headline mb-8 white-glow">Digital Craftsmanship</h2>
+                        <span class="font-label text-label-sm mb-4 block text-primary/60 tracking-[0.2em]">ТРИ РЫНКА — ОДИН ДОСТУП</span>
+                        <h2 class="text-display-lg text-white font-headline mb-8 white-glow">Из чего выбирать</h2>
                         <p class="text-body-lg mb-8 max-w-md text-white/60">
-                            Forging digital experiences that command attention. We specialize in high-contrast,
-                            narrative-driven interfaces that blend raw aesthetic power with refined usability.
+                            Каждая страна Азии — своя экосистема товаров, цен и возможностей. 
+                            Научись пользоваться всеми или сосредоточься на одной.
                         </p>
                     </div>
                     <div class="flex flex-col justify-center gap-10 reveal-up delay-200">
                         <div
                             class="border-l-2 border-primary pl-6 transition-colors duration-500">
-                            <h3
-                                class="text-2xl font-bold text-primary font-headline mb-2 transition-colors">
-                                Editorial UI Design</h3>
-                            <p class="text-sm text-white/40">Treating every screen as a curated spread, prioritizing
-                                typography and layout asymmetry.</p>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full overflow-hidden shadow-md">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <rect width="100" height="100" fill="#DE2910"/>
+                                        <g fill="#FFDE00">
+                                            <polygon points="20,15 22.5,22.5 30,22.5 24,27 26,35 20,30 14,35 16,27 10,22.5 17.5,22.5"/>
+                                            <polygon points="35,8 36,11 39,11 36.5,13 37.5,16 35,14 32.5,16 33.5,13 31,11 34,11"/>
+                                            <polygon points="42,18 43,21 46,21 43.5,23 44.5,26 42,24 39.5,26 40.5,23 38,21 41,21"/>
+                                            <polygon points="42,30 43,33 46,33 43.5,35 44.5,38 42,36 39.5,38 40.5,35 38,33 41,33"/>
+                                            <polygon points="35,38 36,41 39,41 36.5,43 37.5,46 35,44 32.5,46 33.5,43 31,41 34,41"/>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <h3 class="text-2xl font-bold text-primary font-headline transition-colors">Китай — Цены</h3>
+                            </div>
+                            <p class="text-sm text-white/40">Самый дешёвый вариант для массовых закупок. 
+                            Электроника, одежда, товары для дома на 40-70% ниже рынка.</p>
                         </div>
                         <div
                             class="border-l-2 border-primary pl-6 transition-colors duration-500">
-                            <h3
-                                class="text-2xl font-bold text-primary font-headline mb-2 transition-colors">
-                                Creative Development</h3>
-                            <p class="text-sm text-white/40">Bringing designs to life with fluid motion, WebGL, and
-                                precise semantic structure.</p>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full overflow-hidden shadow-md">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <rect width="100" height="100" fill="#FFFFFF"/>
+                                        <!-- Taegeuk (center) -->
+                                        <g transform="translate(50,50)">
+                                            <circle r="18" fill="#C60C30"/>
+                                            <path d="M0,-18 A18,18 0 0,1 0,18 A9,9 0 0,1 0,0 A9,9 0 0,0 0,-18" fill="#003478"/>
+                                        </g>
+                                        <!-- Trigrams -->
+                                        <g fill="#000000">
+                                            <rect x="18" y="12" width="12" height="2"/>
+                                            <rect x="18" y="17" width="12" height="2"/>
+                                            <rect x="18" y="22" width="12" height="2"/>
+                                            <rect x="70" y="12" width="12" height="2"/>
+                                            <rect x="70" y="17" width="12" height="2"/>
+                                            <rect x="70" y="22" width="12" height="2"/>
+                                            <rect x="18" y="76" width="12" height="2"/>
+                                            <rect x="18" y="81" width="12" height="2"/>
+                                            <rect x="18" y="86" width="12" height="2"/>
+                                            <rect x="70" y="76" width="12" height="2"/>
+                                            <rect x="70" y="81" width="12" height="2"/>
+                                            <rect x="70" y="86" width="12" height="2"/>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <h3 class="text-2xl font-bold text-primary font-headline transition-colors">Корея — Тренды</h3>
+                            </div>
+                            <p class="text-sm text-white/40">K-beauty, корейская косметика и уход, стильная одежда 
+                            и аксессуары, которых ещё нет в локальных магазинах.</p>
                         </div>
                         <div
                             class="border-l-2 border-primary pl-6 transition-colors duration-500">
-                            <h3
-                                class="text-2xl font-bold text-primary font-headline mb-2 transition-colors">
-                                Brand Architecture</h3>
-                            <p class="text-sm text-white/40">Building foundational design systems that scale without
-                                losing their unique voice.</p>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full overflow-hidden shadow-md">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <rect width="100" height="100" fill="#FFFFFF"/>
+                                        <circle cx="50" cy="50" r="22" fill="#BC002D"/>
+                                    </svg>
+                                </span>
+                                <h3 class="text-2xl font-bold text-primary font-headline transition-colors">Япония — Качество</h3>
+                            </div>
+                            <p class="text-sm text-white/40">Винтаж, коллекционные товары, японская косметика 
+                            и уникальная электроника. Всё оригинальное.</p>
                         </div>
                     </div>
                 </div>
             </section>
             <div class="section-separator mx-auto max-w-4xl opacity-50"></div>
-            <!-- Let's Talk Section -->
+            <!-- Purchase Section -->
             <section id="contact"
                 class="max-w-7xl mx-auto px-8 py-20 md:px-16 md:py-32 flex flex-col items-center text-center relative z-10">
                 <h2
-                    class="text-[12vw] md:text-[10rem] text-white/[0.03] font-headline italic mb-12 leading-none tracking-tight select-none reveal-up">
-                    Let's Talk</h2>
-                <p class="font-label text-label-sm text-white/40 tracking-[0.4em] uppercase mb-16 reveal-up delay-100">
-                    LIMITED AVAILABILITY FOR 2026
+                    class="text-4xl md:text-6xl text-white font-bold mb-6 leading-tight max-w-4xl reveal-up">
+                    Начни уже сегодня и выйди на новый уровень дохода
+                </h2>
+                <p class="text-lg text-white/60 mb-16 reveal-up delay-100 max-w-2xl">
+                    Проверять продавцов, оплачивать заказы, организовывать доставку и зарабатывать на перепродаже
                 </p>
-                <a href="mailto:contact@example.com"
-                    class="bg-white text-black font-label text-xs uppercase tracking-[0.2em] rounded-full px-10 py-5 flex items-center gap-4 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] reveal-up delay-200">
-                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                    Ready to join?
-                </a>
+                <div class="flex flex-col sm:flex-row gap-3 reveal-up delay-200">
+                    <a href="#tariffs"
+                        class="bg-white text-black font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] whitespace-nowrap">
+                        Выбрать тариф ↑
+                    </a>
+                    <a href="https://t.me/KSENIAVARKULEVICH" target="_blank"
+                        class="bg-white/5 hover:bg-white/10 text-white font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 whitespace-nowrap">
+                        Написать в Telegram
+                    </a>
+                </div>
             </section>
         </div>
     </main>
     <!-- Footer -->
     <footer
-        class="w-auto mx-2 md:mx-4 lg:mx-auto max-w-[1400px] py-16 px-4 md:px-8 bg-[#080808] rounded-[4rem] md:rounded-[5rem] flex flex-col md:flex-row justify-between items-center gap-12 border border-white/5 mb-12 relative overflow-hidden">
+        class="w-auto mx-2 md:mx-4 lg:mx-auto max-w-[1400px] py-16 px-4 md:px-8 bg-[#080808] rounded-[4rem] md:rounded-[6rem] flex flex-col justify-center items-center gap-12 border border-white/5 mb-12 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-t from-white/[0.01] to-transparent pointer-events-none"></div>
         <div class="absolute inset-0 footer-inner-glow pointer-events-none"></div>
         <div class="text-white font-black text-2xl font-headline relative z-10 tracking-tighter">
-            Molten Monolith
+            VARKULEVICH
         </div>
-        <div class="flex gap-8 relative z-10">
-            <!-- TODO: Add real social links -->
-            <a aria-label="Instagram"
-                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all hover:text-white"
-                href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
-            <a aria-label="LinkedIn"
-                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all hover:text-white"
-                href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-            <a aria-label="Dribbble"
-                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all hover:text-white"
-                href="https://dribbble.com" target="_blank" rel="noopener">Dribbble</a>
-            <a aria-label="Email"
-                class="font-label text-xs uppercase tracking-[0.2em] text-primary transition-all hover:text-white"
-                href="mailto:hello@moltenmonolith.com">Email</a>
+        <div class="flex flex-col items-center gap-0 relative z-10 self-center -mt-2">
+            <p class="text-base text-primary/80 text-center max-w-xs mb-4">
+                Также, я принимаю заказы как посредник.
+            </p>
+            <a href="https://t.me/KSENIAVARKULEVICH" target="_blank"
+                class="btn-glow bg-primary text-black font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,215,155,0.1)] whitespace-nowrap">
+                Telegram
+            </a>
         </div>
         <div class="font-label text-[10px] uppercase tracking-[0.3em] text-primary/40 relative z-10">
-            &copy; 2026 Molten Monolith.
+            &copy; 2026 VARKULEVICH. Не является публичной офертой.
         </div>
     </footer>
 
@@ -599,9 +1036,10 @@
                     entries.forEach((entry) => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.1 });
+                }, { threshold: 0.05, rootMargin: '0px 0px 100px 0px' });
 
                 revealItems.forEach((el) => observer.observe(el));
             }
@@ -653,6 +1091,54 @@
             const currentHash = window.location.hash.replace('#', '');
             if (currentHash) {
                 setActiveLink(currentHash);
+            }
+
+            // 3D Tilt Effect on Cards
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            tiltCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / centerY * -8;
+                    const rotateY = (x - centerX) / centerX * 8;
+                    card.style.transform = `translateZ(40px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateZ(0) rotateX(0) rotateY(0)';
+                });
+            });
+
+            // Parallax Effect on hero text
+            const heroText = document.querySelector('.text-3d');
+            if (heroText) {
+                window.addEventListener('scroll', () => {
+                    const scrollY = window.scrollY;
+                    const heroSection = document.querySelector('#hero');
+                    if (heroSection) {
+                        const rect = heroSection.getBoundingClientRect();
+                        if (rect.top < window.innerHeight && rect.bottom > 0) {
+                            const offset = scrollY * 0.15;
+                            heroText.style.transform = `translateY(${offset}px) translateZ(30px)`;
+                        }
+                    }
+                }, { passive: true });
+            }
+
+            // Header scroll effect: darken background
+            const header = document.querySelector('#main-nav');
+            if (header) {
+                window.addEventListener('scroll', () => {
+                    const currentScroll = window.scrollY;
+                    // Darken header on scroll
+                    if (currentScroll > 80) {
+                        header.classList.add('header-scrolled');
+                    } else {
+                        header.classList.remove('header-scrolled');
+                    }
+                }, { passive: true });
             }
 
             // All scroll effects initialized
