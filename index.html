@@ -5,6 +5,8 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description" content="Обучение заказам из Китая, Кореи и Японии. Научись покупать дешевле, избегать мошенников, находить проверенных поставщиков и масштабировать продажи." />
+    <meta name="theme-color" content="#000000" />
     <title>VARKULEVICH — Заказы из Китая, Кореи, Японии</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
@@ -89,31 +91,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* 3D Perspective Container */
-        .perspective-container {
-            perspective: 1200px;
-            transform-style: preserve-3d;
-        }
-
-        /* 3D Tilt Cards */
-        .tilt-card {
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .tilt-card:hover {
-            transform: translateZ(30px) rotateX(2deg) rotateY(-2deg);
-        }
-
-        .tilt-card-inner {
-            transform: translateZ(20px);
-        }
-
-        /* Parallax Layers */
-        .parallax-slow {
-            will-change: transform;
-        }
-
         /* Smooth 3D Text */
         .text-3d {
             transform-style: preserve-3d;
@@ -122,16 +99,6 @@
 
         .text-3d:hover {
             transform: translateZ(50px) scale(1.02);
-        }
-
-        /* Enhanced Glow with 3D depth */
-        .glow-3d {
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 60px rgba(255, 215, 155, 0.15));
-        }
-
-        /* Smooth section transitions */
-        section {
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .font-headline {
@@ -254,62 +221,6 @@
             border-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        .photo-card {
-            position: relative;
-            isolation: isolate;
-            background: transparent;
-        }
-
-        .photo-card-inner {
-            overflow: hidden;
-            border-radius: inherit;
-            position: relative;
-            transform: translateZ(30px);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .tilt-card:hover .photo-card-inner {
-            transform: translateZ(50px) scale(1.02);
-        }
-
-        .photo-card::before {
-            content: "";
-            position: absolute;
-            inset: -72px;
-            z-index: -1;
-            border-radius: inherit;
-            background:
-                radial-gradient(circle at 50% 50%,
-                    rgba(255, 215, 155, 0.62) 0%,
-                    rgba(255, 215, 155, 0.38) 18%,
-                    rgba(255, 248, 220, 0.2) 34%,
-                    rgba(255, 215, 155, 0.14) 52%,
-                    rgba(255, 215, 155, 0.08) 66%,
-                    transparent 86%);
-            filter: blur(78px);
-            opacity: 1;
-        }
-
-        .photo-card::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            background:
-                radial-gradient(circle at 50% 45%,
-                    rgba(255, 248, 220, 0.28) 0%,
-                    rgba(255, 215, 155, 0.18) 28%,
-                    rgba(255, 215, 155, 0.08) 46%,
-                    transparent 72%);
-            mix-blend-mode: screen;
-            pointer-events: none;
-            opacity: 1;
-        }
-
-        .photo-card img {
-            display: block;
-        }
-
         .photo-bloom {
             filter:
                 drop-shadow(0 0 44px rgba(255, 255, 255, 0.24))
@@ -369,32 +280,8 @@
         }
 
         /* Card Glow Effect */
-        .card-glow {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .card-glow-accent {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
         .animate-float {
             animation: float3d 6s ease-in-out infinite;
-        }
-
-        .delay-100 {
-            transition-delay: 100ms;
-        }
-
-        .delay-200 {
-            transition-delay: 200ms;
-        }
-
-        .delay-300 {
-            transition-delay: 300ms;
-        }
-
-        .delay-400 {
-            transition-delay: 400ms;
         }
 
         .card-glow {
@@ -461,14 +348,6 @@
                     transparent 75%);
         }
 
-        .nav-link {
-            color: rgba(255, 255, 255, 0.62);
-        }
-
-        .nav-link.is-active {
-            color: #ffd79b;
-        }
-
         @media (prefers-reduced-motion: reduce) {
             .animate-startup,
             .animate-startup-delay,
@@ -517,7 +396,7 @@
             Купить
         </a>
     </div>
-    <main class="flex-grow pt-24 pb-16 px-2 md:px-4 lg:px-8 relative overflow-x-hidden">
+    <main class="flex-grow pt-32 sm:pt-24 pb-16 px-2 md:px-4 lg:px-8 relative overflow-x-hidden">
         <!-- Hero Section -->
         <section class="relative w-full min-h-[400px] flex flex-col items-center justify-center mb-16 overflow-x-hidden" id="hero">
             <h1 class="text-[12vw] font-black tracking-tighter uppercase text-white font-headline leading-none opacity-100 transition-opacity duration-700 white-glow work-glow text-3d animate-startup-delay">
@@ -528,12 +407,12 @@
             </p>
         </section>
         <!-- Value Proposition Section -->
-        <section class="max-w-7xl mx-auto mb-8 px-4 md:px-8 lg:pl-64 reveal-up lg:mt-32">
-            <div class="flex flex-col md:grid md:grid-cols-2 gap-4 lg:gap-12 items-start mx-auto max-w-6xl">
+        <section class="w-full md:max-w-7xl mx-auto mb-8 px-2 md:px-8 lg:pl-64 reveal-up lg:mt-32">
+            <div class="flex flex-col md:grid md:grid-cols-2 gap-4 lg:gap-12 items-center md:items-start mx-auto w-full md:max-w-6xl">
                 <!-- Left Column: Text Content -->
                 <div class="order-1 md:order-1 w-full md:flex-1">
                     <!-- Main Headline -->
-                    <h1 class="text-2xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight font-headline text-left">
+                    <h1 class="text-2xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight font-headline text-center md:text-left">
                         Как заказывать<br/>
                         товары из <span class="text-primary">Китая</span>,<br/>
                         <span class="text-primary">Кореи</span> и <span class="text-primary">Японии</span><br/>
@@ -662,7 +541,7 @@
             <!-- Tariff Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                 <!-- Tariff 1: China -->
-                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-100">
+                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-100 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] transition-all duration-300 cursor-pointer">
                     <div class="mb-6">
                         <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
                             <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -703,7 +582,7 @@
                     </a>
                 </div>
                 <!-- Tariff 2: Korea -->
-                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-200">
+                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-200 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] transition-all duration-300 cursor-pointer">
                     <div class="mb-6">
                         <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
                             <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -761,7 +640,7 @@
                     </button>
                 </div>
                 <!-- Tariff 3: Japan -->
-                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-300">
+                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] transition-all duration-300 cursor-pointer">
                     <div class="mb-6">
                         <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
                             <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -796,7 +675,7 @@
                     </button>
                 </div>
                 <!-- Tariff 4: All Countries (Popular) -->
-                <div class="card-glow-accent bg-gradient-to-br from-primary/20 to-transparent rounded-[3rem] border-2 border-primary/60 p-8 flex flex-col relative overflow-hidden group reveal-up delay-400 animate-pulse-slow">
+                <div class="card-glow-accent bg-gradient-to-br from-primary/20 to-transparent rounded-[3rem] border-2 border-primary/60 p-8 flex flex-col relative overflow-hidden group reveal-up delay-400 hover:-translate-y-2 hover:shadow-[0_0_50px_rgba(255,215,155,0.4)] transition-all duration-300 cursor-pointer">
                     <div class="absolute top-0 right-0 bg-primary text-black text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-bl-2xl">
                         ВЫГОДНО
                     </div>
@@ -1099,24 +978,6 @@
                 setActiveLink(currentHash);
             }
 
-            // 3D Tilt Effect on Cards
-            const tiltCards = document.querySelectorAll('.tilt-card');
-            tiltCards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / centerY * -8;
-                    const rotateY = (x - centerX) / centerX * 8;
-                    card.style.transform = `translateZ(40px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateZ(0) rotateX(0) rotateY(0)';
-                });
-            });
-
             // Parallax Effect on hero text
             const heroText = document.querySelector('.text-3d');
             if (heroText) {
@@ -1151,6 +1012,4 @@
         });
     </script>
 </body>
-
 </html>
-
