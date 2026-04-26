@@ -183,14 +183,6 @@
             filter: drop-shadow(0 0 20px rgba(255, 215, 155, 0.1));
         }
 
-        .card-hover-glow {
-            box-shadow:
-                0 0 80px rgba(255, 215, 155, 0.34),
-                0 0 180px rgba(255, 215, 155, 0.28),
-                0 0 320px rgba(255, 215, 155, 0.2),
-                0 0 440px rgba(255, 215, 155, 0.14);
-        }
-
         .section-separator {
             background: linear-gradient(90deg, transparent, rgba(255, 215, 155, 0.1), transparent);
             height: 1px;
@@ -231,15 +223,6 @@
             border-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        .photo-bloom {
-            filter:
-                drop-shadow(0 0 44px rgba(255, 255, 255, 0.24))
-                drop-shadow(0 0 100px rgba(255, 215, 155, 0.34))
-                drop-shadow(0 0 180px rgba(255, 215, 155, 0.28))
-                drop-shadow(0 0 260px rgba(255, 215, 155, 0.18))
-                brightness(1.22);
-        }
-
         /* Scroll Reveal Animations */
         .reveal-up {
             opacity: 0;
@@ -253,115 +236,185 @@
             transform: translateY(0);
         }
 
-        .reveal-up.delay-100 {
-            transition-delay: 0ms;
+        .reveal-up.delay-100 { transition-delay: 0ms; }
+        .reveal-up.delay-150 { transition-delay: 75ms; }
+        .reveal-up.delay-200 { transition-delay: 150ms; }
+        .reveal-up.delay-250 { transition-delay: 225ms; }
+        .reveal-up.delay-300 { transition-delay: 300ms; }
+        .reveal-up.delay-400 { transition-delay: 450ms; }
+
+        /* Shimmer (блик) для цен */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
-        .reveal-up.delay-200 {
-            transition-delay: 150ms;
+        .shimmer-text {
+            background: linear-gradient(
+                90deg,
+                #ffd79b 0%,
+                #ffd79b 40%,
+                #ffffff 50%,
+                #ffd79b 60%,
+                #ffd79b 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
         }
 
-        .reveal-up.delay-300 {
-            transition-delay: 300ms;
+        .shimmer-white {
+            background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #ffffff 35%,
+                #ffd79b 48%,
+                #fff8ec 52%,
+                #ffffff 65%,
+                #ffffff 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 5s linear infinite;
         }
 
-        .reveal-up.delay-400 {
-            transition-delay: 450ms;
+        .shimmer-black {
+            background: linear-gradient(
+                90deg,
+                #000000 0%,
+                #000000 40%,
+                #555555 50%,
+                #000000 60%,
+                #000000 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
         }
 
-        /* 3D Float Animation */
-        @keyframes float3d {
-            0%, 100% { transform: translateY(0) translateZ(0) rotateX(0); }
-            50% { transform: translateY(-15px) translateZ(30px) rotateX(2deg); }
+        /* Sweep — блик пробегает по карточке при hover */
+        .sweep-card {
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Slow Pulse Animation for Popular Card */
-        @keyframes pulse-slow {
-            0%, 100% { 
-                box-shadow: 0 0 20px rgba(255, 215, 155, 0.3), 0 0 40px rgba(255, 215, 155, 0.2);
-            }
-            50% { 
-                box-shadow: 0 0 30px rgba(255, 215, 155, 0.5), 0 0 60px rgba(255, 215, 155, 0.3);
-            }
+        .sweep-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent 0%,
+                rgba(255, 215, 155, 0.08) 50%,
+                transparent 100%
+            );
+            transform: skewX(-20deg);
+            transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .animate-pulse-slow {
-            animation: pulse-slow 3s ease-in-out infinite;
+        .sweep-card:hover::before {
+            left: 125%;
         }
 
-        /* Card Glow Effect */
-        .animate-float {
-            animation: float3d 6s ease-in-out infinite;
+        /* Анимированный градиент для популярной карточки */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
-        .card-glow {
-            box-shadow: 0 0 25px rgba(255, 215, 155, 0.08), 0 0 50px rgba(255, 215, 155, 0.04), inset 0 0 25px rgba(255, 215, 155, 0.03);
-            transition: box-shadow 0.4s ease, border-color 0.3s ease;
+        .animated-gradient {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 215, 155, 0.25) 0%,
+                rgba(255, 179, 0, 0.15) 25%,
+                rgba(255, 215, 155, 0.2) 50%,
+                rgba(255, 179, 0, 0.15) 75%,
+                rgba(255, 215, 155, 0.25) 100%
+            );
+            background-size: 300% 300%;
+            animation: gradientShift 8s ease infinite;
         }
 
-        .card-glow:hover {
-            box-shadow: 0 0 35px rgba(255, 215, 155, 0.15), 0 0 70px rgba(255, 215, 155, 0.08), inset 0 0 35px rgba(255, 215, 155, 0.05);
+        /* Magnetic кнопка — мягкое масштабирование */
+        .btn-magnetic {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.3s ease;
         }
 
-        .card-glow-accent {
-            box-shadow: 0 0 30px rgba(255, 215, 155, 0.12), 0 0 60px rgba(255, 215, 155, 0.06), inset 0 0 30px rgba(255, 215, 155, 0.04);
-            transition: box-shadow 0.4s ease, border-color 0.3s ease;
+        .btn-magnetic:hover {
+            transform: translateY(-2px) scale(1.03);
         }
 
-        .card-glow-accent:hover {
-            box-shadow: 0 0 45px rgba(255, 215, 155, 0.22), 0 0 90px rgba(255, 215, 155, 0.1), inset 0 0 45px rgba(255, 215, 155, 0.07);
+        .btn-magnetic:active {
+            transform: translateY(0) scale(0.98);
         }
 
-        .btn-glow {
-            box-shadow: 0 0 20px rgba(255, 215, 155, 0.2), 0 0 40px rgba(255, 215, 155, 0.1);
-            transition: box-shadow 0.3s ease, transform 0.2s ease;
+        /* Tilt-эффект для тарифных карточек */
+        .tilt-card {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.5s ease;
+            transform-style: preserve-3d;
         }
 
-        .btn-glow:hover {
-            box-shadow: 0 0 30px rgba(255, 215, 155, 0.35), 0 0 60px rgba(255, 215, 155, 0.15);
+        .tilt-card:hover {
+            transform: translateY(-8px) perspective(1000px) rotateX(2deg);
         }
 
-        .btn-glow:active {
-            box-shadow: 0 0 15px rgba(255, 215, 155, 0.25), 0 0 30px rgba(255, 215, 155, 0.1);
+        /* Подчёркивание под "Подходит для" пунктами */
+        .check-item {
+            transition: transform 0.3s ease;
         }
 
-        @keyframes startupFadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .check-item:hover {
+            transform: translateX(6px);
         }
 
-        .animate-startup {
-            animation: startupFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
+        .check-item:hover .check-mark {
+            transform: scale(1.3) rotate(10deg);
         }
 
-        .animate-startup-delay {
-            animation: startupFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-            opacity: 0;
+        .check-mark {
+            display: inline-block;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        section[id] {
-            scroll-margin-top: 8rem;
+        /* Hero subtitle — мягкое плавание */
+        @keyframes heroFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
-        .footer-inner-glow {
-            background: radial-gradient(circle at center,
-                    rgba(255, 255, 255, 0.04) 0%,
-                    rgba(255, 255, 255, 0.01) 45%,
-                    transparent 75%);
+        .hero-subtitle-float {
+            animation: heroFloat 5s ease-in-out infinite;
+        }
+
+        /* Бейдж "ВЫГОДНО" — пульсация */
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
         }
 
         @media (prefers-reduced-motion: reduce) {
             .animate-startup,
             .animate-startup-delay,
-            .reveal-up {
+            .reveal-up,
+            .shimmer-text,
+            .shimmer-white,
+            .shimmer-black,
+            .animated-gradient,
+            .hero-subtitle-float,
+            .badge-pulse {
                 animation: none !important;
                 transition: none !important;
                 transform: none !important;
@@ -378,14 +431,14 @@
 <body
     class="bg-background text-on-surface antialiased min-h-screen flex flex-col selection:bg-white/20 selection:text-white font-body">
     <!-- TopNavBar -->
-    <header class="fixed top-0 left-0 right-0 z-[100] flex justify-center items-center w-full mt-0 px-1 sm:mt-2 sm:px-4">
+    <header class="fixed top-0 left-0 right-0 z-[100] flex justify-center items-center w-full mt-2 px-1 sm:mt-4 sm:px-4">
         <nav
             class="bg-black/40 backdrop-blur-3xl rounded-[1rem] sm:rounded-[3rem] mx-auto max-w-fit px-2 py-2 sm:px-6 sm:py-3 shadow-2xl flex items-center justify-center gap-4 border border-white/5 animate-startup" id="main-nav">
             <a class="font-headline text-base sm:text-2xl font-bold text-primary tracking-tighter shrink-0 transition-colors duration-300"
                 href="#">VARKULEVICH</a>
             <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20узнать%20подробнее%20о%20тарифах" target="_blank"
-                class="hidden sm:flex btn-glow bg-primary text-black font-bold rounded-[1.5rem] px-6 py-2 text-sm scale-95 active:scale-90 transition-transform whitespace-nowrap shadow-[0_0_20px_rgba(255,179,0,0.6)] hover:shadow-[0_0_30px_rgba(255,179,0,0.8)]">
-                Купить
+                class="hidden sm:flex btn-glow bg-primary font-bold rounded-[1.5rem] px-6 py-2 text-sm scale-95 active:scale-90 transition-transform whitespace-nowrap shadow-[0_0_20px_rgba(255,179,0,0.6)] hover:shadow-[0_0_30px_rgba(255,179,0,0.8)]">
+                <span class="shimmer-black">Купить</span>
             </a>
             <div class="flex items-center gap-2 sm:gap-5">
                 <a class="nav-link font-headline italic text-xs sm:text-base font-medium transition-colors duration-300"
@@ -402,17 +455,17 @@
     <!-- Mobile Buy Button -->
     <div class="fixed top-14 left-0 right-0 z-[99] flex justify-center items-center w-full px-4 sm:hidden">
         <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20узнать%20подробнее%20о%20тарифах" target="_blank"
-            class="bg-primary text-black font-bold rounded-[1.5rem] px-6 py-2 text-sm scale-95 active:scale-90 transition-all whitespace-nowrap shadow-[0_0_20px_rgba(255,179,0,0.6)] hover:shadow-[0_0_30px_rgba(255,179,0,0.8)]">
-            Купить
+            class="bg-primary font-bold rounded-[1.5rem] px-6 py-2 text-sm scale-95 active:scale-90 transition-all whitespace-nowrap shadow-[0_0_20px_rgba(255,179,0,0.6)] hover:shadow-[0_0_30px_rgba(255,179,0,0.8)]">
+            <span class="shimmer-black">Купить</span>
         </a>
     </div>
     <main class="flex-grow pt-32 sm:pt-24 pb-16 px-2 md:px-4 lg:px-8 relative">
         <!-- Hero Section -->
         <section class="relative w-full min-h-[400px] flex flex-col items-center justify-center mb-16" id="hero">
-            <h1 class="text-[10vw] sm:text-[12vw] font-black tracking-tighter uppercase text-white font-headline leading-none opacity-100 transition-opacity duration-700 white-glow work-glow text-3d animate-startup-delay max-w-full">
+            <h1 class="text-[10vw] sm:text-[12vw] font-black tracking-tighter uppercase shimmer-white font-headline leading-none opacity-100 transition-opacity duration-700 white-glow work-glow text-3d animate-startup-delay max-w-full">
                 VARKULEVICH
             </h1>
-            <p class="text-xl md:text-2xl text-primary font-headline mt-4 text-center max-w-[80vw] px-4 reveal-up">
+            <p class="text-xl md:text-2xl text-primary font-headline mt-4 text-center max-w-[80vw] px-4 reveal-up hero-subtitle-float">
                 Ты научишься заказывать с Китая, Кореи и Японии быстрее, чем думаешь.
             </p>
         </section>
@@ -422,14 +475,14 @@
                 <!-- Left Column: Text Content -->
                 <div class="order-1 md:order-1 w-full md:flex-1">
                     <!-- Main Headline -->
-                    <h1 class="text-2xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight font-headline text-center md:text-left">
+                    <h2 class="text-2xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight font-headline text-center md:text-left">
                         Как заказывать<br/>
                         товары из <span class="text-primary">Китая</span>,<br/>
                         <span class="text-primary">Кореи</span> и <span class="text-primary">Японии</span><br/>
                         дешевле и<br/>
                         зарабатывать<br/>
                         на этом
-                    </h1>
+                    </h2>
                     
                     <!-- 4 Features Row -->
                     <div class="grid grid-cols-1 gap-2 mb-4">
@@ -441,7 +494,7 @@
                                     <path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
                             </div>
-                            <p class="text-xs sm:text-sm text-white leading-tight pr-2">Находим поставщиков по лучшим ценам</p>
+                            <p class="text-sm sm:text-base text-white leading-snug pr-2">Находим поставщиков по лучшим ценам</p>
                         </div>
 
                         <!-- Feature 2 -->
@@ -542,7 +595,7 @@
         <!-- Tariffs Section -->
         <section class="max-w-7xl mx-auto mb-32" id="tariffs">
             <div class="max-w-3xl mx-auto mb-16 text-center reveal-up">
-                <span class="text-label-sm font-label mb-3 block text-primary/60 tracking-[0.2em]">4 ТАРИФА ОБУЧЕНИЯ</span>
+                <span class="text-label-sm font-label mb-3 block tracking-[0.2em]" style="animation: shimmer 4s linear infinite; background: linear-gradient(90deg, rgba(255,215,155,0.6) 0%, rgba(255,215,155,0.6) 40%, #ffffff 50%, rgba(255,215,155,0.6) 60%, rgba(255,215,155,0.6) 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">4 ТАРИФА ОБУЧЕНИЯ</span>
                 <h2 class="text-2xl md:text-display-lg text-white font-headline white-glow">От старта до полного сопровождения</h2>
                 <p class="text-body-lg max-w-2xl mx-auto mt-6 text-white/60">
                     Получи систему, которая поможет покупать дешевле, избегать мошенников, находить проверенных поставщиков, правильно организовывать логистику и масштабировать продажи.
@@ -551,7 +604,7 @@
             <!-- Tariff Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                 <!-- Tariff 1: China -->
-                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-100 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] transition-all duration-300 cursor-pointer">
+                <div class="card-glow sweep-card tilt-card bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-100 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] cursor-pointer">
                     <div class="mb-6">
                         <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
                             <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -566,7 +619,7 @@
                             </svg>
                         </span>
                         <h3 class="text-2xl font-bold text-white font-headline mb-1">Китай</h3>
-                        <span class="text-2xl font-bold text-primary">1990 ₽</span>
+                        <span class="text-2xl font-bold shimmer-text">1990 ₽</span>
                         <p class="text-white/40 text-sm mt-1">Доступ навсегда</p>
                     </div>
                     <ul class="flex-grow space-y-3 mb-8">
@@ -587,12 +640,12 @@
                             <span>Доставка и таможня</span>
                         </li>
                     </ul>
-                    <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20купить%20тариф%20Китай%201990₽" target="_blank" class="btn-glow w-full bg-primary hover:bg-primary/90 text-black font-bold py-3.5 rounded-[1.5rem] text-center transition-all text-sm">
+                    <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20купить%20тариф%20Китай%201990₽" target="_blank" class="btn-glow btn-magnetic w-full bg-primary hover:bg-primary/90 text-black font-bold py-3.5 rounded-[1.5rem] text-center text-sm relative z-10">
                         Перейти к оплате
                     </a>
                 </div>
                 <!-- Tariff 2: Korea -->
-                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-200 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] transition-all duration-300 cursor-pointer">
+                <div class="card-glow sweep-card tilt-card bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-200 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] cursor-pointer">
                     <div class="mb-6">
                         <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
                             <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -624,7 +677,7 @@
                             </svg>
                         </span>
                         <h3 class="text-2xl font-bold text-white font-headline mb-1">Корея</h3>
-                        <span class="text-2xl font-bold text-primary">2990 ₽</span>
+                        <span class="text-2xl font-bold shimmer-text">2990 ₽</span>
                         <p class="text-white/40 text-sm mt-1">Доступ навсегда</p>
                     </div>
                     <ul class="flex-grow space-y-3 mb-8">
@@ -650,7 +703,7 @@
                     </button>
                 </div>
                 <!-- Tariff 3: Japan -->
-                <div class="card-glow bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] transition-all duration-300 cursor-pointer">
+                <div class="card-glow sweep-card tilt-card bg-[#0d0d0c] rounded-[3rem] border-2 border-primary/40 p-8 flex flex-col relative overflow-hidden group reveal-up delay-300 hover:shadow-[0_0_40px_rgba(255,215,155,0.3)] cursor-pointer">
                     <div class="mb-6">
                         <span class="inline-flex items-center justify-center w-14 h-14 rounded-full overflow-hidden mb-4 shadow-lg">
                             <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -659,7 +712,7 @@
                             </svg>
                         </span>
                         <h3 class="text-2xl font-bold text-white font-headline mb-1">Япония</h3>
-                        <span class="text-2xl font-bold text-primary">2990 ₽</span>
+                        <span class="text-2xl font-bold shimmer-text">2990 ₽</span>
                         <p class="text-white/40 text-sm mt-1">Доступ навсегда</p>
                     </div>
                     <ul class="flex-grow space-y-3 mb-8">
@@ -685,11 +738,11 @@
                     </button>
                 </div>
                 <!-- Tariff 4: All Countries (Popular) -->
-                <div class="card-glow-accent bg-gradient-to-br from-primary/20 to-transparent rounded-[3rem] border-2 border-primary/60 p-8 flex flex-col relative overflow-hidden group reveal-up delay-400 hover:-translate-y-2 hover:shadow-[0_0_50px_rgba(255,215,155,0.4)] transition-all duration-300 cursor-pointer">
-                    <div class="absolute top-0 right-0 bg-primary text-black text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-bl-2xl">
+                <div class="card-glow-accent sweep-card tilt-card animated-gradient rounded-[3rem] border-2 border-primary/60 p-8 flex flex-col relative overflow-hidden group reveal-up delay-400 hover:shadow-[0_0_50px_rgba(255,215,155,0.4)] cursor-pointer">
+                    <div class="absolute top-0 right-0 bg-primary text-black text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-bl-2xl badge-pulse z-10">
                         ВЫГОДНО
                     </div>
-                    <div class="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-br-2xl">
+                    <div class="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-br-2xl badge-pulse z-10">
                         -54%
                     </div>
                     <div class="mb-6 mt-4">
@@ -701,7 +754,7 @@
                         </span>
                         <h3 class="text-2xl font-bold text-white font-headline mb-1">Все страны</h3>
                         <div class="flex items-baseline gap-2">
-                            <span class="text-2xl font-bold text-primary">6490 ₽</span>
+                            <span class="text-2xl font-bold shimmer-text">6490 ₽</span>
                             <span class="text-white/40 line-through text-base">8970 ₽</span>
                         </div>
                         <p class="text-white/40 text-sm mt-1">Китай + Корея + Япония</p>
@@ -741,36 +794,36 @@
                 <h2 class="text-display-lg font-headline italic mb-12 text-white gold-glow-subtle reveal-up">Подходит для:
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl text-left">
-                    <div class="flex items-start gap-3 reveal-up delay-100">
-                        <span class="text-primary text-xl mt-0.5">✓</span>
+                    <div class="check-item flex items-start gap-3 reveal-up delay-100 cursor-pointer">
+                        <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Личных покупок</h3>
                             <p class="text-sm text-white/60">Покупай всё для себя по ценам ниже рынка в 2-3 раза</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-3 reveal-up delay-150">
-                        <span class="text-primary text-xl mt-0.5">✓</span>
+                    <div class="check-item flex items-start gap-3 reveal-up delay-150 cursor-pointer">
+                        <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Запуска бизнеса</h3>
                             <p class="text-sm text-white/60">Начни свой магазин с минимальными вложениями</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-3 reveal-up delay-200">
-                        <span class="text-primary text-xl mt-0.5">✓</span>
+                    <div class="check-item flex items-start gap-3 reveal-up delay-200 cursor-pointer">
+                        <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Маркетплейсов</h3>
                             <p class="text-sm text-white/60">Поставляй товары на Wildberries, Ozon, Яндекс.Маркет</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-3 reveal-up delay-250">
-                        <span class="text-primary text-xl mt-0.5">✓</span>
+                    <div class="check-item flex items-start gap-3 reveal-up delay-250 cursor-pointer">
+                        <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Оптовых поставок</h3>
                             <p class="text-sm text-white/60">Масштабируй закупки и работай с крупными объёмами</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-3 reveal-up delay-300 col-span-1 md:col-span-2 lg:col-span-1">
-                        <span class="text-primary text-xl mt-0.5">✓</span>
+                    <div class="check-item flex items-start gap-3 reveal-up delay-300 col-span-1 md:col-span-2 lg:col-span-1 cursor-pointer">
+                        <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Собственного бренда</h3>
                             <p class="text-sm text-white/60">Создавай бренды одежды, косметики и техники</p>
@@ -783,7 +836,7 @@
                 <div class="section-separator mx-auto max-w-4xl opacity-50 mb-12 md:mb-20"></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div class="reveal-up">
-                        <span class="font-label text-label-sm mb-4 block text-primary/60 tracking-[0.2em]">ТРИ РЫНКА — ОДИН ДОСТУП</span>
+                        <span class="font-label text-label-sm mb-4 block text-primary/60 tracking-[0.2em] inline-block" style="animation: shimmer 4s linear infinite; background: linear-gradient(90deg, rgba(255,215,155,0.6) 0%, rgba(255,215,155,0.6) 40%, #ffffff 50%, rgba(255,215,155,0.6) 60%, rgba(255,215,155,0.6) 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">ТРИ РЫНКА — ОДИН ДОСТУП</span>
                         <h2 class="text-display-lg text-white font-headline mb-8 white-glow">Из чего выбирать</h2>
                         <p class="text-body-lg mb-8 max-w-md text-white/60">
                             Каждая страна Азии — своя экосистема товаров, цен и возможностей. 
@@ -792,7 +845,7 @@
                     </div>
                     <div class="flex flex-col justify-center gap-10 reveal-up delay-200">
                         <div
-                            class="border-l-2 border-primary pl-6 transition-colors duration-500">
+                            class="border-l-2 border-primary pl-6">
                             <div class="flex items-center gap-3 mb-2">
                                 <span class="inline-flex items-center justify-center w-10 h-10 rounded-full overflow-hidden shadow-md">
                                     <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -812,7 +865,7 @@
                             Электроника, одежда, товары для дома на 40-70% ниже рынка.</p>
                         </div>
                         <div
-                            class="border-l-2 border-primary pl-6 transition-colors duration-500">
+                            class="border-l-2 border-primary pl-6">
                             <div class="flex items-center gap-3 mb-2">
                                 <span class="inline-flex items-center justify-center w-10 h-10 rounded-full overflow-hidden shadow-md">
                                     <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -824,15 +877,19 @@
                                         </g>
                                         <!-- Trigrams -->
                                         <g fill="#000000">
+                                            <!-- Top left (geon) -->
                                             <rect x="18" y="12" width="12" height="2"/>
                                             <rect x="18" y="17" width="12" height="2"/>
                                             <rect x="18" y="22" width="12" height="2"/>
+                                            <!-- Top right (ri) -->
                                             <rect x="70" y="12" width="12" height="2"/>
                                             <rect x="70" y="17" width="12" height="2"/>
                                             <rect x="70" y="22" width="12" height="2"/>
+                                            <!-- Bottom left (gam) -->
                                             <rect x="18" y="76" width="12" height="2"/>
                                             <rect x="18" y="81" width="12" height="2"/>
                                             <rect x="18" y="86" width="12" height="2"/>
+                                            <!-- Bottom right (gon) -->
                                             <rect x="70" y="76" width="12" height="2"/>
                                             <rect x="70" y="81" width="12" height="2"/>
                                             <rect x="70" y="86" width="12" height="2"/>
@@ -845,7 +902,7 @@
                             и аксессуары, которых ещё нет в локальных магазинах.</p>
                         </div>
                         <div
-                            class="border-l-2 border-primary pl-6 transition-colors duration-500">
+                            class="border-l-2 border-primary pl-6">
                             <div class="flex items-center gap-3 mb-2">
                                 <span class="inline-flex items-center justify-center w-10 h-10 rounded-full overflow-hidden shadow-md">
                                     <svg viewBox="0 0 100 100" class="w-full h-full">
@@ -874,11 +931,11 @@
                 </p>
                 <div class="flex flex-col sm:flex-row gap-3 reveal-up delay-200">
                     <a href="#tariffs"
-                        class="bg-white text-black font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] whitespace-nowrap">
-                        Выбрать тариф ↑
+                        class="btn-magnetic bg-black font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] whitespace-nowrap">
+                        <span class="shimmer-white">Выбрать тариф ↑</span>
                     </a>
                     <a href="https://t.me/KSENIAVARKULEVICH" target="_blank"
-                        class="bg-white/5 hover:bg-white/10 text-white font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 whitespace-nowrap">
+                        class="btn-magnetic bg-white/5 hover:bg-white/10 text-white font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 whitespace-nowrap">
                         Написать в Telegram
                     </a>
                 </div>
@@ -898,11 +955,11 @@
                 Также, я принимаю заказы как посредник.
             </p>
             <a href="https://t.me/KSENIAVARKULEVICH" target="_blank"
-                class="btn-glow bg-primary text-black font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,215,155,0.1)] whitespace-nowrap">
+                class="btn-glow btn-magnetic bg-primary text-black font-bold text-sm uppercase tracking-[0.15em] rounded-[1.5rem] px-8 py-4 flex items-center justify-center gap-2 transition-all border border-white/10 shadow-[0_0_30px_rgba(255,215,155,0.1)] whitespace-nowrap">
                 Telegram
             </a>
         </div>
-        <div class="font-label text-[10px] uppercase tracking-[0.3em] text-primary/40 relative z-10">
+        <div class="font-label text-[10px] uppercase tracking-[0.3em] text-primary/40 relative z-10 text-center w-full">
             &copy; 2026 VARKULEVICH. Не является публичной офертой.
         </div>
     </footer>
@@ -971,54 +1028,42 @@
                 setActiveLink(active?.id || null);
             };
 
-            updateActiveNav();
-            let navRaf = null;
-            const scheduleNavUpdate = () => {
-                if (navRaf) return;
-                navRaf = requestAnimationFrame(() => {
-                    navRaf = null;
-                    updateActiveNav();
-                });
-            };
-            window.addEventListener('scroll', scheduleNavUpdate, { passive: true });
-            window.addEventListener('resize', scheduleNavUpdate, { passive: true });
-
             const currentHash = window.location.hash.replace('#', '');
             if (currentHash) {
                 setActiveLink(currentHash);
             }
 
-            // Parallax Effect on hero text
+            // Cache DOM references
             const heroText = document.querySelector('.text-3d');
-            if (heroText) {
-                window.addEventListener('scroll', () => {
+            const heroSection = document.querySelector('#hero');
+            const header = document.querySelector('#main-nav');
+
+            // Single rAF-throttled scroll handler for all effects
+            let scrollRaf = null;
+            const onScroll = () => {
+                if (scrollRaf) return;
+                scrollRaf = requestAnimationFrame(() => {
+                    scrollRaf = null;
                     const scrollY = window.scrollY;
-                    const heroSection = document.querySelector('#hero');
-                    if (heroSection) {
+
+                    updateActiveNav();
+
+                    if (heroText && heroSection) {
                         const rect = heroSection.getBoundingClientRect();
                         if (rect.top < window.innerHeight && rect.bottom > 0) {
-                            const offset = scrollY * 0.15;
-                            heroText.style.transform = `translateY(${offset}px) translateZ(30px)`;
+                            heroText.style.transform = `translateY(${scrollY * 0.15}px) translateZ(30px)`;
                         }
                     }
-                }, { passive: true });
-            }
 
-            // Header scroll effect: darken background
-            const header = document.querySelector('#main-nav');
-            if (header) {
-                window.addEventListener('scroll', () => {
-                    const currentScroll = window.scrollY;
-                    // Darken header on scroll
-                    if (currentScroll > 80) {
-                        header.classList.add('header-scrolled');
-                    } else {
-                        header.classList.remove('header-scrolled');
+                    if (header) {
+                        header.classList.toggle('header-scrolled', scrollY > 80);
                     }
-                }, { passive: true });
-            }
+                });
+            };
 
-            // All scroll effects initialized
+            updateActiveNav();
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll, { passive: true });
         });
     </script>
 </body>
