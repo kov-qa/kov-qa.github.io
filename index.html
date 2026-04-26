@@ -452,22 +452,37 @@
             </p>
             <!-- Hero Gallery: автор + результаты продаж -->
             <div class="w-full max-w-5xl mx-auto mt-12 px-4 grid grid-cols-1 md:grid-cols-2 gap-6 reveal-up delay-200">
-                <div class="rounded-[2rem] border border-white/10 overflow-hidden">
+                <div class="rounded-md border border-white/10 overflow-hidden">
                     <img src="https://i.imgur.com/piHmW2y.png" alt="Ксения Варкулевич" loading="lazy" class="w-full h-full object-cover block"/>
                 </div>
-                <div class="bg-[#0d0d0c] rounded-[2rem] border border-white/10 p-5 flex flex-col">
-                    <p class="font-label text-[10px] uppercase tracking-[0.3em] text-primary/60 mb-2">Реальные результаты за год</p>
+                <div class="bg-[#0d0d0c] rounded-md border border-white/10 p-5 flex flex-col">
+                    <p class="font-label text-sm md:text-base font-bold uppercase tracking-[0.25em] mb-3 shimmer-text" style="animation-duration: 7s;">Мои личные результаты за год</p>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div>
-                            <p class="text-xl md:text-2xl font-bold shimmer-text">4 274 900 ₽</p>
+                            <p class="text-xl md:text-2xl font-bold shimmer-text" style="animation-duration: 7s;">4 274 900 ₽</p>
                             <p class="text-white/50 text-xs">777 заказов</p>
                         </div>
                         <div>
-                            <p class="text-xl md:text-2xl font-bold shimmer-text">1 290 188 ₽</p>
+                            <p class="text-xl md:text-2xl font-bold shimmer-text" style="animation-duration: 7s; animation-delay: 0.3s;">1 290 188 ₽</p>
                             <p class="text-white/50 text-xs">335 выкупов</p>
                         </div>
                     </div>
-                    <img src="https://i.imgur.com/CeMsPXg.png" alt="Отчёт по продажам и выкупам за год" loading="lazy" class="w-full h-auto rounded-xl border border-white/5 mt-auto"/>
+                    <div class="relative mt-auto" data-report-slider>
+                        <div class="overflow-hidden rounded-md border border-white/5">
+                            <img data-report-slide src="https://i.imgur.com/CeMsPXg.png" alt="Мой личный отчёт по продажам и выкупам за год" loading="lazy" class="w-full h-auto block"/>
+                            <img data-report-slide src="https://i.imgur.com/66gzOHC.png" alt="Дополнительный отчёт по продажам" loading="lazy" class="w-full h-auto hidden"/>
+                        </div>
+                        <button type="button" data-report-prev aria-label="Предыдущий отчёт" class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/10 flex items-center justify-center text-primary transition-colors">
+                            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button type="button" data-report-next aria-label="Следующий отчёт" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/10 flex items-center justify-center text-primary transition-colors">
+                            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                        </button>
+                        <div data-report-dots class="flex justify-center gap-1.5 mt-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Scroll-down indicator -->
@@ -1072,6 +1087,26 @@
             updateActiveNav();
             window.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('resize', onScroll, { passive: true });
+
+            // Report slider
+            document.querySelectorAll('[data-report-slider]').forEach((slider) => {
+                const slides = slider.querySelectorAll('[data-report-slide]');
+                const dots = slider.querySelectorAll('[data-report-dots] span');
+                const prev = slider.querySelector('[data-report-prev]');
+                const next = slider.querySelector('[data-report-next]');
+                if (!slides.length) return;
+                let idx = 0;
+                const show = (i) => {
+                    idx = (i + slides.length) % slides.length;
+                    slides.forEach((s, n) => s.classList.toggle('hidden', n !== idx));
+                    dots.forEach((d, n) => {
+                        d.classList.toggle('bg-primary', n === idx);
+                        d.classList.toggle('bg-white/20', n !== idx);
+                    });
+                };
+                prev?.addEventListener('click', () => show(idx - 1));
+                next?.addEventListener('click', () => show(idx + 1));
+            });
         });
     </script>
 </body>
