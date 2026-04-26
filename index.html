@@ -397,6 +397,24 @@
             animation: slideFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* Slider stack — все слайды в одной grid-ячейке: контейнер не меняет размер */
+        .slide-stack {
+            display: grid;
+        }
+        .slide-stack > [data-slide],
+        .slide-stack > [data-report-slide] {
+            grid-column: 1;
+            grid-row: 1;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .slide-stack > [data-slide].is-active,
+        .slide-stack > [data-report-slide].is-active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .animate-startup,
             .animate-startup-delay,
@@ -426,7 +444,7 @@
     <!-- TopNavBar -->
     <header class="fixed top-0 left-0 right-0 z-[100] flex justify-center items-center w-full mt-2 px-1 sm:mt-4 sm:px-4">
         <nav
-            class="bg-black/40 backdrop-blur-3xl rounded-[1rem] sm:rounded-[3rem] mx-auto max-w-fit px-2 py-2 sm:px-6 sm:py-3 shadow-2xl flex items-center justify-center gap-4 border border-white/5 animate-startup" id="main-nav">
+            class="bg-black/40 backdrop-blur-3xl rounded-[2rem] sm:rounded-[3rem] mx-auto max-w-fit px-2 py-2 sm:px-6 sm:py-3 shadow-2xl flex items-center justify-center gap-4 border border-white/5 animate-startup" id="main-nav">
             <a class="font-headline text-base sm:text-2xl font-bold text-primary tracking-tighter shrink-0 transition-colors duration-300"
                 href="#">VARKULEVICH</a>
             <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20узнать%20подробнее%20о%20тарифах" target="_blank"
@@ -463,10 +481,10 @@
             </p>
             <!-- Hero Gallery: автор + результаты продаж -->
             <div class="w-full max-w-5xl mx-auto mt-12 px-4 grid grid-cols-1 md:grid-cols-2 gap-6 reveal-up delay-200">
-                <div class="relative rounded-xl border border-white/10 overflow-hidden" data-slider>
-                    <img data-slide src="https://i.imgur.com/piHmW2y.png" alt="Ксения Варкулевич" loading="lazy" class="w-full h-full object-cover block"/>
-                    <img data-slide src="https://i.imgur.com/4oY7yqR.png" alt="Ксения Варкулевич — фото 2" loading="lazy" class="w-full h-full object-cover block hidden"/>
-                    <img data-slide src="https://i.imgur.com/3Yu1Etg.jpeg" alt="Ксения Варкулевич — фото 3" loading="lazy" class="w-full h-full object-cover block hidden"/>
+                <div class="relative rounded-xl border border-white/10 overflow-hidden slide-stack touch-pan-y select-none" data-slider>
+                    <img data-slide src="https://i.imgur.com/piHmW2y.png" alt="Ксения Варкулевич" loading="lazy" class="w-full h-full object-cover block is-active"/>
+                    <img data-slide src="https://i.imgur.com/4oY7yqR.png" alt="Ксения Варкулевич — фото 2" loading="lazy" class="w-full h-full object-cover block"/>
+                    <img data-slide src="https://i.imgur.com/3Yu1Etg.jpeg" alt="Ксения Варкулевич — фото 3" loading="lazy" class="w-full h-full object-cover block"/>
                     <button type="button" data-slide-prev aria-label="Предыдущее фото" class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/10 flex items-center justify-center text-primary transition-colors z-10">
                         <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                     </button>
@@ -496,9 +514,9 @@
                         <p class="text-white/60 text-xs">Отчёт с Wildberries</p>
                     </div>
                     <div class="relative mt-auto" data-report-slider>
-                        <div class="overflow-hidden rounded-lg border border-white/5">
-                            <img data-report-slide src="https://i.imgur.com/CeMsPXg.png" alt="Мой личный отчёт по продажам и выкупам за год" loading="lazy" class="w-full h-auto block"/>
-                            <img data-report-slide src="https://i.imgur.com/66gzOHC.png" alt="Дополнительный отчёт по продажам" loading="lazy" class="w-full h-auto hidden"/>
+                        <div class="overflow-hidden rounded-lg border border-white/5 slide-stack touch-pan-y select-none">
+                            <img data-report-slide src="https://i.imgur.com/CeMsPXg.png" alt="Мой личный отчёт по продажам и выкупам за год" loading="lazy" class="w-full h-auto block is-active"/>
+                            <img data-report-slide src="https://i.imgur.com/66gzOHC.png" alt="Дополнительный отчёт по продажам" loading="lazy" class="w-full h-auto block"/>
                         </div>
                         <button type="button" data-report-prev aria-label="Предыдущий отчёт" class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/10 flex items-center justify-center text-primary transition-colors">
                             <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -1131,36 +1149,53 @@
             window.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('resize', onScroll, { passive: true });
 
-            // Generic slider helper with fade animation
-            const buildSlider = (slider, slideSel, dotsSel, prevSel, nextSel, inactiveDot) => {
+            // Generic slider helper with fade animation + swipe
+            const buildSlider = (slider, slideSel, dotsSel, prevSel, nextSel, inactiveDot, swipeTarget) => {
                 const slides = slider.querySelectorAll(slideSel);
                 const dots = slider.querySelectorAll(dotsSel);
                 const prev = slider.querySelector(prevSel);
                 const next = slider.querySelector(nextSel);
                 if (!slides.length) return;
                 let idx = 0;
-                let busy = false;
                 const show = (i) => {
                     const target = (i + slides.length) % slides.length;
-                    if (target === idx || busy) return;
-                    busy = true;
-                    const incoming = slides[target];
-                    incoming.classList.remove('hidden');
-                    incoming.classList.remove('slide-fade');
-                    void incoming.offsetWidth;
-                    incoming.classList.add('slide-fade');
-                    slides.forEach((s, n) => {
-                        if (n !== target) s.classList.add('hidden');
-                    });
+                    if (target === idx) return;
+                    slides[idx].classList.remove('is-active');
+                    slides[target].classList.add('is-active');
                     idx = target;
                     dots.forEach((d, n) => {
                         d.classList.toggle('bg-primary', n === idx);
                         d.classList.toggle(inactiveDot, n !== idx);
                     });
-                    setTimeout(() => { busy = false; }, 450);
                 };
                 prev?.addEventListener('click', () => show(idx - 1));
                 next?.addEventListener('click', () => show(idx + 1));
+
+                // Swipe support (touch + mouse drag)
+                const swipeEl = swipeTarget || slider;
+                let startX = 0;
+                let startY = 0;
+                let tracking = false;
+                const SWIPE_THRESHOLD = 40;
+                const onStart = (x, y) => { startX = x; startY = y; tracking = true; };
+                const onEnd = (x, y) => {
+                    if (!tracking) return;
+                    tracking = false;
+                    const dx = x - startX;
+                    const dy = y - startY;
+                    if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+                        show(dx < 0 ? idx + 1 : idx - 1);
+                    }
+                };
+                swipeEl.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+                swipeEl.addEventListener('touchend', (e) => {
+                    const t = e.changedTouches[0];
+                    onEnd(t.clientX, t.clientY);
+                }, { passive: true });
+                swipeEl.addEventListener('mousedown', (e) => onStart(e.clientX, e.clientY));
+                swipeEl.addEventListener('mouseup', (e) => onEnd(e.clientX, e.clientY));
+                swipeEl.addEventListener('mouseleave', () => { tracking = false; });
+                swipeEl.addEventListener('dragstart', (e) => e.preventDefault());
             };
             document.querySelectorAll('[data-report-slider]').forEach((s) =>
                 buildSlider(s, '[data-report-slide]', '[data-report-dots] span', '[data-report-prev]', '[data-report-next]', 'bg-white/20')
