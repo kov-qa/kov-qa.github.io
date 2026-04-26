@@ -387,6 +387,16 @@
             50% { transform: scale(1.06); }
         }
 
+        /* Slide-анимация для слайдеров */
+        @keyframes slideFadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .slide-fade {
+            animation: slideFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .animate-startup,
             .animate-startup-delay,
@@ -396,7 +406,8 @@
             .shimmer-black,
             .animated-gradient,
             .hero-subtitle-float,
-            .badge-pulse {
+            .badge-pulse,
+            .slide-fade {
                 animation: none !important;
                 transition: none !important;
                 transform: none !important;
@@ -452,8 +463,21 @@
             </p>
             <!-- Hero Gallery: автор + результаты продаж -->
             <div class="w-full max-w-5xl mx-auto mt-12 px-4 grid grid-cols-1 md:grid-cols-2 gap-6 reveal-up delay-200">
-                <div class="rounded-xl border border-white/10 overflow-hidden">
-                    <img src="https://i.imgur.com/piHmW2y.png" alt="Ксения Варкулевич" loading="lazy" class="w-full h-full object-cover block"/>
+                <div class="relative rounded-xl border border-white/10 overflow-hidden" data-slider>
+                    <img data-slide src="https://i.imgur.com/piHmW2y.png" alt="Ксения Варкулевич" loading="lazy" class="w-full h-full object-cover block"/>
+                    <img data-slide src="https://i.imgur.com/4oY7yqR.png" alt="Ксения Варкулевич — фото 2" loading="lazy" class="w-full h-full object-cover block hidden"/>
+                    <img data-slide src="https://i.imgur.com/3Yu1Etg.jpeg" alt="Ксения Варкулевич — фото 3" loading="lazy" class="w-full h-full object-cover block hidden"/>
+                    <button type="button" data-slide-prev aria-label="Предыдущее фото" class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/10 flex items-center justify-center text-primary transition-colors z-10">
+                        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button type="button" data-slide-next aria-label="Следующее фото" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/10 flex items-center justify-center text-primary transition-colors z-10">
+                        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                    </button>
+                    <div data-slide-dots class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                    </div>
                 </div>
                 <div class="bg-[#0d0d0c] rounded-xl border border-white/10 p-5 flex flex-col">
                     <p class="font-label text-sm md:text-base font-bold uppercase tracking-[0.25em] mb-3 shimmer-text" style="animation-duration: 7s;">Мои личные результаты за год</p>
@@ -466,6 +490,10 @@
                             <p class="text-xl md:text-2xl font-bold shimmer-text" style="animation-duration: 7s; animation-delay: 0.3s;">1 290 188 ₽</p>
                             <p class="text-white/50 text-xs">335 выкупов</p>
                         </div>
+                    </div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#cb11ab] text-white text-[9px] font-bold shrink-0">W</span>
+                        <p class="text-white/60 text-xs">Отчёт с Wildberries</p>
                     </div>
                     <div class="relative mt-auto" data-report-slider>
                         <div class="overflow-hidden rounded-lg border border-white/5">
@@ -485,8 +513,23 @@
                     </div>
                 </div>
             </div>
+            <!-- Hero Video -->
+            <div class="w-full max-w-3xl mx-auto mt-10 px-4 reveal-up delay-300">
+                <div class="rounded-xl border border-white/10 overflow-hidden bg-black">
+                    <video
+                        src="https://i.imgur.com/L8J5IWA.mp4"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        class="w-full h-auto block">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                </div>
+            </div>
             <!-- Scroll-down indicator -->
-            <a href="#tariffs" aria-label="Прокрутить вниз" class="mt-12 mb-2 inline-flex items-center justify-center w-12 h-12 rounded-full border border-primary/30 bg-white/5 hover:bg-primary/10 hover:border-primary/60 transition-colors">
+            <a href="#tariffs" aria-label="Прокрутить вниз" class="mt-10 mb-2 inline-flex items-center justify-center w-12 h-12 rounded-full border border-primary/30 bg-white/5 hover:bg-primary/10 hover:border-primary/60 transition-colors">
                 <svg viewBox="0 0 24 24" class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 5v14M19 12l-7 7-7-7"/>
                 </svg>
@@ -1088,25 +1131,43 @@
             window.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('resize', onScroll, { passive: true });
 
-            // Report slider
-            document.querySelectorAll('[data-report-slider]').forEach((slider) => {
-                const slides = slider.querySelectorAll('[data-report-slide]');
-                const dots = slider.querySelectorAll('[data-report-dots] span');
-                const prev = slider.querySelector('[data-report-prev]');
-                const next = slider.querySelector('[data-report-next]');
+            // Generic slider helper with fade animation
+            const buildSlider = (slider, slideSel, dotsSel, prevSel, nextSel, inactiveDot) => {
+                const slides = slider.querySelectorAll(slideSel);
+                const dots = slider.querySelectorAll(dotsSel);
+                const prev = slider.querySelector(prevSel);
+                const next = slider.querySelector(nextSel);
                 if (!slides.length) return;
                 let idx = 0;
+                let busy = false;
                 const show = (i) => {
-                    idx = (i + slides.length) % slides.length;
-                    slides.forEach((s, n) => s.classList.toggle('hidden', n !== idx));
+                    const target = (i + slides.length) % slides.length;
+                    if (target === idx || busy) return;
+                    busy = true;
+                    const incoming = slides[target];
+                    incoming.classList.remove('hidden');
+                    incoming.classList.remove('slide-fade');
+                    void incoming.offsetWidth;
+                    incoming.classList.add('slide-fade');
+                    slides.forEach((s, n) => {
+                        if (n !== target) s.classList.add('hidden');
+                    });
+                    idx = target;
                     dots.forEach((d, n) => {
                         d.classList.toggle('bg-primary', n === idx);
-                        d.classList.toggle('bg-white/20', n !== idx);
+                        d.classList.toggle(inactiveDot, n !== idx);
                     });
+                    setTimeout(() => { busy = false; }, 450);
                 };
                 prev?.addEventListener('click', () => show(idx - 1));
                 next?.addEventListener('click', () => show(idx + 1));
-            });
+            };
+            document.querySelectorAll('[data-report-slider]').forEach((s) =>
+                buildSlider(s, '[data-report-slide]', '[data-report-dots] span', '[data-report-prev]', '[data-report-next]', 'bg-white/20')
+            );
+            document.querySelectorAll('[data-slider]').forEach((s) =>
+                buildSlider(s, '[data-slide]', '[data-slide-dots] span', '[data-slide-prev]', '[data-slide-next]', 'bg-white/40')
+            );
         });
     </script>
 </body>
