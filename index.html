@@ -371,24 +371,6 @@
             transform: translateY(-8px) perspective(1000px) rotateX(2deg);
         }
 
-        /* Подчёркивание под "Подходит для" пунктами */
-        .check-item {
-            transition: transform 0.3s ease;
-        }
-
-        .check-item:hover {
-            transform: translateX(6px);
-        }
-
-        .check-item:hover .check-mark {
-            transform: scale(1.3) rotate(10deg);
-        }
-
-        .check-mark {
-            display: inline-block;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
         /* Hero subtitle — мягкое плавание */
         @keyframes heroFloat {
             0%, 100% { transform: translateY(0); }
@@ -468,6 +450,32 @@
             <p class="text-xl md:text-2xl text-primary font-headline mt-4 text-center max-w-[80vw] px-4 reveal-up hero-subtitle-float">
                 Ты научишься заказывать с Китая, Кореи и Японии быстрее, чем думаешь.
             </p>
+            <!-- Hero Gallery: автор + результаты продаж -->
+            <div class="w-full max-w-5xl mx-auto mt-12 px-4 grid grid-cols-1 md:grid-cols-2 gap-6 reveal-up delay-200">
+                <div class="bg-[#0d0d0c] rounded-[2rem] border border-white/10 overflow-hidden flex items-center justify-center">
+                    <img src="https://i.imgur.com/piHmW2y.png" alt="Ксения Варкулевич" loading="lazy" class="w-full h-auto object-cover"/>
+                </div>
+                <div class="bg-[#0d0d0c] rounded-[2rem] border border-white/10 p-5 flex flex-col">
+                    <p class="font-label text-[10px] uppercase tracking-[0.3em] text-primary/60 mb-2">Реальные результаты за год</p>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <p class="text-xl md:text-2xl font-bold shimmer-text">4 274 900 ₽</p>
+                            <p class="text-white/50 text-xs">777 заказов</p>
+                        </div>
+                        <div>
+                            <p class="text-xl md:text-2xl font-bold shimmer-text">1 290 188 ₽</p>
+                            <p class="text-white/50 text-xs">335 выкупов</p>
+                        </div>
+                    </div>
+                    <img src="https://i.imgur.com/CeMsPXg.png" alt="Отчёт по продажам и выкупам за год" loading="lazy" class="w-full h-auto rounded-xl border border-white/5 mt-auto"/>
+                </div>
+            </div>
+            <!-- Scroll-down indicator -->
+            <a href="#tariffs" aria-label="Прокрутить вниз" class="mt-12 mb-2 inline-flex items-center justify-center w-12 h-12 rounded-full border border-primary/30 bg-white/5 hover:bg-primary/10 hover:border-primary/60 transition-colors">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M19 12l-7 7-7-7"/>
+                </svg>
+            </a>
         </section>
         <!-- Value Proposition Section -->
         <section class="w-full md:max-w-7xl mx-auto mb-8 px-2 md:px-8 lg:pl-64 reveal-up lg:mt-32">
@@ -794,35 +802,35 @@
                 <h2 class="text-display-lg font-headline italic mb-12 text-white gold-glow-subtle reveal-up">Подходит для:
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl text-left">
-                    <div class="check-item flex items-start gap-3 reveal-up delay-100 cursor-pointer">
+                    <div class="flex items-start gap-3 reveal-up delay-100">
                         <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Личных покупок</h3>
                             <p class="text-sm text-white/60">Покупай всё для себя по ценам ниже рынка в 2-3 раза</p>
                         </div>
                     </div>
-                    <div class="check-item flex items-start gap-3 reveal-up delay-150 cursor-pointer">
+                    <div class="flex items-start gap-3 reveal-up delay-150">
                         <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Запуска бизнеса</h3>
                             <p class="text-sm text-white/60">Начни свой магазин с минимальными вложениями</p>
                         </div>
                     </div>
-                    <div class="check-item flex items-start gap-3 reveal-up delay-200 cursor-pointer">
+                    <div class="flex items-start gap-3 reveal-up delay-200">
                         <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Маркетплейсов</h3>
                             <p class="text-sm text-white/60">Поставляй товары на Wildberries, Ozon, Яндекс.Маркет</p>
                         </div>
                     </div>
-                    <div class="check-item flex items-start gap-3 reveal-up delay-250 cursor-pointer">
+                    <div class="flex items-start gap-3 reveal-up delay-250">
                         <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Оптовых поставок</h3>
                             <p class="text-sm text-white/60">Масштабируй закупки и работай с крупными объёмами</p>
                         </div>
                     </div>
-                    <div class="check-item flex items-start gap-3 reveal-up delay-300 col-span-1 md:col-span-2 lg:col-span-1 cursor-pointer">
+                    <div class="flex items-start gap-3 reveal-up delay-300 col-span-1 md:col-span-2 lg:col-span-1">
                         <span class="check-mark text-primary text-xl mt-0.5">✓</span>
                         <div>
                             <h3 class="text-lg font-bold text-white mb-1">Собственного бренда</h3>
