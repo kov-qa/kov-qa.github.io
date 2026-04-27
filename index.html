@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#000000" />
     <link rel="icon" type="image/png" href="https://i.imgur.com/L4mquB6.png" />
     <link rel="apple-touch-icon" href="https://i.imgur.com/L4mquB6.png" />
-    <title>VARKULEVICH — Заказы из Китая, Кореи, Японии</title>
+    <title>VARKULEVICH</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -299,6 +299,74 @@
             animation: shimmer 3s linear infinite;
         }
 
+        /* Диагональный блеск для кнопки Купить (тёмный текст на золотом фоне) */
+        .btn-buy-gloss-unused-DELETE {
+            background: linear-gradient(
+                135deg,
+                #000000 0%,
+                #000000 42%,
+                #1a1a1a 50%,
+                #000000 58%,
+                #000000 100%
+            );
+            background-size: 250% 250%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: heroDiagonalGloss 3.5s ease-in-out infinite alternate;
+        }
+
+        /* Тёмный блеск на белом тексте для hero заголовка — по диагонали туда-обратно */
+        @keyframes heroDiagonalGloss {
+            0%   { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .hero-title-dark-gloss {
+            background: linear-gradient(
+                135deg,
+                #ffffff 0%,
+                #ffffff 42%,
+                #000000 50%,
+                #ffffff 58%,
+                #ffffff 100%
+            );
+            background-size: 250% 250%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: startupFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both, heroDiagonalGloss 6s ease-in-out infinite alternate !important;
+        }
+
+        /* Блеск по фону кнопки Купить */
+        @keyframes btnShineSweep {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .btn-shine::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(
+                110deg,
+                transparent 35%,
+                rgba(0, 0, 0, 0.55) 50%,
+                transparent 65%
+            );
+            background-size: 250% 100%;
+            background-repeat: no-repeat;
+            animation: btnShineSweep 2.5s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         /* Sweep — блик пробегает по карточке при hover */
         .sweep-card {
             position: relative;
@@ -428,6 +496,97 @@
             animation: startupFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
         }
 
+        /* Hero Intro — splash overlay (авто-скрытие через 5с) */
+        #hero-intro {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000000;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #hero-intro.is-done {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .hero-intro-sticky {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0 1rem;
+        }
+        .hero-intro-title {
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+            background: linear-gradient(110deg, #ffffff 0%, #ffffff 49%, #000000 51%, #000000 100%);
+            background-size: 300% 100%;
+            background-position: 100% 0;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: heroIntroTitleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards, heroIntroGlowPulse 1.8s ease-in-out 1.5s, heroIntroSweep 1.6s cubic-bezier(0.4, 0, 0.2, 1) 2.4s forwards;
+            will-change: transform, opacity, background-position;
+        }
+        @keyframes heroIntroSweep {
+            from { background-position: 100% 0; }
+            to   { background-position: 0% 0; }
+        }
+        @keyframes heroIntroTitleIn {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes heroIntroGlowPulse {
+            0%   { text-shadow: 0 0 60px rgba(255, 255, 255, 0.15); }
+            50%  { text-shadow: 0 0 70px rgba(255, 255, 255, 0.4), 0 0 140px rgba(255, 215, 155, 0.2), 0 0 200px rgba(255, 215, 155, 0.12); }
+            100% { text-shadow: 0 0 60px rgba(255, 255, 255, 0.15); }
+        }
+        .hero-intro-subtitle {
+            opacity: 0;
+            transform: translateY(60px);
+            animation: heroIntroSubIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.7s forwards;
+            will-change: transform, opacity;
+        }
+        @keyframes heroIntroSubIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-intro-fade-unused-DELETE {
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            will-change: transform, opacity;
+        }
+        .hero-intro-hint-unused-DELETE {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: heroHintFade 0.8s ease 3s forwards;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        @keyframes heroHintFade {
+            to { opacity: 1; }
+        }
+        @keyframes heroHintBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* Bio expand animation */
+        .bio-hidden {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+        }
+        .bio-hidden.bio-open {
+            max-height: 200px;
+            opacity: 1;
+        }
+
         /* Slide-анимация для слайдеров */
         @keyframes slideFadeIn {
             from { opacity: 0; transform: scale(0.97); }
@@ -488,18 +647,19 @@
             class="bg-black/40 backdrop-blur-3xl rounded-[2rem] sm:rounded-[3rem] mx-auto max-w-fit px-2 py-2 sm:px-6 sm:py-3 shadow-2xl flex items-center justify-center gap-4 border border-white/5 animate-startup" id="main-nav">
             <a class="font-headline text-base sm:text-2xl font-bold text-primary tracking-tighter shrink-0 transition-colors duration-300"
                 href="#">VARKULEVICH</a>
+            <span class="w-px h-5 sm:h-7 bg-white/15 shrink-0"></span>
             <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20узнать%20подробнее%20о%20тарифах" target="_blank"
-                class="hidden sm:flex btn-glow bg-primary font-bold rounded-[1.5rem] px-6 py-2 text-sm scale-95 active:scale-90 transition-transform whitespace-nowrap shadow-[0_0_20px_rgba(255,179,0,0.6)] hover:shadow-[0_0_30px_rgba(255,179,0,0.8)]">
-                <span class="shimmer-black">Купить</span>
+                class="hidden sm:flex btn-glow btn-shine bg-primary text-black font-bold rounded-[1.5rem] px-6 py-2 text-sm scale-95 active:scale-90 transition-transform whitespace-nowrap shadow-[0_0_20px_rgba(255,179,0,0.6)] hover:shadow-[0_0_30px_rgba(255,179,0,0.8)]">
+                Купить
             </a>
             <div class="flex items-center gap-2 sm:gap-5">
-                <a class="nav-link font-headline italic text-xs sm:text-base font-medium transition-colors duration-300"
+                <a class="nav-link font-body text-xs sm:text-base font-medium transition-colors duration-300"
                     data-nav-link href="#tariffs">Тарифы</a>
-                <a class="nav-link font-headline italic text-xs sm:text-base font-medium transition-colors duration-300"
+                <a class="nav-link font-body text-xs sm:text-base font-medium transition-colors duration-300"
                     data-nav-link href="#about">Почему?</a>
-                <a class="nav-link font-headline italic text-xs sm:text-base font-medium transition-colors duration-300"
+                <a class="nav-link font-body text-xs sm:text-base font-medium transition-colors duration-300"
                     data-nav-link href="#countries">Страны</a>
-                <a class="nav-link font-headline italic text-xs sm:text-base font-medium transition-colors duration-300"
+                <a class="nav-link font-body text-xs sm:text-base font-medium transition-colors duration-300"
                     data-nav-link href="#contact">Покупка</a>
             </div>
         </nav>
@@ -507,17 +667,28 @@
     <!-- Mobile Buy Button -->
     <div class="fixed top-14 left-0 right-0 z-[99] flex justify-center items-center w-full px-4 sm:hidden">
         <a href="https://t.me/KSENIAVARKULEVICH?text=Хочу%20узнать%20подробнее%20о%20тарифах" target="_blank"
-            class="bg-primary font-bold rounded-[1.5rem] px-6 py-2 text-sm scale-95 active:scale-90 transition-all whitespace-nowrap shadow-[0_0_20px_rgba(255,179,0,0.6)] hover:shadow-[0_0_30px_rgba(255,179,0,0.8)]">
-            <span class="shimmer-black">Купить</span>
+            class="bg-primary btn-shine text-black font-bold rounded-[1.5rem] px-6 py-2 text-sm scale-95 active:scale-90 transition-all whitespace-nowrap shadow-[0_0_20px_rgba(255,179,0,0.6)] hover:shadow-[0_0_30px_rgba(255,179,0,0.8)]">
+            Купить
         </a>
     </div>
     <main class="flex-grow pt-32 sm:pt-24 pb-16 px-2 md:px-4 lg:px-8 relative">
+        <!-- Intro Splash: VARKULEVICH + подпись (авто-скрытие через 5с) -->
+        <section id="hero-intro">
+            <div class="hero-intro-sticky">
+                <h1 class="hero-intro-title text-[12vw] sm:text-[14vw] font-black tracking-tighter uppercase font-headline leading-none text-white max-w-full" style="text-shadow: 0 0 60px rgba(255,255,255,0.15);">
+                    VARKULEVICH
+                </h1>
+                <p class="hero-intro-subtitle text-base md:text-xl text-white/70 mt-8 text-center max-w-[80vw]">
+                    Ты научишься заказывать с Китая, Кореи и Японии быстрее, чем думаешь.
+                </p>
+            </div>
+        </section>
         <!-- Hero Section -->
         <section class="relative w-full min-h-[400px] flex flex-col items-center justify-center mb-16" id="hero">
-            <h1 class="text-[10vw] sm:text-[12vw] font-black tracking-tighter uppercase shimmer-white font-headline leading-none opacity-100 transition-opacity duration-700 white-glow work-glow text-3d animate-startup-delay max-w-full">
+            <h1 class="text-[10vw] sm:text-[12vw] font-black tracking-tighter uppercase hero-title-dark-gloss font-headline leading-none opacity-100 transition-opacity duration-700 white-glow work-glow text-3d animate-startup-delay max-w-full">
                 VARKULEVICH
             </h1>
-            <p class="text-xl md:text-2xl text-primary font-headline mt-4 text-center max-w-[80vw] px-4 reveal-up hero-subtitle-float">
+            <p class="text-base md:text-lg text-white/60 mt-4 text-center max-w-[80vw] px-4 reveal-up hero-subtitle-float">
                 Ты научишься заказывать с Китая, Кореи и Японии быстрее, чем думаешь.
             </p>
             <!-- Hero Gallery: автор + результаты продаж -->
@@ -590,6 +761,31 @@
                         <source src="https://i.imgur.com/L8J5IWA.mp4" type="video/mp4"/>
                         Ваш браузер не поддерживает видео.
                     </video>
+                </div>
+            </div>
+            <!-- About Ksenia Section -->
+            <div class="w-full max-w-3xl mx-auto mt-12 px-4 reveal-up">
+                <div class="bg-[#0d0d0c] rounded-xl border border-white/10 p-6">
+                    <h3 class="text-xl md:text-2xl font-bold text-white font-headline mb-4 text-center">Обо мне</h3>
+                    <div class="text-white/80 text-sm md:text-base leading-relaxed bio-content">
+                        <p class="bio-visible">
+                            Меня зовут Ксения Варкулевич, мне 17 лет, и я более 2 лет в товарном бизнесе. С 15 лет занимаюсь перепродажами и выкупом товаров из Азии. Уже тогда заработала первые 100 000 рублей за месяц.
+                        </p>
+                        <div class="bio-hidden">
+                            <p class="mt-3">
+                                В 16 лет вышла на Wildberries, и уже более года успешно продаю на этой платформе. Работаю с поставками из Китая и знаю, как выстраивать продажи в плюс.
+                            </p>
+                            <p class="mt-3">
+                                Сейчас обучаю заказу товаров из Китая: помогаю находить надежных поставщиков, снижать закупочные цены и избегать ошибок. Также помогаю запускаться на Wildberries, подбирать прибыльные товары и выстраивать продажи с нуля.
+                            </p>
+                        </div>
+                    </div>
+                    <button id="bio-toggle" class="mt-4 text-primary text-sm font-medium hover:text-white transition-colors flex items-center justify-center gap-2 mx-auto">
+                        <span>Читать далее</span>
+                        <svg class="w-4 h-4 transition-transform" id="bio-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
             <!-- Scroll-down indicator -->
@@ -727,7 +923,7 @@
         <section class="max-w-7xl mx-auto mb-32" id="tariffs">
             <div class="max-w-3xl mx-auto mb-16 text-center reveal-up">
                 <span class="text-label-sm font-label mb-3 block tracking-[0.2em]" style="animation: shimmer 4s linear infinite; background: linear-gradient(90deg, rgba(255,215,155,0.6) 0%, rgba(255,215,155,0.6) 40%, #ffffff 50%, rgba(255,215,155,0.6) 60%, rgba(255,215,155,0.6) 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">4 ТАРИФА ОБУЧЕНИЯ</span>
-                <h2 class="text-2xl md:text-display-lg text-white font-headline white-glow">От старта до полного сопровождения</h2>
+                <h2 class="text-2xl md:text-display-lg text-white font-bold font-headline">От старта до полного сопровождения</h2>
                 <p class="text-body-lg max-w-2xl mx-auto mt-6 text-white/60">
                     Получи систему, которая поможет покупать дешевле, избегать мошенников, находить проверенных поставщиков, правильно организовывать логистику и масштабировать продажи.
                 </p>
@@ -922,7 +1118,7 @@
             <!-- Who is it for detailed -->
             <section id="about"
                 class="max-w-7xl mx-auto px-8 pt-24 pb-16 md:px-16 md:pt-32 md:pb-20 flex flex-col items-center text-center relative z-10">
-                <h2 class="text-display-lg font-headline italic mb-12 text-white gold-glow-subtle reveal-up">Подходит для:
+                <h2 class="text-display-lg font-headline font-bold mb-12 text-white reveal-up">Подходит для:
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl text-left">
                     <div class="flex items-start gap-3 reveal-up delay-100">
@@ -968,7 +1164,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div class="reveal-up">
                         <span class="font-label text-label-sm mb-4 block text-primary/60 tracking-[0.2em] inline-block" style="animation: shimmer 4s linear infinite; background: linear-gradient(90deg, rgba(255,215,155,0.6) 0%, rgba(255,215,155,0.6) 40%, #ffffff 50%, rgba(255,215,155,0.6) 60%, rgba(255,215,155,0.6) 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">ТРИ РЫНКА — ОДИН ДОСТУП</span>
-                        <h2 class="text-display-lg text-white font-headline mb-8 white-glow">Из чего выбирать</h2>
+                        <h2 class="text-display-lg text-white font-bold font-headline mb-8">Из чего выбирать</h2>
                         <p class="text-body-lg mb-8 max-w-md text-white/60">
                             Каждая страна Азии — своя экосистема товаров, цен и возможностей. 
                             Научись пользоваться всеми или сосредоточься на одной.
@@ -1248,7 +1444,6 @@
             const heroVideo = document.getElementById('hero-video');
             if (heroVideo) {
                 heroVideo.muted = true;
-                heroVideo.setAttribute('muted', '');
                 heroVideo.playsInline = true;
                 const tryPlay = () => {
                     const p = heroVideo.play();
@@ -1260,8 +1455,6 @@
                 // Fallback: первое касание/клик пользователя
                 const onFirstInteract = () => {
                     tryPlay();
-                    document.removeEventListener('touchstart', onFirstInteract);
-                    document.removeEventListener('click', onFirstInteract);
                 };
                 document.addEventListener('touchstart', onFirstInteract, { passive: true, once: true });
                 document.addEventListener('click', onFirstInteract, { once: true });
@@ -1277,6 +1470,44 @@
             document.querySelectorAll('[data-slider]').forEach((s) =>
                 buildSlider(s, '[data-slide]', '[data-slide-dots] span', '[data-slide-prev]', '[data-slide-next]', 'bg-white/40')
             );
+
+            // Hero Intro — splash overlay, авто-скрытие через 5с
+            const heroIntro = document.getElementById('hero-intro');
+            if (heroIntro) {
+                // Блокируем скролл на время intro
+                document.body.style.overflow = 'hidden';
+                window.scrollTo(0, 0);
+                // Через 5с — плавно скрываем overlay
+                setTimeout(() => {
+                    heroIntro.classList.add('is-done');
+                    document.body.style.overflow = '';
+                }, 5000);
+                // Через 6с удаляем из DOM
+                setTimeout(() => {
+                    heroIntro.remove();
+                }, 6000);
+            }
+
+            // Bio toggle functionality
+            const bioToggle = document.getElementById('bio-toggle');
+            const bioHidden = document.querySelector('.bio-hidden');
+            const bioArrow = document.getElementById('bio-arrow');
+            const bioToggleText = bioToggle?.querySelector('span');
+
+            if (bioToggle && bioHidden && bioArrow) {
+                bioToggle.addEventListener('click', () => {
+                    const isExpanded = bioHidden.classList.contains('bio-open');
+                    if (isExpanded) {
+                        bioHidden.classList.remove('bio-open');
+                        bioArrow.style.transform = 'rotate(0deg)';
+                        bioToggleText.textContent = 'Читать далее';
+                    } else {
+                        bioHidden.classList.add('bio-open');
+                        bioArrow.style.transform = 'rotate(180deg)';
+                        bioToggleText.textContent = 'Свернуть';
+                    }
+                });
+            }
         });
     </script>
 </body>
